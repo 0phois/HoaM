@@ -2,5 +2,6 @@
 {
     public interface IDomainNotification
     {
+        DateTimeOffset TriggeredOn { get; }
     }
 }

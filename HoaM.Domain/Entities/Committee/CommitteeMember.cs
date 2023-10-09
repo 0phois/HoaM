@@ -8,7 +8,7 @@
         public CommitteeRole Position { get; set; } = null!;
 
         /// <summary>
-        /// <see cref="Entities.Committee"/> to which this <seealso cref="CommitteeMember"/> belongs
+        /// <see cref="Committee"/> to which this <seealso cref="CommitteeMember"/> belongs
         /// </summary>
         public ICollection<Committee> Committees { get; private set; } = new HashSet<Committee>();
     }

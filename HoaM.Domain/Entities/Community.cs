@@ -13,10 +13,10 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Name of the community the Home Owner's Association manages
         /// </summary>
-        public CommunityName Name { get; set; }
+        public required CommunityName Name { get; init; }
 
         /// <summary>
-        /// 
+        /// List of <see cref="RecurringExpense"/>s managed by the Home Owner's Association
         /// </summary>
         public ICollection<RecurringExpense> Fees { get; private set; } = new List<RecurringExpense>();
 

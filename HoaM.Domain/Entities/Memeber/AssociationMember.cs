@@ -16,22 +16,22 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// First name of the <see cref="AssociationMember"/> 
         /// </summary>
-        public FirstName FirstName { get; set; }
+        public FirstName? FirstName { get; set; }
 
         /// <summary>
         /// Last name of the <see cref="AssociationMember"/>
         /// </summary>
-        public LastName LastName { get; set; }
+        public LastName? LastName { get; set; }
 
         /// <summary>
         /// Email details of the <see cref="AssociationMember"/>
         /// </summary>
-        public Email Email { get; set; } = null!;
+        public Email? Email { get; set; }
 
         /// <summary>
         /// Contact numbers for the <see cref="AssociationMember"/>
         /// </summary>
-        public List<PhoneNumber> PhoneNumbers { get; set; } = new List<PhoneNumber>();
+        public List<PhoneNumber> PhoneNumbers { get; } = new List<PhoneNumber>();
 
         /// <summary>
         /// Resendential address (within the community) of the <see cref="AssociationMember"/>

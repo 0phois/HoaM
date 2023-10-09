@@ -5,9 +5,9 @@ using Typely.Core.Builders;
 
 namespace HoaM.Domain
 {
-    internal class ValueObjectConfigurations : ITypelyConfiguration
+    internal partial class ValueObjectConfigurations : ITypelySpecification
     {
-        public void Configure(ITypelyBuilder builder)
+        public void Create(ITypelyBuilder builder)
         {
             var entityId = builder.OfGuid().NotEmpty();
 
@@ -29,7 +29,7 @@ namespace HoaM.Domain
                 .Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 
             name.For("CommitteeRole").AsClass();
-            name.For("TransactionTitle") ;
+            name.For("TransactionTitle");
             name.For("CommunityName");
             name.For("CommitteeName");
             name.For("StreetName");
@@ -37,9 +37,10 @@ namespace HoaM.Domain
             name.For("LastName");
 
             builder.OfString().For("MeetingTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
-            builder.OfString().For("EmailAddress").Matches(new Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
+            builder.OfString().For("EmailAddress").Matches(EmailRegex());
             builder.OfString().For("MeetingDescription").NotEmpty().MaxLength(250);
             builder.OfString().For("Text").NotEmpty();
+            builder.OfString().For("Lot").NotEmpty();
 
             builder.OfUShort().For("CountryCallingCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(1);
             builder.OfUShort().For("AreaCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(100);
@@ -47,7 +48,10 @@ namespace HoaM.Domain
             builder.OfUShort().For("LineNumber").NotEmpty().LessThanOrEqualTo(9999).GreaterThan(0);
             builder.OfUShort().For("StreetNumber").NotEmpty();
 
-            
+
         }
+
+        [GeneratedRegex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")]
+        private static partial Regex EmailRegex();
     }
 }

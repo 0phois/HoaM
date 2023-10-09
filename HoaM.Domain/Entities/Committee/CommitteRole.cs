@@ -1,4 +1,4 @@
-﻿namespace HoaM.Domain.Common
+﻿namespace HoaM.Domain.Entities
 {
     public partial class CommitteRole
     {

@@ -1,7 +1,7 @@
-﻿namespace HoaM.Domain.Common
+﻿namespace HoaM.Domain.Entities
 {
     /// <summary>
-    /// Represents the type of <see cref="Contracts.ITransaction"/>
+    /// Represents the type of <see cref="Transactions.Contracts.ITransaction"/>
     /// </summary>
     public enum TransactionType
     {

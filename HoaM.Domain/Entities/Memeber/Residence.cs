@@ -1,5 +1,4 @@
 ﻿using HoaM.Domain.Common;
-using HoaM.Domain.Contracts;
 using MassTransit;
 
 namespace HoaM.Domain.Entities
@@ -15,6 +14,11 @@ namespace HoaM.Domain.Entities
         public override ResidenceId Id => ResidenceId.From(NewId.Next().ToGuid());
 
         /// <summary>
+        /// Lot# for the <see cref="Residence"/>
+        /// </summary>
+        public required Lot LotNumber { get; set; }
+
+        /// <summary>
         /// Street number for the <see cref="Residence"/>
         /// </summary>
         public StreetNumber StreetNumber { get; set; }
@@ -22,13 +26,13 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Street name for the <see cref="Residence"/>
         /// </summary>
-        public StreetName StreetName { get; set; }
+        public required StreetName StreetName { get; set; }
 
         /// <summary>
         /// Development status of the <see cref="Residence"/>
         /// </summary>
         public DevelopmentStatus Status { get; set; }
-        
+
         /// <summary>
         /// Summary of all <see cref="ITransaction"/>s linked to this <seealso cref="Residence"/>
         /// </summary>
@@ -37,6 +41,6 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// <see cref="AssociationMember"/>s residing at the property address
         /// </summary>
-        public ICollection<AssociationMember> AssociationMembers { get; private set; } = new List<AssociationMember>();
+        public ICollection<AssociationMember> Residents { get; private set; } = new List<AssociationMember>();
     }
 }

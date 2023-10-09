@@ -18,6 +18,6 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Contents of the <see cref="Note"/>
         /// </summary>
-        public Text Text { get; init; }
+        public required Text Text { get; set; }
     }
 }

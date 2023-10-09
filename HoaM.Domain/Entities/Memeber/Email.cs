@@ -18,6 +18,6 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Email address of an <see cref="AssociationMember"/>
         /// </summary>
-        public EmailAddress Address { get; set; }
+        public required EmailAddress Address { get; set; }
     }
 }

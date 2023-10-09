@@ -13,12 +13,12 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Title of the <see cref="Meeting"/>
         /// </summary>
-        public MeetingTitle Title { get; set; }
+        public required MeetingTitle Title { get; set; }
 
         /// <summary>
         /// Short description of the purpose of the <see cref="Meeting"/>
         /// </summary>
-        public MeetingDescription Description { get; set; }
+        public MeetingDescription? Description { get; set; }
 
         /// <summary>
         /// Planned agenda for the <see cref="Meeting"/>

@@ -16,7 +16,7 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Name of the <see cref="Committee"/> (example: Executive)
         /// </summary>
-        public CommitteeName Title { get; set; }
+        public required CommitteeName Title { get; set; }
 
         /// <summary>
         /// Date the <see cref="Committee"/> was created

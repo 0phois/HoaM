@@ -13,12 +13,12 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// <see cref="CommitteeMember"/> that created the <seealso cref="MeetingMinutes"/>
         /// </summary>
-        public CommitteeMember Author { get; init; } = null!;
+        public required CommitteeMember Author { get; init; }
 
         /// <summary>
         /// Date and time the <see cref="MeetingMinutes"/> were created
         /// </summary>
-        public DateTimeOffset CreatedDate { get; private set; }
+        public DateTimeOffset CreatedDate { get; private set; } = DateTimeOffset.UtcNow;
 
         /// <summary>
         /// Minutes (transcript) of the meeting 
