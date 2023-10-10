@@ -6,7 +6,7 @@ namespace HoaM.Domain.Entities
     /// <summary>
     /// Defines a committee within the Home Owner's Association
     /// </summary>
-    public sealed class Committee : Entity<CommitteeId>
+    public sealed class Committee : Entity<CommitteeId>, ISoftDelete
     {
         /// <summary>
         /// Unique ID of the <see cref="Committee"/>
@@ -37,5 +37,8 @@ namespace HoaM.Domain.Entities
         /// All meetings held by this <see cref="Committee"/>
         /// </summary>
         public ICollection<Meeting> Meetings { get; set; } = new HashSet<Meeting>();
+
+        public AssociationMemberId? DeletedBy { get; set; }
+        public DateTimeOffset? DeletionDate { get; set; }
     }
 }

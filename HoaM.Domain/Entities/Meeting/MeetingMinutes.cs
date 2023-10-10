@@ -3,22 +3,12 @@ using MassTransit;
 
 namespace HoaM.Domain.Entities
 {
-    public sealed class MeetingMinutes : Entity<MinutesId>
+    public sealed class MeetingMinutes : AuditableSoftDeleteEntity<MinutesId>
     {
         /// <summary>
         /// Unique ID of the <see cref="MeetingMinutes"/>
         /// </summary>
         public override MinutesId Id => MinutesId.From(NewId.Next().ToGuid());
-
-        /// <summary>
-        /// <see cref="CommitteeMember"/> that created the <seealso cref="MeetingMinutes"/>
-        /// </summary>
-        public required CommitteeMember Author { get; init; }
-
-        /// <summary>
-        /// Date and time the <see cref="MeetingMinutes"/> were created
-        /// </summary>
-        public DateTimeOffset CreatedDate { get; private set; } = DateTimeOffset.UtcNow;
 
         /// <summary>
         /// Minutes (transcript) of the meeting 

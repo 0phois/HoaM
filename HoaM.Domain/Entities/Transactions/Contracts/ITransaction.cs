@@ -1,18 +1,14 @@
-﻿using MassTransit;
+﻿using HoaM.Domain.Common;
+using MassTransit;
 
 namespace HoaM.Domain.Entities
 {
-    public interface ITransaction
+    public interface ITransaction : IAuditable, ISoftDelete
     {
         /// <summary>
         /// Unique Id of this <see cref="ITransaction"/>
         /// </summary>
         TransactionId Id => TransactionId.From(NewId.Next().ToGuid());
-
-        /// <summary>
-        /// <see cref="AssociationMember"/> that submitted this <seealso cref="ITransaction"/>
-        /// </summary>
-        AssociationMember Submitter { get; init; }
 
         /// <summary>
         /// Short description of this <see cref="ITransaction"/>

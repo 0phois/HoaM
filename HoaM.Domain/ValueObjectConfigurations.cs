@@ -11,22 +11,24 @@ namespace HoaM.Domain
         {
             var entityId = builder.OfGuid().NotEmpty();
 
+            entityId.For("NotificationTemplateId");
             entityId.For("AssociationMemberId");
             entityId.For("AssociationFeeId");
+            entityId.For("NotificationId");
             entityId.For("PhoneNumberId");
             entityId.For("TransactionId");
             entityId.For("ResidenceId");
             entityId.For("CommitteeId");
             entityId.For("CommunityId");
+            entityId.For("DocumentId");
+            entityId.For("ArticleId");
             entityId.For("MeetingId");
             entityId.For("MinutesId");
+            entityId.For("AuditId");
             entityId.For("EmailId");
             entityId.For("NoteId");
 
-            var name = builder.OfString()
-                .NotEmpty()
-                .MaxLength(50)
-                .Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+            var name = builder.OfString().NotEmpty().MaxLength(50).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 
             name.For("CommitteeRole").AsClass();
             name.For("TransactionTitle");
@@ -35,9 +37,15 @@ namespace HoaM.Domain
             name.For("StreetName");
             name.For("FirstName");
             name.For("LastName");
+            name.For("FileName");
 
-            builder.OfString().For("MeetingTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
-            builder.OfString().For("EmailAddress").Matches(EmailRegex());
+            var title = builder.OfString().NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+
+            title.For("NotificationTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+            title.For("MeetingTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+            title.For("ArticleTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+
+            builder.OfString().For("EmailAddress").Matches(new Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
             builder.OfString().For("MeetingDescription").NotEmpty().MaxLength(250);
             builder.OfString().For("Text").NotEmpty();
             builder.OfString().For("Lot").NotEmpty();
@@ -50,8 +58,5 @@ namespace HoaM.Domain
 
 
         }
-
-        [GeneratedRegex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")]
-        private static partial Regex EmailRegex();
     }
 }

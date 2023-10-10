@@ -6,7 +6,7 @@ namespace HoaM.Domain.Entities
     /// <summary>
     /// Defines a member of the home owner's association
     /// </summary>
-    public class AssociationMember : Entity<AssociationMemberId>
+    public class AssociationMember : Entity<AssociationMemberId>, ISoftDelete
     {
         /// <summary>
         /// Unique ID of the <see cref="AssociationMember"/>
@@ -37,5 +37,13 @@ namespace HoaM.Domain.Entities
         /// Resendential address (within the community) of the <see cref="AssociationMember"/>
         /// </summary>
         public Residence? Residence { get; private set; }
+
+        /// <summary>
+        /// <see cref="Notification"/>s delivered to this <see cref="AssociationMember"/>
+        /// </summary>
+        public List<Notification> Notifications { get; } = new List<Notification>();
+
+        public AssociationMemberId? DeletedBy { get; set; }
+        public DateTimeOffset? DeletionDate { get; set; }
     }
 }

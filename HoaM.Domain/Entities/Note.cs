@@ -11,6 +11,11 @@ namespace HoaM.Domain.Entities
         public override NoteId Id => NoteId.From(NewId.Next().ToGuid());
 
         /// <summary>
+        /// <see cref="AssociationMember"/> that authored the <seealso cref="Note"/>
+        /// </summary>
+        public required AssociationMember Author { get; init; }
+
+        /// <summary>
         /// Date and time the <see cref="Note"/> was created
         /// </summary>
         public DateTimeOffset CreatedDate { get; init; }
@@ -18,6 +23,6 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Contents of the <see cref="Note"/>
         /// </summary>
-        public required Text Text { get; set; }
+        public required Text Text { get; init; }
     }
 }

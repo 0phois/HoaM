@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace HoaM.Domain.Entities
 {
-    public sealed class Meeting : Entity<MeetingId>
+    public sealed class Meeting : Entity<MeetingId>, ISoftDelete
     {
         /// <summary>
         /// Unique ID of the <see cref="Meeting"/>
@@ -39,5 +39,8 @@ namespace HoaM.Domain.Entities
         /// <see cref="Entities.Committee"/> hosting this <seealso cref="Meeting"/>
         /// </summary>
         public Committee Committee { get; private set; } = null!;
+
+        public AssociationMemberId? DeletedBy { get; set; }
+        public DateTimeOffset? DeletionDate { get; set; }
     }
 }

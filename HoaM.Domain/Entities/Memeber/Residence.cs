@@ -4,9 +4,9 @@ using MassTransit;
 namespace HoaM.Domain.Entities
 {
     /// <summary>
-    /// Defines the address of a residential property within the community/neighborhood
+    /// Details of a residential property within the community/neighborhood
     /// </summary>
-    public sealed class Residence : Entity<ResidenceId>
+    public sealed class Residence : Entity<ResidenceId>, ISoftDelete
     {
         /// <summary>
         /// Unique ID of the <see cref="Residence"/>
@@ -16,7 +16,7 @@ namespace HoaM.Domain.Entities
         /// <summary>
         /// Lot# for the <see cref="Residence"/>
         /// </summary>
-        public required Lot LotNumber { get; set; }
+        public required Lot Lot { get; set; }
 
         /// <summary>
         /// Street number for the <see cref="Residence"/>
@@ -42,5 +42,8 @@ namespace HoaM.Domain.Entities
         /// <see cref="AssociationMember"/>s residing at the property address
         /// </summary>
         public ICollection<AssociationMember> Residents { get; private set; } = new List<AssociationMember>();
+
+        public AssociationMemberId? DeletedBy { get; set; }
+        public DateTimeOffset? DeletionDate { get; set; }
     }
 }

@@ -2,10 +2,9 @@
 
 namespace HoaM.Domain.Entities
 {
-    public abstract class Transaction : Entity<TransactionId>, ITransaction
+    public abstract class Transaction : AuditableSoftDeleteEntity<TransactionId>, ITransaction
     {
-        //inherit doc
-        public required AssociationMember Submitter { get; init; }
+        public required AssociationMember SubmittedBy { get; init; }
 
         //inherit doc
         public required TransactionTitle Title { get; init; }

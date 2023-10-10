@@ -16,24 +16,29 @@ namespace HoaM.Domain.Entities
         public required CommunityName Name { get; init; }
 
         /// <summary>
-        /// List of <see cref="RecurringExpense"/>s managed by the Home Owner's Association
+        /// Collection of members of the Home Owner's Association
+        /// </summary>
+        public ICollection<AssociationMember> AssociationMembers { get; private set; } = new HashSet<AssociationMember>();
+
+        /// <summary>
+        /// Collection of <see cref="RecurringExpense"/>s managed by the Home Owner's Association
         /// </summary>
         public ICollection<RecurringExpense> Fees { get; private set; } = new List<RecurringExpense>();
 
         /// <summary>
-        /// List of <see cref="Committee"/>s within the Home Owner's Association
+        /// Collection of <see cref="Committee"/>s within the Home Owner's Association
         /// </summary>
         public ICollection<Committee> Committees { get; private set; } = new HashSet<Committee>();
 
         /// <summary>
-        /// List of properties within the <see cref="Community"/>
+        /// Collection of properties within the <see cref="Community"/>
         /// </summary>
         public ICollection<Residence> Residences { get; private set; } = new HashSet<Residence>();
 
         /// <summary>
-        /// List of members of the Home Owner's Association
+        /// Collection of <see cref="Article"/>s posted in the <seealso cref="Community"/>
         /// </summary>
-        public ICollection<AssociationMember> AssociationMembers { get; private set; } = new HashSet<AssociationMember>();
+        public ICollection<Article> Articles { get; private set; } = new List<Article>();
     }
 }
 
@@ -43,3 +48,4 @@ namespace HoaM.Domain.Entities
 //Financial - Statement | Fee | Receipt | Expense | Payment | Accounts (Name | balance | transactions)
 //Announcements/Bulletins
 //Submissions
+//Forum - https://github.com/enkodellc/blazorboilerplate/tree/master/src/Shared/Modules/BlazorBoilerplate.Theme.MudBlazor.Demo/Pages/Forum
