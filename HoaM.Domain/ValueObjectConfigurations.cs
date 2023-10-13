@@ -25,6 +25,7 @@ namespace HoaM.Domain
             entityId.For("MeetingId");
             entityId.For("MinutesId");
             entityId.For("AuditId");
+            entityId.For("EventId");
             entityId.For("EmailId");
             entityId.For("NoteId");
 
@@ -39,16 +40,17 @@ namespace HoaM.Domain
             name.For("LastName");
             name.For("FileName");
 
-            var title = builder.OfString().NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+            var title = builder.OfString().NotEmpty().MaxLength(100).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 
-            title.For("NotificationTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
-            title.For("MeetingTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
-            title.For("ArticleTitle").NotEmpty().MaxLength(150).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+            title.For("NotificationTitle");
+            title.For("MeetingTitle");
+            title.For("ArticleTitle");
+            title.For("EventTitle");
 
             builder.OfString().For("EmailAddress").Matches(new Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
             builder.OfString().For("MeetingDescription").NotEmpty().MaxLength(250);
+            builder.OfString().For("Lot").NotEmpty().MaxLength(10);
             builder.OfString().For("Text").NotEmpty();
-            builder.OfString().For("Lot").NotEmpty();
 
             builder.OfUShort().For("CountryCallingCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(1);
             builder.OfUShort().For("AreaCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(100);

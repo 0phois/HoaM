@@ -5,17 +5,17 @@
         /// <summary>
         /// Name of the table associated with the <see cref="AuditLog"/> entry
         /// </summary>
-        string TableName { get; set; }
+        string TableName { get; init; }
 
         /// <summary>
         /// Primary key of the record associated with the <see cref="AuditLog"/> entry
         /// </summary>
-        Guid RecordId { get; set; }
+        Guid RecordId { get; init; }
 
         /// <summary>
         /// <see cref="AuditAction"/> performed on the record
         /// </summary>
-        AuditAction Action { get; set; }
+        AuditAction Action { get; init; }
 
         /// <summary>
         /// Names of the columns that were changed in the record
