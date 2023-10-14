@@ -61,13 +61,15 @@ namespace HoaM.Domain.Features
             Body = body;
         }
 
-        public Article Publish(ISystemClock clock)
+        public IResult Publish(IArticleManager articleManager)
         {
             if (PublishedDate != null) throw new InvalidOperationException("Article has already been published!");
 
-            PublishedDate = clock.UtcNow;
+            var publishResult = articleManager.PublishArticle(this);
 
-            return this;
+            if (publishResult.IsSuccess) PublishedDate = articleManager.SystemClock.UtcNow;
+
+            return publishResult;
         }
     }
 

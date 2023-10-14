@@ -10,6 +10,9 @@ namespace HoaM.Domain.Features
         /// </summary>
         public override EventId Id => EventId.From(NewId.Next().ToGuid());
 
+        /// <summary>
+        /// Represents the basis of the event
+        /// </summary>
         public T Activity { get; private set; } = default!;
 
         /// <summary>

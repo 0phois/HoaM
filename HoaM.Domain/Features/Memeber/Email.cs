@@ -13,11 +13,20 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Whether or not the email address has been verified
         /// </summary>
-        public bool IsVerified { get; set; }
+        public bool IsVerified { get; private set; }
 
         /// <summary>
         /// Email address of an <see cref="AssociationMember"/>
         /// </summary>
-        public required EmailAddress Address { get; set; }
+        public required EmailAddress Address { get; init; }
+
+        private Email() { }
+
+        public static Email Create(EmailAddress emailAddress)
+        {
+            return new() { Address = emailAddress };
+        }
+
+        public void Verify() => IsVerified = true;
     }
 }

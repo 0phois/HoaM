@@ -13,12 +13,14 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Minutes (transcript) of the meeting 
         /// </summary>
-        public List<Note> Notes { get; set; } = new List<Note>();
+        public IReadOnlyCollection<Note> Notes => _notes.AsReadOnly();
+        private readonly List<Note> _notes = new();
 
         /// <summary>
         /// <see cref="AssociationMember"/>s that attended the <seealso cref="Entities.Meeting"/>
         /// </summary>
-        public List<AssociationMember> Attendees { get; set; } = new List<AssociationMember>();
+        public IReadOnlyCollection<AssociationMember> Attendees => _attendees.AsReadOnly();
+        private readonly List<AssociationMember> _attendees = new();
 
         /// <summary>
         /// <see cref="CommitteeMember"/> that published the <see cref="MeetingMinutes"/>
@@ -34,5 +36,50 @@ namespace HoaM.Domain.Features
         /// <see cref="Entities.Meeting"/> for which the <seealso cref="MeetingMinutes"/> were recorded
         /// </summary>
         public Meeting Meeting { get; private set; } = null!;
+
+        private MeetingMinutes() { }
+
+        public static MeetingMinutes Create()
+        {
+            return new MeetingMinutes();
+        }
+
+        public MeetingMinutes AddAttendees(params AssociationMember[] attendees)
+        {
+            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+
+            _attendees.AddRange(attendees);
+
+            return this;
+        } 
+
+        public MeetingMinutes AddAttendee(AssociationMember attendee)
+        {
+            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+
+            _attendees.Add(attendee);
+
+            return this;
+        }
+
+        public MeetingMinutes AddNote(Note note)
+        {
+            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+
+            _notes.Add(note);
+
+            return this;
+        }
+
+        public IResult Publish(IMeetingManager meetingManager)
+        {
+            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+
+            var publishResult = meetingManager.PublishMeetingMinutes(this);
+
+            if (publishResult.IsSuccess) PublishedDate = meetingManager.SystemClock.UtcNow;
+
+            return publishResult;
+        }
     }
 }

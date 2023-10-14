@@ -16,34 +16,111 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// First name of the <see cref="AssociationMember"/> 
         /// </summary>
-        public FirstName? FirstName { get; set; }
+        public FirstName FirstName { get; protected set; } = null!;
 
         /// <summary>
         /// Last name of the <see cref="AssociationMember"/>
         /// </summary>
-        public LastName? LastName { get; set; }
+        public LastName LastName { get; protected set; } = null!;
 
         /// <summary>
         /// Email details of the <see cref="AssociationMember"/>
         /// </summary>
-        public Email? Email { get; set; }
+        public Email? Email { get; protected set; }
 
         /// <summary>
         /// Contact numbers for the <see cref="AssociationMember"/>
         /// </summary>
-        public List<PhoneNumber> PhoneNumbers { get; } = new List<PhoneNumber>();
+        public List<PhoneNumber> PhoneNumbers { get; protected set; } = new List<PhoneNumber>();
 
         /// <summary>
         /// Resendential address (within the community) of the <see cref="AssociationMember"/>
         /// </summary>
-        public Residence? Residence { get; private set; }
+        public Residence? Residence { get; protected set; }
 
         /// <summary>
         /// <see cref="Notification"/>s delivered to this <see cref="AssociationMember"/>
         /// </summary>
-        public List<Notification> Notifications { get; } = new List<Notification>();
+        public IReadOnlyCollection<Notification> Notifications { get; } = new List<Notification>().AsReadOnly();
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+
+        private AssociationMember() { }
+        
+        protected AssociationMember(FirstName name, LastName surname)
+        {
+            FirstName = name;
+            LastName = surname;
+        }
+
+        public static AssociationMember Create(FirstName name, LastName surname)
+        {
+            return new() { FirstName = name, LastName = surname };
+        }
+
+        public AssociationMember WithEmailAddress(EmailAddress emailAddress) 
+        {
+            if (Email is not null) throw new InvalidOperationException("Email address is already set.");
+
+            Email = Email.Create(emailAddress);
+
+            return this;
+        }
+
+        public AssociationMember WithResidence(Residence residence)
+        {
+            if (Residence is not null) throw new InvalidOperationException("Member is already associated with a residence");
+
+            Residence = residence;
+
+            return this;
+        }
+
+        public AssociationMember WithPhoneNumbers(params PhoneNumber[] numbers)
+        {
+            if (numbers is null || numbers.Length == 0) throw new ArgumentNullException(nameof(PhoneNumbers), "Value cannot be null or empty");
+
+            PhoneNumbers.AddRange(numbers); 
+            
+            return this;
+        }
+
+        public AssociationMember AddPhoneNumber(PhoneNumber phoneNumber)
+        {
+            if (PhoneNumbers.Any(p => p.Type == phoneNumber.Type)) throw new InvalidOperationException($"A {phoneNumber.Type} number has already been registered.");
+        
+            PhoneNumbers.Add(phoneNumber);
+
+            return this;
+        }
+
+        public void EditFirstName(FirstName name)
+        {
+            if (name == FirstName) return;
+
+            FirstName = name;
+        }
+
+        public void EditLastName(LastName surname) 
+        {
+            if (surname == LastName) return;
+            
+            LastName = surname;
+        }
+
+        public void UpdateResidence(Residence residence)
+        {
+            if (residence.Equals(Residence)) return;
+
+            Residence = residence;
+        }
+
+        public void RemoveResidence() => Residence = null;
     }
 }
+
+//TODO - User Manager
+/*
+ Create a service that facilitates editing email, phone numbers etc
+ */

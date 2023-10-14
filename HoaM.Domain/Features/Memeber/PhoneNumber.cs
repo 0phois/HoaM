@@ -13,26 +13,33 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// International subscriber dialing code (telephone country code)
         /// </summary>
-        public CountryCallingCode CountryCode { get; set; }
+        public CountryCallingCode CountryCode { get; init; }
 
         /// <summary>
         /// 3-digit number representing the telephone service area
         /// </summary>
-        public AreaCode AreaCode { get; set; }
+        public AreaCode AreaCode { get; init; }
 
         /// <summary>
         /// 3-digit exchange code of the telephone number
         /// </summary>
-        public PhonePrefix Prefix { get; set; }
+        public PhonePrefix Prefix { get; init; }
 
         /// <summary>
         /// Last four digits of a telephone number
         /// </summary>
-        public LineNumber Number { get; set; }
+        public LineNumber Number { get; init; }
 
         /// <summary>
         /// The <see cref="PhoneType">type</see> of phone
         /// </summary>
-        public PhoneType Type { get; set; }
+        public PhoneType Type { get; init; }
+
+        private PhoneNumber() { }
+
+        public static PhoneNumber Create(PhoneType type, CountryCallingCode countryCode, AreaCode areaCode, PhonePrefix prefix, LineNumber lastDigits)
+        {
+            return new() { Type = type, CountryCode = countryCode, AreaCode = areaCode, Prefix = prefix, Number = lastDigits };
+        }
     }
 }

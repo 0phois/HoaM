@@ -1,5 +1,6 @@
 ﻿using HoaM.Domain.Common;
 using MassTransit;
+using MassTransit.NewIdProviders;
 
 namespace HoaM.Domain.Features
 {
@@ -16,12 +17,12 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Name of the <see cref="Committee"/> (example: Executive)
         /// </summary>
-        public required CommitteeName Title { get; set; }
+        public CommitteeName Name { get; private set; } = null!;
 
         /// <summary>
         /// Date the <see cref="Committee"/> was created
         /// </summary>
-        public DateOnly Established { get; set; }
+        public DateOnly? Established { get; set; }
 
         /// <summary>
         /// Date the <see cref="Committee"/> ceased operations
@@ -40,5 +41,19 @@ namespace HoaM.Domain.Features
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+
+        private Committee () { }
+
+        public static Committee Create(CommitteeName name, DateOnly? established = null)
+        {
+            return new() { Name = name, Established = established };
+        }
+
+        public void EditName(CommitteeName name)
+        {
+            if (name == Name) return;
+
+            Name = name;
+        }
     }
 }

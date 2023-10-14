@@ -4,12 +4,12 @@
     {
         private AssociationFee() { }
 
-        private AssociationFee(Expense activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null) 
-            : base(activity, title, start, stop, schedule) { }
+        private AssociationFee(Expense activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? frequency = null) 
+            : base(activity, title, start, stop, frequency) { }
 
-        public static AssociationFee Create(Expense expense, Schedule? schedule = null)
+        public static AssociationFee Create(Expense expense, Schedule? frequency = null)
         {
-            return new AssociationFee(expense, EventTitle.From(expense.Title.Value), expense.EffectiveDate, expense.EffectiveDate, schedule);
+            return new AssociationFee(expense, EventTitle.From(expense.Title.Value), expense.EffectiveDate, expense.EffectiveDate, frequency);
         }
     }
 }

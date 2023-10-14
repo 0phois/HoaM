@@ -10,6 +10,25 @@
         /// <summary>
         /// <see cref="Committee"/> to which this <seealso cref="CommitteeMember"/> belongs
         /// </summary>
-        public ICollection<Committee> Committees { get; private set; } = new HashSet<Committee>();
+        public IReadOnlyCollection<Committee> Committees => _committees.AsReadOnly();
+        private readonly List<Committee> _committees = new();
+
+        private CommitteeMember(FirstName name, LastName surname) : base(name, surname) { }
+
+        public static CommitteeMember Createreate(FirstName name, LastName surname)
+        {
+            return new(name, surname);
+        }
+
+        public static CommitteeMember CreateFrom(AssociationMember member, CommitteeRole role)
+        {
+            return new(member.FirstName, member.LastName) 
+            { 
+                Position = role,
+                Email = member.Email,
+                Residence = member.Residence,
+                PhoneNumbers = member.PhoneNumbers,
+            };
+        }
     }
 }
