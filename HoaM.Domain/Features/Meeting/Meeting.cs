@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -36,6 +37,8 @@ namespace HoaM.Domain.Features
         /// </summary>
         public MeetingMinutes? Minutes { get; set; }
 
+        public bool IsMinutesAttached => Minutes is not null;
+
         /// <summary>
         /// <see cref="Entities.Committee"/> hosting this <seealso cref="Meeting"/>
         /// </summary>
@@ -48,9 +51,9 @@ namespace HoaM.Domain.Features
             return new Meeting() { Title = title,  ScheduledDate = scheduledDate, Committee = host };
         }
 
-        public Meeting AddDescription(MeetingDescription description) 
+        public Meeting WithDescription(MeetingDescription description)
         {
-            if (Description is not null) throw new InvalidOperationException("A description has already been added");
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             Description = description;
 
@@ -59,31 +62,50 @@ namespace HoaM.Domain.Features
 
         public Meeting WithAgenda(params Note[] agenda)
         {
-            if (agenda is null || agenda.Length == 0) throw new ArgumentNullException(nameof(agenda), "Value cannot be null or empty.");
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
-            if (_agenda.Count > 0) throw new InvalidOperationException("Meeting agenda has already been defined");
+            if (agenda is null || agenda.Length == 0) throw new DomainException(DomainErrors.Meeting.MissingAgenda);
+
+            _agenda.Clear();
 
             _agenda.AddRange(agenda);
 
             return this;
         }
 
-        public Meeting AddAgenda(Note agenda)
+        public Meeting AddAgendaItem(Note note)
         {
-            _agenda.Add(agenda);
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
+
+            _agenda.Add(note);
 
             return this;
         }
 
-        public Meeting RemoveAgendaItem(Note agenda)
+        public Meeting AddAgendaItems(params Note[] notes)
         {
-            _agenda.Remove(agenda);
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
+
+            if (notes is null || notes.Length == 0) throw new DomainException(DomainErrors.Meeting.MissingNote);
+
+            _agenda.AddRange(notes);
+
+            return this;
+        }
+
+        public Meeting RemoveAgendaItem(Note note)
+        {
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
+
+            _agenda.Remove(note);
 
             return this;
         }
 
         public Meeting RemoveAgenda() 
         {
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
+
             _agenda.Clear();
 
             return this;
@@ -91,39 +113,27 @@ namespace HoaM.Domain.Features
 
         public void AddMinutes(MeetingMinutes minutes)
         {
-            if (Minutes is not null) throw new InvalidOperationException("Meeting minutes have already been set");
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             Minutes = minutes;
         }
 
         public void EditTitle(MeetingTitle title)
         {
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
+
             if (title == Title) return;
 
             Title = title;
         }
 
-        public void EditDescription(MeetingDescription description)
-        {
-            if (description == Description) return;
-
-            Description = description;
-        }
-
         public void EditScheduledDate(DateTimeOffset date)
         {
+            if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
+
             if (date == ScheduledDate) return;
 
             ScheduledDate = date;
-        }
-
-        public void EditAgenda(params Note[] agenda)
-        {
-            if (agenda is null || agenda.Length == 0) throw new ArgumentNullException(nameof(agenda), "Value cannot be null or empty.");
-
-            _agenda.Clear();
-
-            _agenda.AddRange(agenda);
         }
     }
 }

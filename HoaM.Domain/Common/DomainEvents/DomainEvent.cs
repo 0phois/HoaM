@@ -5,7 +5,5 @@ namespace HoaM.Domain.Common
     public abstract class DomainEvent : IDomainEvent, INotifyBefore
     {
         public Guid Id { get; } = NewId.Next().ToGuid();
-
-        public DateTimeOffset TriggeredOn { get; } = DateTimeOffset.UtcNow;
     }
 }

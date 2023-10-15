@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -35,6 +36,8 @@ namespace HoaM.Domain.Features
         /// </summary>
         public DateTimeOffset? PublishedDate { get; private set; }
 
+        public bool IsPublished => PublishedDate is not null;
+
         private NotificationTemplate() { }
 
         public static NotificationTemplate Create(NotificationTitle title, Text content, NotificationType type)
@@ -42,11 +45,11 @@ namespace HoaM.Domain.Features
             return new() { Title = title, Content = content, Type = type };
         }
 
-        public NotificationTemplate Publish(ISystemClock clock)
+        public NotificationTemplate Publish(INotificationManager notificationManager)
         {
-            if (PublishedDate != null) throw new InvalidOperationException("Notification has already been published!");
+            if (IsPublished) throw new DomainException(DomainErrors.Notification.AlreadyPublished);
 
-            PublishedDate = clock.UtcNow;
+            PublishedDate = notificationManager.SystemClock.UtcNow;
 
             return this;
         }

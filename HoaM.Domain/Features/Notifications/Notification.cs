@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -39,7 +40,7 @@ namespace HoaM.Domain.Features
 
         public IResult Publish(AssociationMember member, INotificationManager notificationManager)
         {
-            if (notificationManager is null) throw new ArgumentNullException(nameof(notificationManager), "Value cannot be null.");
+            if (notificationManager is null) throw new DomainException(DomainErrors.NotificationManager.NullOrEmpty);
 
             ReceivedDate = notificationManager.SystemClock.UtcNow;
 
@@ -52,7 +53,7 @@ namespace HoaM.Domain.Features
 
         public void MarkAsRead(INotificationManager notificationManager)
         {
-            if (notificationManager is null) throw new ArgumentNullException(nameof(notificationManager), "Value cannot be null.");
+            if (notificationManager is null) throw new DomainException(DomainErrors.NotificationManager.NullOrEmpty);
 
             ReadDate = notificationManager.SystemClock.UtcNow;
         }

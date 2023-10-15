@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -63,7 +64,7 @@ namespace HoaM.Domain.Features
 
         public IResult Publish(IArticleManager articleManager)
         {
-            if (PublishedDate != null) throw new InvalidOperationException("Article has already been published!");
+            if (PublishedDate != null) throw new DomainException(DomainErrors.Article.AlreadyPublished);
 
             var publishResult = articleManager.PublishArticle(this);
 

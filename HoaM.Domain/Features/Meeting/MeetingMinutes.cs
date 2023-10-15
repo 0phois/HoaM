@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -32,6 +33,8 @@ namespace HoaM.Domain.Features
         /// </summary>
         public DateTimeOffset? PublishedDate { get; private set; }
 
+        public bool IsPublished => PublishedDate is not null;
+
         /// <summary>
         /// <see cref="Entities.Meeting"/> for which the <seealso cref="MeetingMinutes"/> were recorded
         /// </summary>
@@ -46,7 +49,7 @@ namespace HoaM.Domain.Features
 
         public MeetingMinutes AddAttendees(params AssociationMember[] attendees)
         {
-            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+            if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _attendees.AddRange(attendees);
 
@@ -55,7 +58,7 @@ namespace HoaM.Domain.Features
 
         public MeetingMinutes AddAttendee(AssociationMember attendee)
         {
-            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+            if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _attendees.Add(attendee);
 
@@ -64,7 +67,7 @@ namespace HoaM.Domain.Features
 
         public MeetingMinutes AddNote(Note note)
         {
-            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+            if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _notes.Add(note);
 
@@ -73,7 +76,7 @@ namespace HoaM.Domain.Features
 
         public IResult Publish(IMeetingManager meetingManager)
         {
-            if (PublishedDate != null) throw new InvalidOperationException("Meeting minutes have already been published!");
+            if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             var publishResult = meetingManager.PublishMeetingMinutes(this);
 

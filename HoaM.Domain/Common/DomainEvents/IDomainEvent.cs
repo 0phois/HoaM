@@ -3,7 +3,6 @@
     public interface IDomainEvent
     {
         Guid Id { get; }
-        DateTimeOffset TriggeredOn { get; }
     }
 
     public interface INotifyBefore { }

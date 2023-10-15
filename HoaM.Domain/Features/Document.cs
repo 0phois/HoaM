@@ -2,6 +2,7 @@
 using MassTransit;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.IO.Compression;
+using HoaM.Domain.Exceptions;
 
 namespace HoaM.Domain.Features
 {
@@ -26,7 +27,7 @@ namespace HoaM.Domain.Features
 
         public static Document Create(FileName title, byte[] data)
         {
-            if (data is null || data.Length == 0) throw new ArgumentNullException(nameof(data), "Value cannot be null or empty.");
+            if (data is null || data.Length == 0) throw new DomainException(DomainErrors.Document.NullOrEmpty);
 
             var memoryStream = new MemoryStream();
 

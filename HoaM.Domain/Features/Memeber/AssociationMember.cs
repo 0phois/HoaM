@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -61,8 +62,6 @@ namespace HoaM.Domain.Features
 
         public AssociationMember WithEmailAddress(EmailAddress emailAddress) 
         {
-            if (Email is not null) throw new InvalidOperationException("Email address is already set.");
-
             Email = Email.Create(emailAddress);
 
             return this;
@@ -70,7 +69,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMember WithResidence(Residence residence)
         {
-            if (Residence is not null) throw new InvalidOperationException("Member is already associated with a residence");
+            if (Residence is not null) throw new DomainException(DomainErrors.AssociationMember.DuplicateResidenceAssignment);
 
             Residence = residence;
 
@@ -79,7 +78,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMember WithPhoneNumbers(params PhoneNumber[] numbers)
         {
-            if (numbers is null || numbers.Length == 0) throw new ArgumentNullException(nameof(PhoneNumbers), "Value cannot be null or empty");
+            if (numbers is null || numbers.Length == 0) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
 
             PhoneNumbers.AddRange(numbers); 
             
@@ -88,7 +87,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMember AddPhoneNumber(PhoneNumber phoneNumber)
         {
-            if (PhoneNumbers.Any(p => p.Type == phoneNumber.Type)) throw new InvalidOperationException($"A {phoneNumber.Type} number has already been registered.");
+            if (PhoneNumbers.Any(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
         
             PhoneNumbers.Add(phoneNumber);
 
