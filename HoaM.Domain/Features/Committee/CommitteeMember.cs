@@ -22,8 +22,8 @@
 
         public static CommitteeMember CreateFrom(AssociationMember member, CommitteeRole role)
         {
-            return new(member.FirstName, member.LastName) 
-            { 
+            return new(member.FirstName, member.LastName)
+            {
                 Position = role,
                 Email = member.Email,
                 Residence = member.Residence,

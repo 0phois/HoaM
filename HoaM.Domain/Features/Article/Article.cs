@@ -35,7 +35,7 @@ namespace HoaM.Domain.Features
         /// Date and time the <see cref="Article"/> was published
         /// </summary>
         public DateTimeOffset? PublishedDate { get; private set; }
-        
+
         private Article() { }
 
         public static Article CreateBulletin(ArticleTitle title, Text body)

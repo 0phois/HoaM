@@ -33,7 +33,7 @@ namespace HoaM.Domain.Features
 
         private Notification() { }
 
-        public static Notification Create(NotificationTemplate template) 
+        public static Notification Create(NotificationTemplate template)
         {
             return new() { Template = template };
         }
@@ -45,7 +45,7 @@ namespace HoaM.Domain.Features
             ReceivedDate = notificationManager.SystemClock.UtcNow;
 
             var deliveryResult = notificationManager.DeliverTo(member);
-                
+
             if (deliveryResult.IsSuccess) Template.DeliveredTo.Add(member);
 
             return deliveryResult;

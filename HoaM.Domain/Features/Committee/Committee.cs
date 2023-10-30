@@ -1,6 +1,5 @@
 ﻿using HoaM.Domain.Common;
 using MassTransit;
-using MassTransit.NewIdProviders;
 
 namespace HoaM.Domain.Features
 {
@@ -42,7 +41,7 @@ namespace HoaM.Domain.Features
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
 
-        private Committee () { }
+        private Committee() { }
 
         public static Committee Create(CommitteeName name, DateOnly? established = null)
         {

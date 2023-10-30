@@ -48,7 +48,7 @@ namespace HoaM.Domain.Features
         public DateTimeOffset? DeletionDate { get; set; }
 
         private AssociationMember() { }
-        
+
         protected AssociationMember(FirstName name, LastName surname)
         {
             FirstName = name;
@@ -60,7 +60,7 @@ namespace HoaM.Domain.Features
             return new() { FirstName = name, LastName = surname };
         }
 
-        public AssociationMember WithEmailAddress(EmailAddress emailAddress) 
+        public AssociationMember WithEmailAddress(EmailAddress emailAddress)
         {
             Email = Email.Create(emailAddress);
 
@@ -80,15 +80,15 @@ namespace HoaM.Domain.Features
         {
             if (numbers is null || numbers.Length == 0) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
 
-            PhoneNumbers.AddRange(numbers); 
-            
+            PhoneNumbers.AddRange(numbers);
+
             return this;
         }
 
         public AssociationMember AddPhoneNumber(PhoneNumber phoneNumber)
         {
             if (PhoneNumbers.Any(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
-        
+
             PhoneNumbers.Add(phoneNumber);
 
             return this;
@@ -101,10 +101,10 @@ namespace HoaM.Domain.Features
             FirstName = name;
         }
 
-        public void EditLastName(LastName surname) 
+        public void EditLastName(LastName surname)
         {
             if (surname == LastName) return;
-            
+
             LastName = surname;
         }
 

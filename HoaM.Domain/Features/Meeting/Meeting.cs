@@ -48,7 +48,7 @@ namespace HoaM.Domain.Features
 
         public static Meeting Create(MeetingTitle title, DateTimeOffset scheduledDate, Committee host)
         {
-            return new Meeting() { Title = title,  ScheduledDate = scheduledDate, Committee = host };
+            return new Meeting() { Title = title, ScheduledDate = scheduledDate, Committee = host };
         }
 
         public Meeting WithDescription(MeetingDescription description)
@@ -102,7 +102,7 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        public Meeting RemoveAgenda() 
+        public Meeting RemoveAgenda()
         {
             if (IsMinutesAttached) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 

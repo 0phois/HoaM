@@ -19,7 +19,7 @@ namespace HoaM.Domain.Features
         /// Name of the <see cref="Event"/>
         /// </summary>
         public EventTitle Title { get; private set; } = null!;
-        
+
         /// <summary>
         /// Start time and end time of the <see cref="Event"/>
         /// </summary>
@@ -45,11 +45,11 @@ namespace HoaM.Domain.Features
             return new() { Activity = activity, Title = title, Occurance = new(start, stop), Schedule = schedule };
         }
 
-        public void EditTitle(EventTitle title) 
+        public void EditTitle(EventTitle title)
         {
             if (title == Title) return;
 
-            Title = title; 
+            Title = title;
         }
 
         public IEnumerable<Event<T>> GetInstances(int limit)

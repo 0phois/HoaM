@@ -4,7 +4,7 @@
     {
         internal RecurringTransaction() { }
 
-        protected RecurringTransaction(T activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null) 
+        protected RecurringTransaction(T activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null)
             : base(activity, title, new Occurance(start, stop), schedule) { }
     }
 }

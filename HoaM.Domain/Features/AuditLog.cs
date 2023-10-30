@@ -57,13 +57,13 @@ namespace HoaM.Domain.Features
             return new() { TableName = table, RecordId = recordId, Action = AuditAction.Insert };
         }
 
-        public static AuditLog CreateUpdateLog(string table, Guid recordId, string columns, string oldValues, string newValues) 
+        public static AuditLog CreateUpdateLog(string table, Guid recordId, string columns, string oldValues, string newValues)
         {
             return new() { TableName = table, RecordId = recordId, Action = AuditAction.Update, ChangedColumns = columns, OldValues = oldValues, NewValues = newValues };
         }
 
         public static AuditLog CreateDeleteLog(string table, Guid recordId, string oldValues)
-        { 
+        {
             return new() { TableName = table, RecordId = recordId, Action = AuditAction.Delete, OldValues = oldValues };
         }
     }

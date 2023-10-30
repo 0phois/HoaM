@@ -11,7 +11,7 @@ namespace HoaM.Domain.Features
         public required decimal Amount { get; init; }
 
         public DateTimeOffset EffectiveDate { get; set; }
-     
+
         public abstract TransactionType Type { get; }
 
         public Note? Memo { get; set; }

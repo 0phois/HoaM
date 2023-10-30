@@ -13,7 +13,7 @@
         {
             public static Error DuplicateEmail => new($"{nameof(AssociationMember)}.{nameof(DuplicateEmail)}", "The specified email is already registered.");
 
-            public static Error DuplicateResidenceAssignment 
+            public static Error DuplicateResidenceAssignment
                 => new($"{nameof(AssociationMember)}.{nameof(DuplicateResidenceAssignment)}", "This member is already assigned to a different residence.");
         }
 
@@ -31,7 +31,7 @@
 
         public static class Meeting
         {
-            public static Error MinutesAlreadyAttached 
+            public static Error MinutesAlreadyAttached
                 => new($"{nameof(Meeting)}.{nameof(MinutesAlreadyAttached)}", "Details can not longer be modified. Meeting minutes have already been attached.");
 
             public static Error MissingAgenda => new($"{nameof(Meeting)}.{nameof(MissingAgenda)}", "Agenda is required.");

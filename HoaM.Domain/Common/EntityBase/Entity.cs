@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using System.Collections.Concurrent;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HoaM.Domain.Common
@@ -12,22 +13,17 @@ namespace HoaM.Domain.Common
     {
         public virtual TId Id { get; protected set; } = default!;
 
-        private readonly List<IDomainEvent> _domainEvents = new();
+        private readonly ConcurrentBag<IDomainEvent> _domainEvents = new();
 
         [NotMapped]
-        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+        public IProducerConsumerCollection<IDomainEvent> DomainEvents => _domainEvents;
 
         public void AddDomainEvent(IDomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);
         }
 
-        public void RemoveDomainEvent(IDomainEvent domainEvent)
-        {
-            _domainEvents.Remove(domainEvent);
-        }
-
-        public void ClearDomainEvents()
+        internal void ClearDomainEvents()
         {
             _domainEvents.Clear();
         }

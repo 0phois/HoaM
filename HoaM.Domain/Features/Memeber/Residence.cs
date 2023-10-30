@@ -56,26 +56,26 @@ namespace HoaM.Domain.Features
         public Residence WithAddress(StreetNumber houseNumber, StreetName streetName)
         {
             HouseNumber = houseNumber;
-            StreetName = streetName; 
-            
+            StreetName = streetName;
+
             return this;
         }
 
-        public void EditStreetName(StreetName streetName) 
+        public void EditStreetName(StreetName streetName)
         {
             if (streetName == StreetName) return;
-            
+
             StreetName = streetName;
         }
 
         public void EditHouseNumber(StreetNumber houseNumber)
         {
             if (houseNumber == HouseNumber) return;
-            
+
             HouseNumber = houseNumber;
         }
 
-        public void UpdateDevelopmentStatus(DevelopmentStatus status) 
+        public void UpdateDevelopmentStatus(DevelopmentStatus status)
         {
             if (status == Status) return;
 

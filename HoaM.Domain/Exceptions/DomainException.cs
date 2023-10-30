@@ -4,6 +4,6 @@
     {
         public Error Error { get; }
 
-        internal DomainException(Error error) :base(error.Message) => Error = error;
+        internal DomainException(Error error) : base(error.Message) => Error = error;
     }
 }

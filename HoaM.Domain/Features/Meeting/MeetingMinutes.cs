@@ -54,7 +54,7 @@ namespace HoaM.Domain.Features
             _attendees.AddRange(attendees);
 
             return this;
-        } 
+        }
 
         public MeetingMinutes AddAttendee(AssociationMember attendee)
         {

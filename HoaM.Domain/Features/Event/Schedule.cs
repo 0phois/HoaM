@@ -8,19 +8,19 @@
         private Schedule() { }
 
         public static Schedule Create(TimeSpan interval, DateTimeOffset until) => new() { Interval = interval, EndsAt = until };
-        
+
         public static Schedule CreateWeekly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(7), EndsAt = until };
-        
+
         public static Schedule CreateBiWeekly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(14), EndsAt = until };
-        
-        public static Schedule CreateMonthly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(30) , EndsAt = until };
-        
+
+        public static Schedule CreateMonthly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(30), EndsAt = until };
+
         public static Schedule CreateBiMonthly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(60), EndsAt = until };
-        
+
         public static Schedule CreateQuarterly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(90), EndsAt = until };
-        
+
         public static Schedule CreateSemiAnnually(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(180), EndsAt = until };
-        
+
         public static Schedule CreateAnnually(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(365), EndsAt = until };
 
         public IEnumerable<Occurance> GetOccurances(Occurance first, int limit)

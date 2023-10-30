@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace HoaM.Domain.Common.DomainEvents
+namespace HoaM.Domain.Common
 {
     public abstract class DomainNotification : IDomainEvent, INotifyAfter
     {

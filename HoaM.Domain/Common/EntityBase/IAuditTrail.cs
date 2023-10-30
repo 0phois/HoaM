@@ -47,7 +47,7 @@
     public enum AuditAction
     {
         Insert,
-        Update, 
+        Update,
         Delete
     }
 }

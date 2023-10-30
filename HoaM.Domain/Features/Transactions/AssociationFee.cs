@@ -4,7 +4,7 @@
     {
         private AssociationFee() { }
 
-        private AssociationFee(Expense activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? frequency = null) 
+        private AssociationFee(Expense activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? frequency = null)
             : base(activity, title, start, stop, frequency) { }
 
         public static AssociationFee Create(Expense expense, Schedule? frequency = null)
