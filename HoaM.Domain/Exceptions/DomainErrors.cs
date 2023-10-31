@@ -17,6 +17,14 @@
                 => new($"{nameof(AssociationMember)}.{nameof(DuplicateResidenceAssignment)}", "This member is already assigned to a different residence.");
         }
 
+        public static class Committee
+        {
+            public static Error MandateNotFound => new($"{nameof(Committee)}.{nameof(MandateNotFound)}", "Committee mandate not found.");
+            public static Error MissingDetails => new($"{nameof(Committee)}.{nameof(MissingDetails)}", "Additional details cannot be empty.");
+            public static Error AlreadyDeleted => new($"{nameof(Committee)}.{nameof(AlreadyDeleted)}", "This committee no longer exists.");
+            public static Error AlreadyDissolved => new($"{nameof(Committee)}.{nameof(AlreadyDissolved)}", "This committee has already been dissolved.");
+        }
+
         public static class Document
         {
             public static Error NullOrEmpty => new($"{nameof(Document)}.{nameof(NullOrEmpty)}", "Data is required. Content cannot be empty.");

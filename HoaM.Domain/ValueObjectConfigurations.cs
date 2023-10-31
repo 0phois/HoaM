@@ -46,9 +46,11 @@ namespace HoaM.Domain
             title.For("MeetingTitle");
             title.For("ArticleTitle");
             title.For("EventTitle");
+            title.For("Username");
 
             builder.OfString().For("EmailAddress").Matches(new Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
             builder.OfString().For("MeetingDescription").NotEmpty().MaxLength(250);
+            builder.OfString().For("MissionStatement").NotEmpty().MaxLength(300);
             builder.OfString().For("Lot").NotEmpty().MaxLength(10);
             builder.OfString().For("Text").NotEmpty();
 

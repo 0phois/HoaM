@@ -7,7 +7,7 @@ namespace HoaM.Domain.Features
     /// <summary>
     /// Defines a member of the home owner's association
     /// </summary>
-    public class AssociationMember : Entity<AssociationMemberId>, ISoftDelete
+    public class AssociationMember : Entity<AssociationMemberId>, IMember, ISoftDelete
     {
         /// <summary>
         /// Unique ID of the <see cref="AssociationMember"/>
@@ -46,6 +46,8 @@ namespace HoaM.Domain.Features
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+
+        public Username Username => Username.TryParse(Email?.Address.Value, out var displayName) ? displayName : Username.From($"{FirstName} {LastName}");
 
         private AssociationMember() { }
 
