@@ -35,11 +35,15 @@ namespace HoaM.Domain.Features
 
         public static Notification Create(NotificationTemplate template)
         {
+            if (template is null) throw new DomainException(DomainErrors.NotificationTemplate.NullOrEmpty);
+
             return new() { Template = template };
         }
 
         public IResult Publish(AssociationMember member, INotificationManager notificationManager)
         {
+            if (member is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
+
             if (notificationManager is null) throw new DomainException(DomainErrors.NotificationManager.NullOrEmpty);
 
             ReceivedDate = notificationManager.SystemClock.UtcNow;

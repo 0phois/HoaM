@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -19,11 +20,15 @@ namespace HoaM.Domain.Features
 
         public static Note Create(Text content)
         {
+            if (content is null) throw new DomainException(DomainErrors.Note.ContentNullOrEmpty);
+
             return new() { Content = content };
         }
 
         public void EditContent(Text content)
         {
+            if (content is null) throw new DomainException(DomainErrors.Note.ContentNullOrEmpty);
+
             if (content == Content) return;
 
             Content = content;

@@ -26,7 +26,9 @@ namespace HoaM.Domain.Features
 
         public static Document Create(FileName title, byte[] data)
         {
-            if (data is null || data.Length == 0) throw new DomainException(DomainErrors.Document.NullOrEmpty);
+            if (title is null) throw new DomainException(DomainErrors.Document.TitleNullOrEmpty);
+
+            if (data is null || data.Length == 0) throw new DomainException(DomainErrors.Document.DataNullOrEmpty);
 
             var memoryStream = new MemoryStream();
 
@@ -38,6 +40,8 @@ namespace HoaM.Domain.Features
 
         public void EditTitle(FileName title)
         {
+            if (title is null) throw new DomainException(DomainErrors.Document.TitleNullOrEmpty);
+
             if (title == Title) return;
 
             Title = title;

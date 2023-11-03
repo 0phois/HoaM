@@ -1,4 +1,6 @@
-﻿namespace HoaM.Domain.Features
+﻿using HoaM.Domain.Exceptions;
+
+namespace HoaM.Domain.Features
 {
     public class PeriodicMeeting : RecurringMeeting<Meeting>
     {
@@ -9,6 +11,8 @@
 
         public static PeriodicMeeting Create(Meeting meeting, Schedule? frequeny = null)
         {
+            if (meeting is null) throw new DomainException(DomainErrors.Meeting.NullOrEmpty);
+
             return new PeriodicMeeting(meeting, EventTitle.From(meeting.Title.Value), meeting.ScheduledDate, meeting.ScheduledDate, frequeny);
         }
     }

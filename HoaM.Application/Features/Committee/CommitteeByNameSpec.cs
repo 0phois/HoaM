@@ -8,7 +8,7 @@ namespace HoaM.Application.Features
     {
         public CommitteeByNameSpec(CommitteeName name)
         {
-            Query.Where(c => c.Name == name).AsNoTracking();
+            Query.Where(c => c.Name == name && c.DeletionDate == null).AsNoTracking();
         }
     }
 }

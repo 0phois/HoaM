@@ -52,6 +52,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+        public bool IsDeleted => DeletionDate is not null;
 
         /// <summary>
         /// Whether or not the <see cref="Committee"/> is active 
@@ -68,7 +69,7 @@ namespace HoaM.Domain.Features
         public Committee WithMissionStatement(MissionStatement statement)
         {
             Validate();
-
+            
             MissionStatement = statement;
 
             return this;
@@ -87,31 +88,13 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        public Committee AddDetail(Note detail)
-        {
-            Validate();
-
-            _additionalDetails.Add(detail);
-
-            return this;
-        }
-
-        public Committee AddDetails(params Note[] details)
+        public Committee AppendAdditionalDetails(params Note[] details)
         {
             Validate();
 
             if (details is null || details.Length == 0) throw new DomainException(DomainErrors.Committee.MissingDetails);
 
             _additionalDetails.AddRange(details);
-
-            return this;
-        }
-
-        public Committee RemoveDetail(Note detail)
-        {
-            Validate();
-
-            _additionalDetails.Remove(detail);
 
             return this;
         }
@@ -141,8 +124,8 @@ namespace HoaM.Domain.Features
 
             Dissolved = DateOnly.FromDateTime(systemClock.UtcNow.DateTime);
 
-            //raise event to cancel any existing meetings
-            
+            AddDomainEvent(new CommitteeDissolvedNotification(this));
+
             return true;
         }
 

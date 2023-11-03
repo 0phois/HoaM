@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -39,6 +40,12 @@ namespace HoaM.Domain.Features
 
         public static PhoneNumber Create(PhoneType type, CountryCallingCode countryCode, AreaCode areaCode, PhonePrefix prefix, LineNumber lastDigits)
         {
+            if (prefix == default) throw new DomainException(DomainErrors.PhoneNumber.PrefixNullOrEmpty);
+
+            if (prefix == default) throw new DomainException(DomainErrors.PhoneNumber.LastDigitsNullOrEmpty);
+
+            if (!Enum.IsDefined(typeof(PhoneType), type)) throw new DomainException(DomainErrors.PhoneNumber.TypeNotDefined);
+
             return new() { Type = type, CountryCode = countryCode, AreaCode = areaCode, Prefix = prefix, Number = lastDigits };
         }
     }

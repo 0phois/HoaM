@@ -1,4 +1,6 @@
-﻿namespace HoaM.Domain.Features
+﻿using HoaM.Domain.Exceptions;
+
+namespace HoaM.Domain.Features
 {
     public class AssociationFee : RecurringTransaction<Expense>
     {
@@ -9,6 +11,8 @@
 
         public static AssociationFee Create(Expense expense, Schedule? frequency = null)
         {
+            if (expense is null) throw new DomainException(DomainErrors.AssociationFee.ExpenseNullOrEmpty);
+
             return new AssociationFee(expense, EventTitle.From(expense.Title.Value), expense.EffectiveDate, expense.EffectiveDate, frequency);
         }
     }

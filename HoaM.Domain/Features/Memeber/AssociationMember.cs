@@ -46,6 +46,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+        public bool IsDeleted => DeletionDate is not null;
 
         public Username Username => Username.TryParse(Email?.Address.Value, out var displayName) ? displayName : Username.From($"{FirstName} {LastName}");
 
@@ -59,11 +60,17 @@ namespace HoaM.Domain.Features
 
         public static AssociationMember Create(FirstName name, LastName surname)
         {
+            if (name is null) throw new DomainException(DomainErrors.AssociationMember.FirstNameNullOrEmpty);
+
+            if (surname is null) throw new DomainException(DomainErrors.AssociationMember.LastNameNullOrEmpty);
+
             return new() { FirstName = name, LastName = surname };
         }
 
         public AssociationMember WithEmailAddress(EmailAddress emailAddress)
         {
+            if (emailAddress is null) throw new DomainException(DomainErrors.Email.AddressNullOrEmpty);
+
             Email = Email.Create(emailAddress);
 
             return this;
@@ -71,7 +78,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMember WithResidence(Residence residence)
         {
-            if (Residence is not null) throw new DomainException(DomainErrors.AssociationMember.DuplicateResidenceAssignment);
+            if (residence is null) throw new DomainException(DomainErrors.Residence.NullOrEmpty);
 
             Residence = residence;
 
@@ -89,6 +96,8 @@ namespace HoaM.Domain.Features
 
         public AssociationMember AddPhoneNumber(PhoneNumber phoneNumber)
         {
+            if (phoneNumber is null) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
+            
             if (PhoneNumbers.Any(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
 
             PhoneNumbers.Add(phoneNumber);
@@ -96,8 +105,17 @@ namespace HoaM.Domain.Features
             return this;
         }
 
+        public void RemovePhoneNumber(PhoneNumber phoneNumber)
+        {
+            if (phoneNumber is null) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
+
+            PhoneNumbers.Remove(phoneNumber);
+        }
+
         public void EditFirstName(FirstName name)
         {
+            if (name is null) throw new DomainException(DomainErrors.AssociationMember.FirstNameNullOrEmpty);
+            
             if (name == FirstName) return;
 
             FirstName = name;
@@ -105,16 +123,11 @@ namespace HoaM.Domain.Features
 
         public void EditLastName(LastName surname)
         {
+            if (surname is null) throw new DomainException(DomainErrors.AssociationMember.LastNameNullOrEmpty);
+            
             if (surname == LastName) return;
 
             LastName = surname;
-        }
-
-        public void UpdateResidence(Residence residence)
-        {
-            if (residence.Equals(Residence)) return;
-
-            Residence = residence;
         }
 
         public void RemoveResidence() => Residence = null;

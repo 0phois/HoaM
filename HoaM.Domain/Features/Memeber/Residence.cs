@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -50,11 +51,19 @@ namespace HoaM.Domain.Features
 
         public static Residence Create(Lot lot, DevelopmentStatus status)
         {
+            if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
+
+            if (!Enum.IsDefined(typeof(DevelopmentStatus), status)) throw new DomainException(DomainErrors.Residence.StatusNotDefined);
+
             return new() { Lot = lot, Status = status };
         }
 
         public Residence WithAddress(StreetNumber houseNumber, StreetName streetName)
         {
+            if (houseNumber == default) throw new DomainException(DomainErrors.Residence.StreetNumberNullOrEmpty);
+
+            if (streetName is null) throw new DomainException(DomainErrors.Residence.StreetNameNullOrEmpty);
+
             HouseNumber = houseNumber;
             StreetName = streetName;
 
@@ -63,6 +72,8 @@ namespace HoaM.Domain.Features
 
         public void EditStreetName(StreetName streetName)
         {
+            if (streetName is null) throw new DomainException(DomainErrors.Residence.StreetNameNullOrEmpty);
+
             if (streetName == StreetName) return;
 
             StreetName = streetName;
@@ -70,6 +81,8 @@ namespace HoaM.Domain.Features
 
         public void EditHouseNumber(StreetNumber houseNumber)
         {
+            if (houseNumber == default) throw new DomainException(DomainErrors.Residence.StreetNumberNullOrEmpty);
+
             if (houseNumber == HouseNumber) return;
 
             HouseNumber = houseNumber;
@@ -77,6 +90,8 @@ namespace HoaM.Domain.Features
 
         public void UpdateDevelopmentStatus(DevelopmentStatus status)
         {
+            if (!Enum.IsDefined(typeof(DevelopmentStatus), status)) throw new DomainException(DomainErrors.Residence.StatusNotDefined);
+
             if (status == Status) return;
 
             Status = status;

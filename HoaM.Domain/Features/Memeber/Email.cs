@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -24,6 +25,8 @@ namespace HoaM.Domain.Features
 
         public static Email Create(EmailAddress emailAddress)
         {
+            if (emailAddress is null) throw new DomainException(DomainErrors.Email.AddressNullOrEmpty);
+
             return new() { Address = emailAddress };
         }
 

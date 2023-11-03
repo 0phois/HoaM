@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using HoaM.Domain.Common;
+using MediatR;
 
 namespace HoaM.Application.Common
 {

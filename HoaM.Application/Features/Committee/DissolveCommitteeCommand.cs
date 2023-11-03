@@ -11,11 +11,22 @@ namespace HoaM.Application.Features
 
     public sealed class DissolveCommitteeValidator : AbstractValidator<DissolveCommitteeCommand> 
     {
-        public DissolveCommitteeValidator()
+        public DissolveCommitteeValidator(IReadRepository<Committee> repository)
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
 
             RuleFor(command => command.Committee).NotEmpty();
+
+            RuleFor(command => command.Committee)
+                .NotEmpty()
+                .MustAsync(async (request, cancellationToken) =>
+                {
+                    var committee = await repository.GetByIdAsync(request.Id, cancellationToken);
+
+                    return committee is not null && !committee.IsDeleted;
+                })
+                .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
+                .WithMessage(ApplicationErrors.Committee.NotFound.Message);
 
             RuleFor(command => command.Committee.DeletionDate).Null()
                 .WithErrorCode(ApplicationErrors.Committee.AlreadyDeleted.Code)

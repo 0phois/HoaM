@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -54,11 +55,15 @@ namespace HoaM.Domain.Features
 
         public static Community Create(CommunityName name)
         {
+            if (name is null) throw new DomainException(DomainErrors.Community.NameNullOrEmpty);
+
             return new() { Name = name };
         }
 
         public void EditName(CommunityName name)
         {
+            if (name is null) throw new DomainException(DomainErrors.Community.NameNullOrEmpty);
+            
             if (name == Name) return;
 
             Name = name;
