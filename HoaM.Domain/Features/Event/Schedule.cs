@@ -1,4 +1,6 @@
-﻿namespace HoaM.Domain.Features
+﻿using HoaM.Domain.Exceptions;
+
+namespace HoaM.Domain.Features
 {
     public class Schedule
     {
@@ -7,7 +9,12 @@
 
         private Schedule() { }
 
-        public static Schedule Create(TimeSpan interval, DateTimeOffset until) => new() { Interval = interval, EndsAt = until };
+        public static Schedule Create(TimeSpan interval, DateTimeOffset? until = null)
+        {
+            if (interval < TimeSpan.FromDays(1)) throw new DomainException(DomainErrors.Schedule.IntervalTooSmall);
+
+            return new() { Interval = interval, EndsAt = until };
+        }
 
         public static Schedule CreateWeekly(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(7), EndsAt = until };
 
@@ -25,6 +32,8 @@
 
         public IEnumerable<Occurance> GetOccurances(Occurance first, int limit)
         {
+            if (first is null) throw new DomainException(DomainErrors.Schedule.OccuranceNullOrEmpty);
+
             var occurance = first;
             var count = 0;
 

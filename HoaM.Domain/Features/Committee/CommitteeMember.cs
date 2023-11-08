@@ -1,4 +1,6 @@
-﻿namespace HoaM.Domain.Features
+﻿using HoaM.Domain.Exceptions;
+
+namespace HoaM.Domain.Features
 {
     public sealed class CommitteeMember : AssociationMember
     {
@@ -15,16 +17,24 @@
 
         private CommitteeMember(FirstName name, LastName surname) : base(name, surname) { }
 
-        public static CommitteeMember Createreate(FirstName name, LastName surname)
+        public static CommitteeMember Create(FirstName name, LastName surname, CommitteeRole? role = null)
         {
-            return new(name, surname);
+            if (name is null) throw new DomainException(DomainErrors.AssociationMember.FirstNameNullOrEmpty);
+
+            if (surname is null) throw new DomainException(DomainErrors.AssociationMember.LastNameNullOrEmpty);
+
+            return new(name, surname) { Position = role ?? CommitteeRole.Member };
         }
 
-        public static CommitteeMember CreateFrom(AssociationMember member, CommitteeRole role)
+        public static CommitteeMember CreateFrom(AssociationMember member, CommitteeRole? role = null)
         {
+            if (member is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
+
+            if (role is null) throw new DomainException(DomainErrors.CommitteeRole.NullOrEmpty);
+
             return new(member.FirstName, member.LastName)
             {
-                Position = role,
+                Position = role ?? CommitteeRole.Member,
                 Email = member.Email,
                 Residence = member.Residence,
                 PhoneNumbers = member.PhoneNumbers,

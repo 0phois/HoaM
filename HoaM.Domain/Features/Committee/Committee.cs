@@ -22,7 +22,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// <see cref="Domain.MissionStatement"/> of the <see cref="Committee"/>
         /// </summary>
-        public MissionStatement MissionStatement { get; set; } = null!;
+        public MissionStatement? MissionStatement { get; private set; }
 
         /// <summary>
         /// Other relevant details about the <see cref="Committee"/>
@@ -63,12 +63,16 @@ namespace HoaM.Domain.Features
 
         public static Committee Create(CommitteeName name, DateOnly? established = null)
         {
+            if (name is null) throw new DomainException(DomainErrors.Committee.NameNullOrEmpty);
+
             return new() { Name = name, Established = established };
         }
 
         public Committee WithMissionStatement(MissionStatement statement)
         {
-            Validate();
+            CheckForActiveCommittee();
+            
+            if (statement is null) throw new DomainException(DomainErrors.Committee.MissionNullOrEmpty);
             
             MissionStatement = statement;
 
@@ -77,9 +81,9 @@ namespace HoaM.Domain.Features
 
         public Committee WithAdditionalDetails(params Note[] details)
         {
-            Validate();
+            CheckForActiveCommittee();
 
-            if (details is null || details.Length == 0) throw new DomainException(DomainErrors.Committee.MissingDetails);
+            if (details is null || details.Length == 0) throw new DomainException(DomainErrors.Committee.DetailsNullOrEmpty);
 
             _additionalDetails.Clear();
 
@@ -90,9 +94,9 @@ namespace HoaM.Domain.Features
 
         public Committee AppendAdditionalDetails(params Note[] details)
         {
-            Validate();
+            CheckForActiveCommittee();
 
-            if (details is null || details.Length == 0) throw new DomainException(DomainErrors.Committee.MissingDetails);
+            if (details is null || details.Length == 0) throw new DomainException(DomainErrors.Committee.DetailsNullOrEmpty);
 
             _additionalDetails.AddRange(details);
 
@@ -101,7 +105,7 @@ namespace HoaM.Domain.Features
 
         public Committee RemoveDetails()
         {
-            Validate();
+            CheckForActiveCommittee();
 
             _additionalDetails.Clear();
 
@@ -110,7 +114,9 @@ namespace HoaM.Domain.Features
 
         public void EditName(CommitteeName name)
         {
-            Validate();
+            CheckForActiveCommittee();
+
+            if (name is null) throw new DomainException(DomainErrors.Committee.NameNullOrEmpty);
 
             if (name == Name) return;
 
@@ -129,7 +135,7 @@ namespace HoaM.Domain.Features
             return true;
         }
 
-        private void Validate()
+        private void CheckForActiveCommittee()
         {
             if (DeletionDate.HasValue) throw new DomainException(DomainErrors.Committee.AlreadyDeleted);
             if (Dissolved.HasValue) throw new DomainException(DomainErrors.Committee.AlreadyDissolved);

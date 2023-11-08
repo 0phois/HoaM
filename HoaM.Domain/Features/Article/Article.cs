@@ -36,20 +36,32 @@ namespace HoaM.Domain.Features
         /// </summary>
         public DateTimeOffset? PublishedDate { get; private set; }
 
+        public bool IsPublished => PublishedDate is not null;
+
         private Article() { }
 
         public static Article CreateBulletin(ArticleTitle title, Text body)
         {
+            if (title is null) throw new DomainException(DomainErrors.Article.TitleNullOrEmpty);
+            
+            if (body is null) throw new DomainException(DomainErrors.Article.BodyNullOrEmpty);
+
             return new() { Title = title, Body = body, Type = ArticleType.Bulletin };
         }
 
         public static Article CreateAnnouncement(ArticleTitle title, Text body)
         {
+            if (title is null) throw new DomainException(DomainErrors.Article.TitleNullOrEmpty);
+
+            if (body is null) throw new DomainException(DomainErrors.Article.BodyNullOrEmpty);
+
             return new() { Title = title, Body = body, Type = ArticleType.Announcement };
         }
 
         public void EditTitle(ArticleTitle title)
         {
+            if (title is null) throw new DomainException(DomainErrors.Article.TitleNullOrEmpty);
+            
             if (title == Title) return;
 
             Title = title;
@@ -57,20 +69,20 @@ namespace HoaM.Domain.Features
 
         public void EditBody(Text body)
         {
+            if (body is null) throw new DomainException(DomainErrors.Article.BodyNullOrEmpty);
+           
             if (body == Body) return;
 
             Body = body;
         }
 
-        public IResult Publish(IArticleManager articleManager)
+        internal void Publish(DateTimeOffset datePublished)
         {
             if (PublishedDate != null) throw new DomainException(DomainErrors.Article.AlreadyPublished);
 
-            var publishResult = articleManager.PublishArticle(this);
+            if (datePublished == default) throw new DomainException(DomainErrors.Article.DateNullOrEmpty);
 
-            if (publishResult.IsSuccess) PublishedDate = articleManager.SystemClock.UtcNow;
-
-            return publishResult;
+            PublishedDate = datePublished;
         }
     }
 

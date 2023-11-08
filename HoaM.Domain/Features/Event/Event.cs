@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Common;
+using HoaM.Domain.Exceptions;
 using MassTransit;
 
 namespace HoaM.Domain.Features
@@ -34,6 +35,12 @@ namespace HoaM.Domain.Features
 
         protected Event(T activity, EventTitle title, Occurance occurance, Schedule? schedule)
         {
+            if (activity is null) throw new DomainException(DomainErrors.Event.ActivityNullOrEmpty);
+
+            if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
+
+            if (occurance is null) throw new DomainException(DomainErrors.Event.OccuranceNullOrEmpty);
+
             Activity = activity;
             Title = title;
             Occurance = occurance;
@@ -42,11 +49,19 @@ namespace HoaM.Domain.Features
 
         public static Event<T> Create(T activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null)
         {
-            return new() { Activity = activity, Title = title, Occurance = new(start, stop), Schedule = schedule };
+            if (start == default) throw new DomainException(DomainErrors.Event.StartNullOrEmpty);
+
+            if (stop == default) throw new DomainException(DomainErrors.Event.StopNullOrEmpty);
+
+            var occurance = new Occurance(start, stop);
+
+            return new(activity, title, occurance, schedule);
         }
 
         public void EditTitle(EventTitle title)
         {
+            if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
+           
             if (title == Title) return;
 
             Title = title;

@@ -6,6 +6,6 @@ namespace HoaM.Domain.Features
     {
         ISystemClock SystemClock { get; }
 
-        IResult PublishMeetingMinutes(MeetingMinutes meetingMinutes);
+        IResult PublishMeetingMinutes(Meeting meeting);
     }
 }

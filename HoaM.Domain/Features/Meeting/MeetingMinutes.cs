@@ -49,6 +49,8 @@ namespace HoaM.Domain.Features
 
         public MeetingMinutes AddAttendees(params AssociationMember[] attendees)
         {
+            if (attendees is null || attendees.Length == 0) throw new DomainException(DomainErrors.MeetingMinutes.AttendeesNullOrEmpty);
+
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _attendees.AddRange(attendees);
@@ -58,6 +60,8 @@ namespace HoaM.Domain.Features
 
         public MeetingMinutes AddAttendee(AssociationMember attendee)
         {
+            if (attendee is null) throw new DomainException(DomainErrors.MeetingMinutes.AttendeesNullOrEmpty);
+
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _attendees.Add(attendee);
@@ -67,6 +71,8 @@ namespace HoaM.Domain.Features
 
         public MeetingMinutes AddNote(Note note)
         {
+            if (note is null) throw new DomainException(DomainErrors.MeetingMinutes.NoteNullOrEmpty);
+            
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _notes.Add(note);
@@ -74,15 +80,13 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        public IResult Publish(IMeetingManager meetingManager)
+        internal void Publish(DateTimeOffset datePublished)
         {
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
-            var publishResult = meetingManager.PublishMeetingMinutes(this);
+            if (datePublished == default) throw new DomainException(DomainErrors.MeetingMinutes.DateNullOrEmpty);
 
-            if (publishResult.IsSuccess) PublishedDate = meetingManager.SystemClock.UtcNow;
-
-            return publishResult;
+            PublishedDate = datePublished;
         }
     }
 }

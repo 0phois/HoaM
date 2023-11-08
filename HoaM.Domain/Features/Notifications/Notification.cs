@@ -17,6 +17,11 @@ namespace HoaM.Domain.Features
         public required NotificationTemplate Template { get; init; }
 
         /// <summary>
+        /// The <see cref="AssociationMember"/> the notification was created for
+        /// </summary>
+        public AssociationMember? Recipient { get; init; }
+
+        /// <summary>
         /// Date and time the <see cref="Notification"/> was received
         /// </summary>
         public DateTimeOffset? ReceivedDate { get; private set; }
@@ -29,37 +34,35 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Indicates whether the <see cref="Notification"/> has been viewed
         /// </summary>
-        public bool Read => ReadDate != DateTimeOffset.MinValue;
+        public bool IsRead => ReadDate != DateTimeOffset.MinValue;
 
         private Notification() { }
 
-        public static Notification Create(NotificationTemplate template)
+        public static Notification Create(NotificationTemplate template, AssociationMember recipient)
         {
             if (template is null) throw new DomainException(DomainErrors.NotificationTemplate.NullOrEmpty);
 
-            return new() { Template = template };
+            if (recipient is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
+
+            var notification = new Notification() { Template = template, Recipient = recipient };
+
+            notification.AddDomainEvent(new NotificaionCreatedEvent(notification));
+
+            return notification;
         }
 
-        public IResult Publish(AssociationMember member, INotificationManager notificationManager)
+        public void MarkAsDelivered(DateTimeOffset dateDelivered)
         {
-            if (member is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
+            if (dateDelivered == default) throw new DomainException(DomainErrors.Notification.DateNullOrEmpty);
 
-            if (notificationManager is null) throw new DomainException(DomainErrors.NotificationManager.NullOrEmpty);
-
-            ReceivedDate = notificationManager.SystemClock.UtcNow;
-
-            var deliveryResult = notificationManager.DeliverTo(member);
-
-            if (deliveryResult.IsSuccess) Template.DeliveredTo.Add(member);
-
-            return deliveryResult;
+            ReceivedDate = dateDelivered;
         }
 
-        public void MarkAsRead(INotificationManager notificationManager)
+        public void MarkAsRead(DateTimeOffset dateRead)
         {
-            if (notificationManager is null) throw new DomainException(DomainErrors.NotificationManager.NullOrEmpty);
+            if (dateRead == default) throw new DomainException(DomainErrors.Notification.DateNullOrEmpty);
 
-            ReadDate = notificationManager.SystemClock.UtcNow;
+            ReadDate = dateRead;
         }
 
         public void MarkAsUnread() => ReadDate = DateTimeOffset.MinValue;

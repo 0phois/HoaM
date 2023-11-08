@@ -26,18 +26,6 @@ namespace HoaM.Domain.Features
         /// </summary>
         public required Text Content { get; init; }
 
-        /// <summary>
-        /// Collection of users the <see cref="NotificationTemplate"/> has been sent to
-        /// </summary>
-        public List<AssociationMember> DeliveredTo { get; private set; } = new List<AssociationMember>();
-
-        /// <summary>
-        /// Date and time the <see cref="NotificationTemplate"/> was published
-        /// </summary>
-        public DateTimeOffset? PublishedDate { get; private set; }
-
-        public bool IsPublished => PublishedDate is not null;
-
         private NotificationTemplate() { }
 
         public static NotificationTemplate Create(NotificationTitle title, Text content, NotificationType type)
@@ -49,17 +37,6 @@ namespace HoaM.Domain.Features
             if (!Enum.IsDefined(typeof(NotificationType), type)) throw new DomainException(DomainErrors.NotificationTemplate.TypeNotDefined);
 
             return new() { Title = title, Content = content, Type = type };
-        }
-
-        public NotificationTemplate Publish(INotificationManager notificationManager)
-        {
-            if (notificationManager is null) throw new DomainException(DomainErrors.NotificationManager.NullOrEmpty);
-
-            if (IsPublished) throw new DomainException(DomainErrors.Notification.AlreadyPublished);
-
-            PublishedDate = notificationManager.SystemClock.UtcNow;
-
-            return this;
         }
     }
 
