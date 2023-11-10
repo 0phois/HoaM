@@ -31,16 +31,16 @@ namespace HoaM.Application.Features
 
     internal sealed class CreateCommunityCommandHandler : ICommandHandler<CreateCommunityCommand, IResult<Community>>
     {
-        private readonly IRepository<Community> _communityRepository;
+        private readonly IRepository<Community> _repository;
 
-        public CreateCommunityCommandHandler(IRepository<Community> communityRepository)
+        public CreateCommunityCommandHandler(IRepository<Community> repository)
         {
-            _communityRepository = communityRepository;
+            _repository = repository;
         }
 
         public async Task<IResult<Community>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {
-            var community = await _communityRepository.AddAsync(Community.Create(request.Name), cancellationToken);
+            var community = await _repository.AddAsync(Community.Create(request.Name), cancellationToken);
 
             return Results.Success(community);
         }

@@ -33,12 +33,12 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Date the <see cref="Committee"/> was created
         /// </summary>
-        public DateOnly? Established { get; set; }
+        public DateOnly? EstablishedDate { get; set; }
 
         /// <summary>
         /// Date the <see cref="Committee"/> ceased operations
         /// </summary>
-        public DateOnly? Dissolved { get; private set; }
+        public DateOnly? DissolvedDate { get; private set; }
 
         /// <summary>
         /// <see cref="AssociationMember"/>s that make up the <seealso cref="Committee"/>
@@ -52,12 +52,14 @@ namespace HoaM.Domain.Features
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+       
         public bool IsDeleted => DeletionDate is not null;
+        public bool IsDissolved => DissolvedDate is not null;
 
         /// <summary>
         /// Whether or not the <see cref="Committee"/> is active 
         /// </summary>
-        public bool IsActive => DeletionDate is null && Dissolved is null;
+        public bool IsActive => DeletionDate is null && DissolvedDate is null;
 
         private Committee() { }
 
@@ -65,7 +67,7 @@ namespace HoaM.Domain.Features
         {
             if (name is null) throw new DomainException(DomainErrors.Committee.NameNullOrEmpty);
 
-            return new() { Name = name, Established = established };
+            return new() { Name = name, EstablishedDate = established };
         }
 
         public Committee WithMissionStatement(MissionStatement statement)
@@ -126,9 +128,9 @@ namespace HoaM.Domain.Features
         public bool TryDissolve(ISystemClock systemClock)
         {
             if (DeletionDate.HasValue) return false;
-            if (Dissolved.HasValue) return false;
+            if (DissolvedDate.HasValue) return false;
 
-            Dissolved = DateOnly.FromDateTime(systemClock.UtcNow.DateTime);
+            DissolvedDate = DateOnly.FromDateTime(systemClock.UtcNow.DateTime);
 
             AddDomainEvent(new CommitteeDissolvedNotification(this));
 
@@ -138,7 +140,7 @@ namespace HoaM.Domain.Features
         private void CheckForActiveCommittee()
         {
             if (DeletionDate.HasValue) throw new DomainException(DomainErrors.Committee.AlreadyDeleted);
-            if (Dissolved.HasValue) throw new DomainException(DomainErrors.Committee.AlreadyDissolved);
+            if (DissolvedDate.HasValue) throw new DomainException(DomainErrors.Committee.AlreadyDissolved);
         }
     }
 }

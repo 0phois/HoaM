@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HoaM.Application.Common;
+using HoaM.Application.Common.Contracts;
 using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
@@ -7,34 +8,30 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DissolveCommitteeCommand(Committee Committee) : ICommand<IResult> { }
+    public sealed record DissolveCommitteeCommand(CommitteeId CommitteeId) : ICommand<IResult>, ICommandBinder<Committee, CommitteeId>
+    {
+        public Committee? Entity { get; set; }
+    }
 
     public sealed class DissolveCommitteeValidator : AbstractValidator<DissolveCommitteeCommand> 
     {
-        public DissolveCommitteeValidator(IReadRepository<Committee> repository)
+        public DissolveCommitteeValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
+            RuleLevelCascadeMode = CascadeMode.Stop;
 
-            RuleFor(command => command.Committee).NotEmpty();
+            RuleFor(command => command.CommitteeId).NotEmpty();
 
-            RuleFor(command => command.Committee)
+            RuleFor(command => command.Entity)
                 .NotEmpty()
-                .MustAsync(async (request, cancellationToken) =>
-                {
-                    var committee = await repository.GetByIdAsync(request.Id, cancellationToken);
-
-                    return committee is not null && !committee.IsDeleted;
-                })
-                .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
-                .WithMessage(ApplicationErrors.Committee.NotFound.Message);
-
-            RuleFor(command => command.Committee.DeletionDate).Null()
-                .WithErrorCode(ApplicationErrors.Committee.AlreadyDeleted.Code)
-                .WithMessage(ApplicationErrors.Committee.AlreadyDeleted.Message);
-
-            RuleFor(command => command.Committee.Dissolved).Null()
-                .WithErrorCode(ApplicationErrors.Committee.AlreadyDissolved.Code)
-                .WithMessage(ApplicationErrors.Committee.AlreadyDissolved.Message);
+                    .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Committee.NotFound.Message)
+                .Must(committee => committee!.IsDeleted == false)
+                    .WithErrorCode(ApplicationErrors.Committee.AlreadyDeleted.Code)
+                    .WithMessage(ApplicationErrors.Committee.AlreadyDeleted.Message)
+                .Must(committee => committee!.IsDissolved == false)
+                    .WithErrorCode(ApplicationErrors.Committee.AlreadyDissolved.Code)
+                    .WithMessage(ApplicationErrors.Committee.AlreadyDissolved.Message);
         }
     }
 
@@ -49,7 +46,7 @@ namespace HoaM.Application.Features
 
         public Task<IResult> Handle(DissolveCommitteeCommand request, CancellationToken cancellationToken)
         {
-            var dissolved = request.Committee.TryDissolve(_clock);
+            var dissolved = request.Entity!.TryDissolve(_clock);
 
             return dissolved ? Results.Success() : Results.Failed("An error occurred while attempting to dissolve the committee.");
         }

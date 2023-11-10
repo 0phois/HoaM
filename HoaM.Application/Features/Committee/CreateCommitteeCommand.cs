@@ -17,15 +17,16 @@ namespace HoaM.Application.Features
 
             RuleFor(command => command.Name)
                 .NotEmpty()
+                    .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Committee.NotFound.Message)
                 .MustAsync(async (name, cancellationToken) =>
                 {
                     var spec = new CommitteeByNameSpec(name);
                     var committee = await repository.FirstOrDefaultAsync(spec, cancellationToken);
 
                     return committee is null;
-                })
-                .WithErrorCode(ApplicationErrors.Committee.DuplicateName.Code)
-                .WithMessage(ApplicationErrors.Committee.DuplicateName.Message);
+                }).WithErrorCode(ApplicationErrors.Committee.DuplicateName.Code)
+                  .WithMessage(ApplicationErrors.Committee.DuplicateName.Message);
         }
     }
 

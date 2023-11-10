@@ -1,29 +1,34 @@
 ﻿using FluentValidation;
 using HoaM.Application.Common;
+using HoaM.Application.Common.Contracts;
 using HoaM.Application.Exceptions;
+using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteMemberCommand(AssociationMember Member) : ICommand<IResult> { }
+    public sealed record DeleteMemberCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    {
+        public AssociationMember? Entity { get; set; }
+    }
 
     public sealed class DeleteMemberValidator :AbstractValidator<DeleteMemberCommand> 
     {
-        public DeleteMemberValidator(IReadRepository<AssociationMember> repository) 
+        public DeleteMemberValidator() 
         {
+            ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
 
-            RuleFor(command => command.Member)
-                .NotEmpty()
-                .MustAsync(async (request, cancellationToken) =>
-                {
-                    var member = await repository.GetByIdAsync(request.Id, cancellationToken);
+            RuleFor(command => command.MemberId).NotEmpty();
 
-                    return member is not null && !member.IsDeleted;
-                })
-                .WithErrorCode(ApplicationErrors.AssociationMember.NotFound.Code)
-                .WithMessage(ApplicationErrors.AssociationMember.NotFound.Message); ;
+            RuleFor(command => command.Entity)
+                .NotEmpty()
+                    .WithErrorCode(ApplicationErrors.AssociationMember.NotFound.Code)
+                    .WithMessage(ApplicationErrors.AssociationMember.NotFound.Message)
+                .Must(member => member!.IsDeleted == false)
+                    .WithErrorCode(ApplicationErrors.AssociationMember.AlreadyDeleted.Code)
+                    .WithMessage(ApplicationErrors.AssociationMember.AlreadyDeleted.Message);
         }
     }
 
@@ -38,7 +43,7 @@ namespace HoaM.Application.Features
 
         public async Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(request.Member, cancellationToken);
+            await _repository.DeleteAsync(request.Entity!, cancellationToken);
 
             return Results.Success();
         }

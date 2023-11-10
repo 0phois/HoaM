@@ -1,29 +1,34 @@
 ﻿using FluentValidation;
 using HoaM.Application.Common;
+using HoaM.Application.Common.Contracts;
 using HoaM.Application.Exceptions;
+using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteCommitteeCommand(Committee Committee) : ICommand<IResult> { }
+    public sealed record DeleteCommitteeCommand(CommitteeId CommitteeId) : ICommand<IResult>, ICommandBinder<Committee, CommitteeId>
+    {
+        public Committee? Entity { get; set; }
+    }
 
     public sealed class DeleteCommitteeValidator : AbstractValidator<DeleteCommitteeCommand> 
     {
-        public DeleteCommitteeValidator(IReadRepository<Committee> repository)
+        public DeleteCommitteeValidator()
         {
+            ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
 
-            RuleFor(command => command.Committee)
-                .NotEmpty()
-                .MustAsync(async (request, cancellationToken) => 
-                {
-                    var committee = await repository.GetByIdAsync(request.Id, cancellationToken);
+            RuleFor(command => command.CommitteeId).NotEmpty();
 
-                    return committee is not null && !committee.IsDeleted;
-                })
-                .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
-                .WithMessage(ApplicationErrors.Committee.NotFound.Message);
+            RuleFor(command => command.Entity)
+                .NotEmpty()
+                    .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Committee.NotFound.Message)
+                .Must(committee => committee!.IsDeleted == false)
+                    .WithErrorCode(ApplicationErrors.Committee.AlreadyDeleted.Code)
+                    .WithMessage(ApplicationErrors.Committee.AlreadyDeleted.Message);
         }
     }
 
@@ -38,7 +43,7 @@ namespace HoaM.Application.Features
 
         public async Task<IResult> Handle(DeleteCommitteeCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(request.Committee, cancellationToken);
+            await _repository.DeleteAsync(request.Entity!, cancellationToken);
 
             return Results.Success();
         }

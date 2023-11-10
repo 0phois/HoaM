@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HoaM.Application.Common;
+using HoaM.Application.Common.Contracts;
 using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
@@ -7,7 +8,10 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateCommunityNameCommand(Community Community, CommunityName NewName) : ICommand<IResult> { }
+    public sealed record UpdateCommunityNameCommand(CommunityId CommunityId, CommunityName NewName) : ICommand<IResult>, ICommandBinder<Community, CommunityId>
+    {
+        public Community? Entity { get; set; }
+    }
 
     public sealed class UpdateCommunityNameValidator : AbstractValidator<UpdateCommunityNameCommand>
     {
@@ -16,7 +20,12 @@ namespace HoaM.Application.Features
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
 
-            RuleFor(command => command.Community).NotEmpty();
+            RuleFor(command => command.CommunityId).NotEmpty();
+
+            RuleFor(command => command.Entity)
+                .NotEmpty()
+                    .WithErrorCode(ApplicationErrors.Community.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Community.NotFound.Message);
 
             RuleFor(command => command.NewName)
                 .NotEmpty()
@@ -26,10 +35,9 @@ namespace HoaM.Application.Features
                     var community = await repository.FirstOrDefaultAsync(spec, cancellationToken);
 
                     return community is null;
-                })
-                .When(command => command.Community.Name != command.NewName)
-                .WithErrorCode(ApplicationErrors.Community.DuplicateName.Code)
-                .WithMessage(ApplicationErrors.Community.DuplicateName.Message);
+                }).WithErrorCode(ApplicationErrors.Community.DuplicateName.Code)
+                  .WithMessage(ApplicationErrors.Community.DuplicateName.Message)
+                  .When(command => !command.Entity!.Name.Value.Equals(command.NewName.Value, StringComparison.OrdinalIgnoreCase));
         }
     }
 
@@ -37,7 +45,7 @@ namespace HoaM.Application.Features
     {
         public Task<IResult> Handle(UpdateCommunityNameCommand request, CancellationToken cancellationToken)
         {
-            request.Community.EditName(request.NewName);
+            request.Entity!.EditName(request.NewName);
 
             return Results.Success();
         }

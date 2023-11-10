@@ -7,6 +7,9 @@ namespace HoaM.Application.Exceptions
         public static class AssociationMember
         {
             public static Error NotFound => new($"{nameof(AssociationMember)}.{nameof(NotFound)}", "The specified member was not found.");
+            public static Error AlreadyDeleted => new($"{nameof(AssociationMember)}.{nameof(AlreadyDeleted)}", "This member no longer exists.");
+            public static Error DuplicatePhone => new($"{nameof(AssociationMember)}.{nameof(DuplicatePhone)}", "A phone number of this type already exists.");
+
         }
 
         public static class Community

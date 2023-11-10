@@ -1,29 +1,31 @@
 ﻿using FluentValidation;
 using HoaM.Application.Common;
+using HoaM.Application.Common.Contracts;
 using HoaM.Application.Exceptions;
+using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteCommunityCommand(Community Community) : ICommand<IResult> { }
+    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand<IResult>, ICommandBinder<Community, CommunityId>
+    {
+        public Community? Entity { get; set; }
+    }
 
     public sealed class DeleteCommunityValidator : AbstractValidator<DeleteCommunityCommand> 
     {
-        public DeleteCommunityValidator(IReadRepository<Community> repository)
+        public DeleteCommunityValidator()
         {
+            ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
 
-            RuleFor(command => command.Community)
-                .NotEmpty()
-                .MustAsync(async (request, cancellationToken) =>
-                {
-                    var community = await repository.GetByIdAsync(request.Id, cancellationToken);
+            RuleFor(command => command.CommunityId).NotEmpty();
 
-                    return community is not null;
-                })
-                .WithErrorCode(ApplicationErrors.Community.NotFound.Code)
-                .WithMessage(ApplicationErrors.Community.NotFound.Message);
+            RuleFor(command => command.Entity)
+                .NotEmpty()
+                    .WithErrorCode(ApplicationErrors.Community.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Community.NotFound.Message);
         }
     }
 
@@ -38,7 +40,7 @@ namespace HoaM.Application.Features
 
         public async Task<IResult> Handle(DeleteCommunityCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(request.Community, cancellationToken);
+            await _repository.DeleteAsync(request.Entity!, cancellationToken);
 
             return Results.Success();
         }
