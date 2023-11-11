@@ -1,9 +1,11 @@
 ﻿using HoaM.Domain.Features;
 
-namespace HoaM.Application.Common
+namespace HoaM.Domain.Common
 {
     public interface ICurrentUserService
     {
         IMember CurrentUser { get; }
+
+        ValueTask<CommitteeMember> GetCommitteeMember();
     }
 }

@@ -30,8 +30,6 @@ namespace HoaM.Domain.Features
         {
             if (member is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
 
-            if (role is null) throw new DomainException(DomainErrors.CommitteeRole.NullOrEmpty);
-
             return new(member.FirstName, member.LastName)
             {
                 Position = role ?? CommitteeRole.Member,

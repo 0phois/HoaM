@@ -28,12 +28,12 @@ namespace HoaM.Domain.Common
             _domainEvents.Clear();
         }
 
-        public bool Equals(TId? other)
+        public virtual bool Equals(TId? other)
         {
             return other != null && (ReferenceEquals(Id, other) || Equals(Id, other));
         }
 
-        public bool Equals(IEntity<TId>? other)
+        public virtual bool Equals(IEntity<TId>? other)
         {
             return other != null && (ReferenceEquals(this, other) || Equals(Id, other.Id));
         }

@@ -2,12 +2,10 @@
 {
     public class Result : IResult
     {
-        public virtual bool IsSuccess => this is not IFailedResult;
-        public virtual bool IsFailed => this is IFailedResult;
+        public virtual bool IsSuccess => true;
+        public virtual bool IsFailed => false;
 
         public string Message { get; init; } = string.Empty;
-
-        internal Result() { }
 
         public override string ToString() => $"{GetType().Name} {Message}";
 

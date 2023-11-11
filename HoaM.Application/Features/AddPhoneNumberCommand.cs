@@ -23,7 +23,7 @@ namespace HoaM.Application.Features
                 {
                     var user = await repository.GetByIdAsync(member.Id, cancellationToken);
 
-                    return user is not null && user.PhoneNumbers.Any(x => x.Type == cmd.PhoneNumber.Type);
+                    return user is not null && user.PhoneNumbers.Exists(x => x.Type == cmd.PhoneNumber.Type);
                 })
                 .WithErrorCode(ApplicationErrors.AssociationMember.DuplicatePhone.Code)
                 .WithMessage(ApplicationErrors.AssociationMember.DuplicatePhone.Message);

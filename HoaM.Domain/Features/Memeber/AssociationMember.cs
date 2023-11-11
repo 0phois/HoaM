@@ -98,7 +98,7 @@ namespace HoaM.Domain.Features
         {
             if (phoneNumber is null) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
             
-            if (PhoneNumbers.Any(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
+            if (PhoneNumbers.Exists(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
 
             PhoneNumbers.Add(phoneNumber);
 

@@ -5,11 +5,16 @@ namespace HoaM.Domain.Features
 {
     public sealed class MeetingService : IMeetingManager
     {
-        public ISystemClock SystemClock { get; }
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ISystemClock _systemClock;
 
-        public MeetingService(ISystemClock systemClock) => SystemClock = systemClock;
+        public MeetingService(ICurrentUserService currentUserService, ISystemClock systemClock)
+        {
+            _currentUserService = currentUserService;
+            _systemClock = systemClock;
+        }
 
-        public IResult PublishMeetingMinutes(Meeting meeting)
+        public async ValueTask<IResult> PublishMeetingMinutesAsync(Meeting meeting)
         {
             if (meeting.Minutes is null) return Results.Failed(DomainErrors.MeetingMinutes.NullOrEmpty.Message);
 
@@ -17,7 +22,9 @@ namespace HoaM.Domain.Features
 
             try
             {
-                meeting.Minutes.Publish(SystemClock.UtcNow);
+                var publisher = await _currentUserService.GetCommitteeMember();
+
+                meeting.Minutes.Publish(publisher, _systemClock.UtcNow);
             }
             catch (DomainException ex)
             {

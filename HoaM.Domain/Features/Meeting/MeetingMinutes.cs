@@ -80,13 +80,16 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        internal void Publish(DateTimeOffset datePublished)
+        internal void Publish(CommitteeMember publisher, DateTimeOffset datePublished)
         {
+            if (publisher is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
+
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             if (datePublished == default) throw new DomainException(DomainErrors.MeetingMinutes.DateNullOrEmpty);
 
             PublishedDate = datePublished;
+            Publisher = publisher;
         }
     }
 }

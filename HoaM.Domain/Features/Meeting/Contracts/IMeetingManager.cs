@@ -4,8 +4,6 @@ namespace HoaM.Domain.Features
 {
     public interface IMeetingManager
     {
-        ISystemClock SystemClock { get; }
-
-        IResult PublishMeetingMinutes(Meeting meeting);
+        ValueTask<IResult> PublishMeetingMinutesAsync(Meeting meeting);
     }
 }

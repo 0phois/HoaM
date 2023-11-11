@@ -26,7 +26,7 @@ namespace HoaM.Application.Features
                 .NotEmpty()
                     .WithErrorCode(ApplicationErrors.AssociationMember.NotFound.Code)
                     .WithMessage(ApplicationErrors.AssociationMember.NotFound.Message)
-                .Must(member => member!.IsDeleted == false)
+                .Must(member => !member!.IsDeleted)
                     .WithErrorCode(ApplicationErrors.AssociationMember.AlreadyDeleted.Code)
                     .WithMessage(ApplicationErrors.AssociationMember.AlreadyDeleted.Message);
         }

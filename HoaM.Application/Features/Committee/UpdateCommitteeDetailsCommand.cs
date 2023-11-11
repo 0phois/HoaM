@@ -26,10 +26,10 @@ namespace HoaM.Application.Features
                 .NotEmpty()
                     .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
                     .WithMessage(ApplicationErrors.Committee.NotFound.Message)
-                .Must(committee => committee!.IsDeleted == false)
+                .Must(committee => !committee!.IsDeleted)
                     .WithErrorCode(ApplicationErrors.Committee.AlreadyDeleted.Code)
                     .WithMessage(ApplicationErrors.Committee.AlreadyDeleted.Message)
-                .Must(committee => committee!.IsDissolved == false)
+                .Must(committee => !committee!.IsDissolved)
                     .WithErrorCode(ApplicationErrors.Committee.AlreadyDissolved.Code)
                     .WithMessage(ApplicationErrors.Committee.AlreadyDissolved.Message);
 

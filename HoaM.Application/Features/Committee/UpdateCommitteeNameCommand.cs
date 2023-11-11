@@ -26,7 +26,7 @@ namespace HoaM.Application.Features
                 .NotEmpty()
                     .WithErrorCode(ApplicationErrors.Committee.NotFound.Code)
                     .WithMessage(ApplicationErrors.Committee.NotFound.Message)
-                .Must(committee => committee!.IsDeleted == false)
+                .Must(committee => !committee!.IsDeleted)
                     .WithErrorCode(ApplicationErrors.Committee.AlreadyDeleted.Code)
                     .WithMessage(ApplicationErrors.Committee.AlreadyDeleted.Message);
 

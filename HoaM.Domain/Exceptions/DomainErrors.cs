@@ -1,6 +1,4 @@
-﻿using MassTransit.NewIdProviders;
-
-namespace HoaM.Domain.Exceptions
+﻿namespace HoaM.Domain.Exceptions
 {
     public sealed record Error(string Code, string Message);
 
@@ -16,7 +14,7 @@ namespace HoaM.Domain.Exceptions
 
         public static class AssociationFee
         {
-            public static Error ExpenseNullOrEmpty => new($"{nameof(AssociationFee)}.{ExpenseNullOrEmpty}", "Expense is required.");
+            public static Error ExpenseNullOrEmpty => new($"{nameof(AssociationFee)}.{nameof(ExpenseNullOrEmpty)}", "Expense is required.");
         }
 
         public static class AssociationMember
@@ -43,7 +41,7 @@ namespace HoaM.Domain.Exceptions
 
         public static class Community
         {
-            public static Error NameNullOrEmpty => new($"{nameof(Community)}.{NameNullOrEmpty}","Name is required");
+            public static Error NameNullOrEmpty => new($"{nameof(Community)}.{nameof(NameNullOrEmpty)}","Name is required");
         }
 
         public static class Document
@@ -68,17 +66,17 @@ namespace HoaM.Domain.Exceptions
 
         public static class Lot
         {
-            public static Error NullOrEmpty => new($"{nameof(Lot)}.{NullOrEmpty}", "Lot cannot be null.");
+            public static Error NullOrEmpty => new($"{nameof(Lot)}.{nameof(NullOrEmpty)}", "Lot cannot be null.");
         }
 
         public static class Meeting
         {
-            public static Error NullOrEmpty => new($"{nameof(Meeting)}.{NullOrEmpty}", "Meeting cannot be null.");
-            public static Error HostNullOrEmpty => new($"{nameof(Meeting)}.{HostNullOrEmpty}", "Meeting host is required.");
+            public static Error NullOrEmpty => new($"{nameof(Meeting)}.{nameof(NullOrEmpty)}", "Meeting cannot be null.");
+            public static Error HostNullOrEmpty => new($"{nameof(Meeting)}.{nameof(HostNullOrEmpty)}", "Meeting host is required.");
             public static Error NoteNullOrEmpty => new($"{nameof(Meeting)}.{nameof(NoteNullOrEmpty)}", "Note is required.");
-            public static Error DateNullOrEmpty => new($"{nameof(Meeting)}.{DateNullOrEmpty}", "Scheduled date is required.");
-            public static Error TitleNullOrEmpty => new($"{nameof(Meeting)}.{TitleNullOrEmpty}", "Meeting title is required.");
-            public static Error DescriptionNullOrEmpty => new($"{nameof(Meeting)}.{DescriptionNullOrEmpty}", "Meeting description is required.");
+            public static Error DateNullOrEmpty => new($"{nameof(Meeting)}.{nameof(DateNullOrEmpty)}", "Scheduled date is required.");
+            public static Error TitleNullOrEmpty => new($"{nameof(Meeting)}.{nameof(TitleNullOrEmpty)}", "Meeting title is required.");
+            public static Error DescriptionNullOrEmpty => new($"{nameof(Meeting)}.{nameof(DescriptionNullOrEmpty)}", "Meeting description is required.");
             public static Error AgendaNullOrEmpty => new($"{nameof(Meeting)}.{nameof(AgendaNullOrEmpty)}", "Agenda is required.");
 
             public static Error MinutesAlreadyAttached
@@ -92,10 +90,10 @@ namespace HoaM.Domain.Exceptions
 
         public static class MeetingMinutes
         {
-            public static Error NullOrEmpty => new($"{nameof(MeetingMinutes)}.{NullOrEmpty}", "Meeting minutes cannot be null.");
+            public static Error NullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(NullOrEmpty)}", "Meeting minutes cannot be null.");
             public static Error NoteNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(NoteNullOrEmpty)}", "Note is required.");
             public static Error DateNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(DateNullOrEmpty)}", "Published date is required.");
-            public static Error AttendeesNullOrEmpty => new($"{nameof(MeetingMinutes)}.{AttendeesNullOrEmpty}", "Meeting attendees required.");
+            public static Error AttendeesNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(AttendeesNullOrEmpty)}", "Meeting attendees required.");
             public static Error AlreadyPublished => new($"{nameof(MeetingMinutes)}.{nameof(AlreadyPublished)}", "The meeting minutes have already been published.");
         }
 
@@ -113,7 +111,7 @@ namespace HoaM.Domain.Exceptions
 
         public static class NotificationTemplate
         {
-            public static Error NullOrEmpty => new($"{nameof(NotificationTemplate)}.{NullOrEmpty}", "Notification template cannot be null.");
+            public static Error NullOrEmpty => new($"{nameof(NotificationTemplate)}.{nameof(NullOrEmpty)}", "Notification template cannot be null.");
             public static Error TitleNullOrEmpty => new($"{nameof(NotificationTemplate)}.{nameof(TitleNullOrEmpty)}", "Title is required.");
             public static Error ContentNullOrEmpty => new($"{nameof(NotificationTemplate)}.{nameof(ContentNullOrEmpty)}", "Content is required.");
             public static Error TypeNotDefined => new($"{nameof(NotificationTemplate)}.{nameof(TypeNotDefined)}", "Notification type is invalid.");
