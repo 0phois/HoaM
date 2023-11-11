@@ -7,19 +7,23 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteMemberCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record UpdateMemberNameCommand(AssociationMemberId MemberId, FirstName FirstName, LastName LastName) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
 
-    public sealed class DeleteMemberValidator :AbstractValidator<DeleteMemberCommand> 
+    public sealed class UpdateMemberNameValidator : AbstractValidator<UpdateMemberNameCommand>
     {
-        public DeleteMemberValidator() 
+        public UpdateMemberNameValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
 
             RuleFor(command => command.MemberId).NotEmpty();
+
+            RuleFor(command => command.FirstName).NotEmpty();
+
+            RuleFor(command => command.LastName).NotEmpty();
 
             RuleFor(command => command.Entity)
                 .NotEmpty()
@@ -31,18 +35,12 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteMemberHandler : ICommandHandler<DeleteMemberCommand, IResult>
+    internal sealed class UpdateMemberNameHandler : ICommandHandler<UpdateMemberNameCommand, IResult>
     {
-        private readonly IRepository<AssociationMember> _repository;
-
-        public DeleteMemberHandler(IRepository<AssociationMember> repository)
+        public Task<IResult> Handle(UpdateMemberNameCommand request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
-
-        public async Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
-        {
-            await _repository.DeleteAsync(request.Entity!, cancellationToken);
+            request.Entity!.EditFirstName(request.FirstName);
+            request.Entity!.EditLastName(request.LastName);
 
             return Results.Success();
         }

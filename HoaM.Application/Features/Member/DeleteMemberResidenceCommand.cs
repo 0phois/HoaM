@@ -7,14 +7,14 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteMemberCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record DeleteMemberResidenceCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
 
-    public sealed class DeleteMemberValidator :AbstractValidator<DeleteMemberCommand> 
+    public sealed class DeleteMemberResidenceValidator : AbstractValidator<DeleteMemberResidenceCommand>
     {
-        public DeleteMemberValidator() 
+        public DeleteMemberResidenceValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -27,22 +27,18 @@ namespace HoaM.Application.Features
                     .WithMessage(ApplicationErrors.AssociationMember.NotFound.Message)
                 .Must(member => !member!.IsDeleted)
                     .WithErrorCode(ApplicationErrors.AssociationMember.AlreadyDeleted.Code)
-                    .WithMessage(ApplicationErrors.AssociationMember.AlreadyDeleted.Message);
+                    .WithMessage(ApplicationErrors.AssociationMember.AlreadyDeleted.Message)
+                .Must(member => member!.Residence is not null)
+                    .WithErrorCode(ApplicationErrors.Residence.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Residence.NotFound.Message);
         }
     }
 
-    internal sealed class DeleteMemberHandler : ICommandHandler<DeleteMemberCommand, IResult>
+    internal sealed class DeleteMemberResidenceHandler : ICommandHandler<DeleteMemberResidenceCommand, IResult>
     {
-        private readonly IRepository<AssociationMember> _repository;
-
-        public DeleteMemberHandler(IRepository<AssociationMember> repository)
+        public Task<IResult> Handle(DeleteMemberResidenceCommand request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
-
-        public async Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
-        {
-            await _repository.DeleteAsync(request.Entity!, cancellationToken);
+            request.Entity!.RemoveResidence();
 
             return Results.Success();
         }

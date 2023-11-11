@@ -1,6 +1,6 @@
 ﻿using HoaM.Domain.Common;
 
-namespace HoaM.Application.Common.Contracts
+namespace HoaM.Application.Common
 {
     /// <summary>
     /// Binds an <see cref="IEntity{TId}"/> to a command.

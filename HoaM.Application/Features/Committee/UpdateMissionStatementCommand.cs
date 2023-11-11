@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using HoaM.Application.Common;
-using HoaM.Application.Common.Contracts;
 using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;

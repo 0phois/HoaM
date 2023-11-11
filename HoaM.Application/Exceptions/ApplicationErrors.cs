@@ -25,5 +25,26 @@ namespace HoaM.Application.Exceptions
             public static Error AlreadyDissolved => new($"{nameof(Committee)}.{nameof(AlreadyDissolved)}", "This committee has already been dissolved.");
             public static Error DuplicateName => new($"{nameof(Committee)}.{nameof(DuplicateName)}", "A committee with this name has already been established.");
         }
+
+        public static class Email
+        {
+            public static Error NotFound => new($"{nameof(Email)}.{nameof(NotFound)}", "Email was not found.");
+            public static Error AlreadyVerified => new($"{nameof(Email)}.{nameof(AlreadyVerified)}", "The specified email has already been verified.");
+        }
+
+        public static class PhoneNumber
+        {
+            public static Error NotFound => new($"{nameof(PhoneNumber)}.{nameof(NotFound)}", "Member phone number was not found.");
+            public static Error LimitReached => new($"{nameof(PhoneNumber)}.{nameof(LimitReached)}", "Maximum allowed phone numbers exists.");
+            public static Error LimitExceeded => new($"{nameof(PhoneNumber)}.{nameof(LimitExceeded)}", "Collection exceeds the maximum phone numbers allowed.");
+            public static Error DuplicateTypeFound => new($"{nameof(PhoneNumber)}.{nameof(DuplicateTypeFound)}", "Duplicate phone type not allowed.");
+
+        }
+
+        public static class Residence
+        {
+            public static Error NotFound => new($"{nameof(Residence)}.{nameof(NotFound)}", "Member residnece was not found.");
+            public static Error AlreadyDeleted => new($"{nameof(Residence)}.{nameof(AlreadyDeleted)}", "This residence no longer exists.");
+        }
     }
 }

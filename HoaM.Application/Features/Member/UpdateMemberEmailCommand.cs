@@ -7,19 +7,21 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteMemberCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record UpdateMemberEmailCommand(AssociationMemberId MemberId, EmailAddress EmailAddress) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
 
-    public sealed class DeleteMemberValidator :AbstractValidator<DeleteMemberCommand> 
+    public sealed class UpdateMemberEmailValidator : AbstractValidator<UpdateMemberEmailCommand>
     {
-        public DeleteMemberValidator() 
+        public UpdateMemberEmailValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
 
             RuleFor(command => command.MemberId).NotEmpty();
+
+            RuleFor(command => command.EmailAddress).NotEmpty();
 
             RuleFor(command => command.Entity)
                 .NotEmpty()
@@ -31,18 +33,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteMemberHandler : ICommandHandler<DeleteMemberCommand, IResult>
+    internal sealed class UpdateMemberEmailHandler : ICommandHandler<UpdateMemberEmailCommand, IResult>
     {
-        private readonly IRepository<AssociationMember> _repository;
-
-        public DeleteMemberHandler(IRepository<AssociationMember> repository)
+        public Task<IResult> Handle(UpdateMemberEmailCommand request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
-
-        public async Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
-        {
-            await _repository.DeleteAsync(request.Entity!, cancellationToken);
+            request.Entity!.WithEmailAddress(request.EmailAddress);
 
             return Results.Success();
         }

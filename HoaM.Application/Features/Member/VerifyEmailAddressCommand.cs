@@ -7,14 +7,14 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteMemberCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record VerifyEmailAddressCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
 
-    public sealed class DeleteMemberValidator :AbstractValidator<DeleteMemberCommand> 
+    public sealed class VerifyEmailAddressValidator : AbstractValidator<VerifyEmailAddressCommand>
     {
-        public DeleteMemberValidator() 
+        public VerifyEmailAddressValidator() 
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -28,21 +28,22 @@ namespace HoaM.Application.Features
                 .Must(member => !member!.IsDeleted)
                     .WithErrorCode(ApplicationErrors.AssociationMember.AlreadyDeleted.Code)
                     .WithMessage(ApplicationErrors.AssociationMember.AlreadyDeleted.Message);
+
+            RuleFor(command => command.Entity!.Email)
+                .NotEmpty()
+                    .WithErrorCode(ApplicationErrors.Email.NotFound.Code)
+                    .WithMessage(ApplicationErrors.Email.NotFound.Message)
+                .Must(email => !email!.IsVerified)
+                    .WithErrorCode(ApplicationErrors.Email.AlreadyVerified.Code)
+                    .WithMessage(ApplicationErrors.Email.AlreadyVerified.Message);
         }
     }
 
-    internal sealed class DeleteMemberHandler : ICommandHandler<DeleteMemberCommand, IResult>
+    internal sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand, IResult>
     {
-        private readonly IRepository<AssociationMember> _repository;
-
-        public DeleteMemberHandler(IRepository<AssociationMember> repository)
+        public Task<IResult> Handle(VerifyEmailAddressCommand request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
-
-        public async Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
-        {
-            await _repository.DeleteAsync(request.Entity!, cancellationToken);
+            request.Entity!.Email!.Verify();
 
             return Results.Success();
         }
