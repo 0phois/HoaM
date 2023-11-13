@@ -37,7 +37,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Resendential address (within the community) of the <see cref="AssociationMember"/>
         /// </summary>
-        public Residence? Residence { get; protected set; }
+        public ResidentialPlot? Residence { get; protected set; }
 
         /// <summary>
         /// <see cref="Notification"/>s delivered to this <see cref="AssociationMember"/>
@@ -76,9 +76,9 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        public AssociationMember WithResidence(Residence residence)
+        public AssociationMember WithResidence(ResidentialPlot residence)
         {
-            if (residence is null) throw new DomainException(DomainErrors.Residence.NullOrEmpty);
+            if (residence is null) throw new DomainException(DomainErrors.CommunityPlot.NullOrEmpty);
 
             Residence = residence;
 

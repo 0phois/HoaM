@@ -17,7 +17,6 @@ namespace HoaM.Domain
             entityId.For("NotificationId");
             entityId.For("PhoneNumberId");
             entityId.For("TransactionId");
-            entityId.For("ResidenceId");
             entityId.For("CommitteeId");
             entityId.For("CommunityId");
             entityId.For("DocumentId");
@@ -28,6 +27,7 @@ namespace HoaM.Domain
             entityId.For("EventId");
             entityId.For("EmailId");
             entityId.For("NoteId");
+            entityId.For("PlotId");
 
             var name = builder.OfString().NotEmpty().MaxLength(50).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 
@@ -36,6 +36,7 @@ namespace HoaM.Domain
             name.For("CommunityName");
             name.For("CommitteeName");
             name.For("StreetName");
+            name.For("PlotTitle");
             name.For("FirstName");
             name.For("LastName");
             name.For("FileName");
