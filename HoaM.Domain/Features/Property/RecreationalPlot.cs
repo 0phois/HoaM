@@ -33,13 +33,13 @@ namespace HoaM.Domain.Features
         public IReadOnlyCollection<Text> Rules => _rules.AsReadOnly();
         private readonly List<Text> _rules = new();
 
-        public static RecreationalPlot Create(Lot lot, DevelopmentStatus status)
+        public static RecreationalPlot Create(DevelopmentStatus status, params Lot[] lots)
         {
-            if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
+            if (lots is null || lots.Length == 0) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
 
             if (!Enum.IsDefined(typeof(DevelopmentStatus), status)) throw new DomainException(DomainErrors.CommunityPlot.StatusNotDefined);
 
-            return new() { Lot = lot, Status = status };
+            return new RecreationalPlot() { Status = status }.WithLots<RecreationalPlot>(lots);
         }
 
         public RecreationalPlot WithTitle(PlotTitle title)

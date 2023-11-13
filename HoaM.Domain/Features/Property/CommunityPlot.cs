@@ -1,6 +1,7 @@
 ﻿using HoaM.Domain.Common;
 using HoaM.Domain.Exceptions;
 using MassTransit;
+using static HoaM.Domain.Exceptions.DomainErrors;
 
 namespace HoaM.Domain.Features
 {
@@ -14,7 +15,8 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Lot# for the <see cref="CommunityPlot"/>
         /// </summary>
-        public Lot Lot { get; protected set; } = null!;
+        public IReadOnlyCollection<Lot> Lots => _lots.AsReadOnly();
+        private readonly List<Lot> _lots = new();
 
         /// <summary>
         /// Street number for the <see cref="CommunityPlot"/>
@@ -40,7 +42,25 @@ namespace HoaM.Domain.Features
         public DateTimeOffset? DeletionDate { get; set; }
 
         private protected CommunityPlot() { }
+        
+        public T AddLot<T>(Lot lot) where T : CommunityPlot
+        {
+            if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
 
+            _lots.Add(lot);
+
+            return (T)this;
+        }
+
+        public T WithLots<T>(params Lot[] lots) where T : CommunityPlot
+        {
+            if (lots is null || lots.Length == 0) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
+
+            _lots.Clear();
+            _lots.AddRange(lots);
+            
+            return (T)this;
+        }
         public CommunityPlot WithAddress(StreetNumber houseNumber, StreetName streetName)
         {
             if (houseNumber == default) throw new DomainException(DomainErrors.CommunityPlot.StreetNumberNullOrEmpty);

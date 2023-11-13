@@ -14,13 +14,13 @@ namespace HoaM.Domain.Features
 
         private ResidentialPlot() { }
 
-        public static ResidentialPlot Create(Lot lot, DevelopmentStatus status)
+        public static ResidentialPlot Create(DevelopmentStatus status, params Lot[] lots)
         {
-            if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
+            if (lots is null || lots.Length == 0) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
 
             if (!Enum.IsDefined(typeof(DevelopmentStatus), status)) throw new DomainException(DomainErrors.CommunityPlot.StatusNotDefined);
 
-            return new() { Lot = lot, Status = status };
+            return new ResidentialPlot() { Status = status }.WithLots<ResidentialPlot>(lots);
         }
     }
 }
