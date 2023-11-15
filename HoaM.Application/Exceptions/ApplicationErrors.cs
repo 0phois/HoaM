@@ -32,6 +32,19 @@ namespace HoaM.Application.Exceptions
             public static Error AlreadyVerified => new($"{nameof(Email)}.{nameof(AlreadyVerified)}", "The specified email has already been verified.");
         }
 
+        public static class Lot
+        {
+            public static Error NotFound => new($"{nameof(Lot)}.{nameof(NotFound)}", "Lot was not found.");
+            public static Error DuplicateNumber => new($"{nameof(Lot)}.{nameof(DuplicateNumber)}", "A lot with this number has already been created");
+            public static Error AlreadyRegistered => new($"{nameof(Lot)}.{nameof(AlreadyRegistered)}", "Lot has already been registered.");
+        }
+
+        public static class Parcel
+        {
+            public static Error NotFound => new($"{nameof(Parcel)}.{nameof(NotFound)}", "Parcel was not found.");
+            public static Error DuplicateAddress => new($"{nameof(Parcel)}.{nameof(DuplicateAddress)}", "A parcel with a matching street name and number already exists.");
+        }
+
         public static class PhoneNumber
         {
             public static Error NotFound => new($"{nameof(PhoneNumber)}.{nameof(NotFound)}", "Member phone number was not found.");

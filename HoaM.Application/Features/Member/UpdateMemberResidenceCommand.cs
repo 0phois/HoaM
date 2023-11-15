@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateMemberResidenceCommand(AssociationMemberId MemberId, ResidentialPlot Residence) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record UpdateMemberResidenceCommand(AssociationMemberId MemberId, Residence Residence) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }

@@ -23,11 +23,12 @@ namespace HoaM.Domain
             entityId.For("ArticleId");
             entityId.For("MeetingId");
             entityId.For("MinutesId");
+            entityId.For("ParcelId");
             entityId.For("AuditId");
             entityId.For("EventId");
             entityId.For("EmailId");
             entityId.For("NoteId");
-            entityId.For("PlotId");
+            entityId.For("LotId");
 
             var name = builder.OfString().NotEmpty().MaxLength(50).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 
@@ -35,8 +36,8 @@ namespace HoaM.Domain
             name.For("TransactionTitle");
             name.For("CommunityName");
             name.For("CommitteeName");
+            name.For("ParcelTitle");
             name.For("StreetName");
-            name.For("PlotTitle");
             name.For("FirstName");
             name.For("LastName");
             name.For("FileName");
@@ -52,7 +53,7 @@ namespace HoaM.Domain
             builder.OfString().For("EmailAddress").Matches(new Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
             builder.OfString().For("MeetingDescription").NotEmpty().MaxLength(250);
             builder.OfString().For("MissionStatement").NotEmpty().MaxLength(300);
-            builder.OfString().For("Lot").NotEmpty().MaxLength(10);
+            builder.OfString().For("LotNumber").NotEmpty().MaxLength(10);
             builder.OfString().For("Text").NotEmpty();
 
             builder.OfUShort().For("CountryCallingCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(1);

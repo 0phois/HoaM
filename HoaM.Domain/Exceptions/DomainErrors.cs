@@ -44,11 +44,11 @@
             public static Error NameNullOrEmpty => new($"{nameof(Community)}.{nameof(NameNullOrEmpty)}","Name is required");
         }
 
-        public static class CommunityPlot
+        public static class Parcel
         {
-            public static Error NullOrEmpty => new($"{nameof(CommunityPlot)}.{nameof(NullOrEmpty)}", "Residence is required.");
-            public static Error StatusNotDefined => new($"{nameof(CommunityPlot)}.{nameof(StatusNotDefined)}", "Development status is invalid.");
-            public static Error StreetNumberNullOrEmpty => new($"{nameof(CommunityPlot)}.{nameof(StreetNumberNullOrEmpty)}", "Street number is required.");
+            public static Error NullOrEmpty => new($"{nameof(Parcel)}.{nameof(NullOrEmpty)}", "Residence is required.");
+            public static Error StatusNotDefined => new($"{nameof(Parcel)}.{nameof(StatusNotDefined)}", "Development status is invalid.");
+            public static Error StreetNumberNullOrEmpty => new($"{nameof(Parcel)}.{nameof(StreetNumberNullOrEmpty)}", "Street number is required.");
             public static Error StreetNameNullOrEmpty => new($"{nameof(PhoneNumber)}.{nameof(StreetNameNullOrEmpty)}", "Street name is required.");
         }
 
@@ -75,6 +75,7 @@
         public static class Lot
         {
             public static Error NullOrEmpty => new($"{nameof(Lot)}.{nameof(NullOrEmpty)}", "Lot cannot be null.");
+            public static Error NumberNullOrEmpty => new($"{nameof(Lot)}.{nameof(NumberNullOrEmpty)}", "Lot number cannot be null.");
         }
 
         public static class Meeting
@@ -140,20 +141,20 @@
             public static Error DuplicateType => new($"{nameof(PhoneNumber)}.{nameof(DuplicateType)}", "The specified phone number type is already registered.");
         }
 
-        public static class RecreationalPlot
+        public static class GreenSpace
         {
-            public static Error NullOrEmpty => new($"{nameof(RecreationalPlot)}.{nameof(NullOrEmpty)}", "Recreational plot is required.");
-            public static Error RuleNullOrEmpty => new($"{nameof(RecreationalPlot)}.{nameof(RuleNullOrEmpty)}", "A rule is required.");
-            public static Error AmenityNullOrEmpty => new($"{nameof(RecreationalPlot)}.{nameof(AmenityNullOrEmpty)}", "An amenity is required.");
-            public static Error TitleNullOrEmpty => new($"{nameof(RecreationalPlot)}.{nameof(TitleNullOrEmpty)}", "Title is required.");
-            public static Error HoursNullOrEmpty => new($"{nameof(RecreationalPlot)}.{nameof(HoursNullOrEmpty)}", "Opening hours required.");
-            public static Error DescriptionNullOrEmpty => new($"{nameof(RecreationalPlot)}.{nameof(DescriptionNullOrEmpty)}", "Description is required.");
+            public static Error NullOrEmpty => new($"{nameof(GreenSpace)}.{nameof(NullOrEmpty)}", "Green space is required.");
+            public static Error RuleNullOrEmpty => new($"{nameof(GreenSpace)}.{nameof(RuleNullOrEmpty)}", "A rule is required.");
+            public static Error AmenityNullOrEmpty => new($"{nameof(GreenSpace)}.{nameof(AmenityNullOrEmpty)}", "An amenity is required.");
+            public static Error TitleNullOrEmpty => new($"{nameof(GreenSpace)}.{nameof(TitleNullOrEmpty)}", "Title is required.");
+            public static Error HoursNullOrEmpty => new($"{nameof(GreenSpace)}.{nameof(HoursNullOrEmpty)}", "Opening hours required.");
+            public static Error DescriptionNullOrEmpty => new($"{nameof(GreenSpace)}.{nameof(DescriptionNullOrEmpty)}", "Description is required.");
 
         }
 
-        public static class ResendentialPlot
+        public static class Residence
         {
-            public static Error NullOrEmpty => new($"{nameof(ResendentialPlot)}.{nameof(NullOrEmpty)}", "Residential plot is required.");
+            public static Error NullOrEmpty => new($"{nameof(Residence)}.{nameof(NullOrEmpty)}", "Residence is required.");
         }
 
         public static class Schedule

@@ -39,7 +39,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Collection of properties within the <see cref="Community"/>
         /// </summary>
-        public ICollection<ResidentialPlot> Residences { get; private set; } = new HashSet<ResidentialPlot>();
+        public ICollection<Residence> Residences { get; private set; } = new HashSet<Residence>();
 
         /// <summary>
         /// Collection of <see cref="Article"/>s posted in the <seealso cref="Community"/>
