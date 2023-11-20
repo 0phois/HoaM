@@ -70,6 +70,17 @@ namespace HoaM.Domain.Features
             return new() { Name = name, EstablishedDate = established };
         }
 
+        public Committee WithEstablishedDate(DateOnly establishedDate)
+        {
+            CheckForActiveCommittee();
+
+            if (establishedDate == default) throw new DomainException(DomainErrors.Committee.DateNullOrEmpty);
+
+            EstablishedDate = establishedDate;
+
+            return this;
+        }
+
         public Committee WithMissionStatement(MissionStatement statement)
         {
             CheckForActiveCommittee();

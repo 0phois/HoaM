@@ -2,6 +2,7 @@
 using HoaM.Domain.Exceptions;
 using MassTransit;
 using System.IO.Compression;
+using System.Text;
 
 namespace HoaM.Domain.Features
 {
@@ -20,7 +21,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Compressed <see cref="Document"/> data
         /// </summary>
-        public byte[] Content { get; private set; } = Array.Empty<byte>();
+        public byte[] Content { get; private set; } = [];
 
         private Document() { }
 
@@ -30,12 +31,9 @@ namespace HoaM.Domain.Features
 
             if (data is null || data.Length == 0) throw new DomainException(DomainErrors.Document.DataNullOrEmpty);
 
-            var memoryStream = new MemoryStream();
-
-            using var gzipStream = new GZipStream(memoryStream, CompressionMode.Compress);
-            gzipStream.Write(data, 0, data.Length);
-
-            return new() { Title = title, Content = memoryStream.ToArray() };
+            var compressedData = Compress(data);
+            
+            return new() { Title = title, Content = compressedData };
         }
 
         public void EditTitle(FileName title)
@@ -47,13 +45,27 @@ namespace HoaM.Domain.Features
             Title = title;
         }
 
-        public byte[] ExtractUncompressedData()
+        private static byte[] Compress(byte[] data)
         {
-            using var gzipStream = new GZipStream(new MemoryStream(Content), CompressionMode.Decompress);
-            using var outputStream = new MemoryStream();
-            gzipStream.CopyTo(outputStream);
+            using var compressedStream = new MemoryStream();
+            using (var gzipStream = new GZipStream(compressedStream, CompressionLevel.Optimal, false))
+            {
+                gzipStream.Write(data);
+            }
 
-            return outputStream.ToArray();
+            return compressedStream.ToArray();
+        }
+
+        public async Task<byte[]> ExtractUncompressedDataAsync()
+        {
+            await using var uncompressedStream = new MemoryStream();
+            await using (var compressedStream = new MemoryStream(Content))
+            {
+                await using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
+                await gzipStream.CopyToAsync(uncompressedStream);
+            }
+
+            return uncompressedStream.ToArray();
         }
     }
 }

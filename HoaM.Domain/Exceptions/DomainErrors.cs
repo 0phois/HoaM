@@ -28,6 +28,7 @@
         public static class Committee
         {
             public static Error NameNullOrEmpty => new($"{nameof(Committee)}.{nameof(NameNullOrEmpty)}", "Committee name is required.");
+            public static Error DateNullOrEmpty => new($"{nameof(Committee)}.{nameof(DateNullOrEmpty)}", "Date is required.");
             public static Error MissionNullOrEmpty => new($"{nameof(Committee)}.{nameof(MissionNullOrEmpty)}", "Mission statement is required.");
             public static Error DetailsNullOrEmpty => new($"{nameof(Committee)}.{nameof(DetailsNullOrEmpty)}", "Additional details cannot be empty.");
             public static Error AlreadyDeleted => new($"{nameof(Committee)}.{nameof(AlreadyDeleted)}", "This committee no longer exists.");

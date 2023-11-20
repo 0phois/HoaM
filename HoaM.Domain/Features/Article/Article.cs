@@ -76,7 +76,7 @@ namespace HoaM.Domain.Features
             Body = body;
         }
 
-        internal void Publish(DateTimeOffset datePublished)
+        internal void Publish(DateTimeOffset datePublished) //TODO - publish with past date should fail (business logic)
         {
             if (PublishedDate != null) throw new DomainException(DomainErrors.Article.AlreadyPublished);
 
