@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Parcel"/>
         /// </summary>
-        public override ParcelId Id => ParcelId.From(NewId.Next().ToGuid());
+        public override ParcelId Id { get; protected set; } = ParcelId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// All <see cref="Lot"/>s that make up the <see cref="Parcel"/>

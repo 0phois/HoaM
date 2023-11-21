@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Note"/>
         /// </summary>
-        public override NoteId Id => NoteId.From(NewId.Next().ToGuid());
+        public override NoteId Id { get; protected set; } = NoteId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Contents of the <see cref="Note"/>

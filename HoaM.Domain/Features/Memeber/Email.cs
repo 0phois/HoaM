@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Email"/>
         /// </summary>
-        public override EmailId Id => EmailId.From(NewId.Next().ToGuid());
+        public override EmailId Id { get; protected set; } = EmailId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Whether or not the email address has been verified

@@ -8,7 +8,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="AuditLog"/> entry
         /// </summary>
-        public override AuditId Id => AuditId.From(NewId.Next().ToGuid());
+        public override AuditId Id { get; protected set; } = AuditId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Name of the database table being modified

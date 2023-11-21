@@ -12,7 +12,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Committee"/>
         /// </summary>
-        public override CommitteeId Id => CommitteeId.From(NewId.Next().ToGuid());
+        public override CommitteeId Id { get; protected set; } = CommitteeId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Name of the <see cref="Committee"/> (example: Executive)

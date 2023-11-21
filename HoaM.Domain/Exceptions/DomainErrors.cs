@@ -4,6 +4,13 @@
 
     public static class DomainErrors
     {
+        public static class ActionItem
+        {
+            public static Error NullOrEmpty => new($"{nameof(ActionItem)}.{nameof(NullOrEmpty)}", "Action items contains no elements.");
+            public static Error ItemNullOrEmpty => new($"{nameof(ActionItem)}.{nameof(ItemNullOrEmpty)}", "Action item cannot be null.");
+            public static Error NotFound => new($"{nameof(ActionItem)}.{nameof(NotFound)}", "Action item does not exist.");
+        }
+
         public static class Article
         {
             public static Error TitleNullOrEmpty => new($"{nameof(Article)}.{nameof(TitleNullOrEmpty)}", "Title is required.");
@@ -71,6 +78,7 @@
             public static Error OccuranceNullOrEmpty => new($"{nameof(Event)}.{nameof(OccuranceNullOrEmpty)}", "Event occurance is required.");
             public static Error StartNullOrEmpty => new($"{nameof(Event)}.{nameof(StartNullOrEmpty)}", "Event start is required.");
             public static Error StopNullOrEmpty => new($"{nameof(Event)}.{nameof(StopNullOrEmpty)}", "Event stop is required.");
+            public static Error InvalidLimit => new($"{nameof(Event)}.{nameof(InvalidLimit)}", "Limit must be greater than zero.");
         }
 
         public static class Lot
@@ -88,7 +96,7 @@
             public static Error TitleNullOrEmpty => new($"{nameof(Meeting)}.{nameof(TitleNullOrEmpty)}", "Meeting title is required.");
             public static Error DescriptionNullOrEmpty => new($"{nameof(Meeting)}.{nameof(DescriptionNullOrEmpty)}", "Meeting description is required.");
             public static Error AgendaNullOrEmpty => new($"{nameof(Meeting)}.{nameof(AgendaNullOrEmpty)}", "Agenda is required.");
-
+            public static Error MinutesMismatch => new($"{nameof(Meeting)}.{nameof(MinutesMismatch)}", "Minutes are associated with another meeting.");
             public static Error MinutesAlreadyAttached
                 => new($"{nameof(Meeting)}.{nameof(MinutesAlreadyAttached)}", "Details can not longer be modified. Meeting minutes have already been attached.");
         }
@@ -101,10 +109,13 @@
         public static class MeetingMinutes
         {
             public static Error NullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(NullOrEmpty)}", "Meeting minutes cannot be null.");
+            public static Error NotFound => new($"{nameof(MeetingMinutes)}.{nameof(NotFound)}", "Meeting minutes not found.");
             public static Error NoteNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(NoteNullOrEmpty)}", "Note is required.");
+            public static Error AgendaNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(AgendaNullOrEmpty)}", "Agenda is required.");
             public static Error DateNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(DateNullOrEmpty)}", "Published date is required.");
             public static Error AttendeesNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(AttendeesNullOrEmpty)}", "Meeting attendees required.");
             public static Error AlreadyPublished => new($"{nameof(MeetingMinutes)}.{nameof(AlreadyPublished)}", "The meeting minutes have already been published.");
+            public static Error InvalidAgendaItem => new($"{nameof(MeetingMinutes)}.{nameof(InvalidAgendaItem)}", "No matching agenda item found for agenda note.");
         }
 
         public static class Note

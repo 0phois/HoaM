@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Community"/>
         /// </summary>
-        public override CommunityId Id => CommunityId.From(NewId.Next().ToGuid());
+        public override CommunityId Id { get; protected set; } = CommunityId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Name of the community the Home Owner's Association manages

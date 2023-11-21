@@ -12,7 +12,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="AssociationMember"/>
         /// </summary>
-        public override AssociationMemberId Id => AssociationMemberId.From(NewId.Next().ToGuid());
+        public override AssociationMemberId Id { get; protected set; } = AssociationMemberId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// First name of the <see cref="AssociationMember"/> 

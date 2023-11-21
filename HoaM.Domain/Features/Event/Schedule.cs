@@ -1,4 +1,5 @@
 ﻿using HoaM.Domain.Exceptions;
+using System.Collections.Generic;
 
 namespace HoaM.Domain.Features
 {
@@ -30,20 +31,32 @@ namespace HoaM.Domain.Features
 
         public static Schedule CreateAnnually(DateTimeOffset? until = null) => new() { Interval = TimeSpan.FromDays(365), EndsAt = until };
 
-        public IEnumerable<Occurance> GetOccurances(Occurance first, int limit)
+        public Occurrence? NextOccurrence(Occurrence current)
+        {
+            if (current is null) throw new DomainException(DomainErrors.Schedule.OccuranceNullOrEmpty);
+
+            var next = new Occurrence(current.Start + Interval, current.Stop + Interval);
+
+            if (EndsAt is not null && next.Start >= EndsAt) return null;
+
+            return next;
+        }
+
+        public IEnumerable<Occurrence> GetOccurrences(Occurrence first, int limit)
         {
             if (first is null) throw new DomainException(DomainErrors.Schedule.OccuranceNullOrEmpty);
 
-            var occurance = first;
+            var occurrence = first;
             var count = 0;
 
-            while (count < limit || occurance.Start <= EndsAt)
+            do
             {
                 count++;
-                occurance = new Occurance(occurance.Start + Interval, occurance.Stop + Interval);
+                yield return occurrence;
 
-                yield return occurance;
-            }
+                occurrence = new Occurrence(occurrence.Start + Interval, occurrence.Stop + Interval);
+
+            } while (count < limit && (EndsAt is null || occurrence.Start <= EndsAt));
         }
     }
 }

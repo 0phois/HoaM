@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Lot"/>
         /// </summary>
-        public override LotId Id => LotId.From(NewId.Next().ToGuid());
+        public override LotId Id { get; protected set; } = LotId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Designated <see cref="Lot"/> number as per cadastral

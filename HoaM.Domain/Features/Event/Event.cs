@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Event"/>
         /// </summary>
-        public override EventId Id => EventId.From(NewId.Next().ToGuid());
+        public override EventId Id { get; protected set; } = EventId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Represents the basis of the event
@@ -24,7 +24,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Start time and end time of the <see cref="Event"/>
         /// </summary>
-        public Occurance Occurance { get; init; } = null!;
+        public Occurrence Occurrence { get; init; } = null!;
 
         /// <summary>
         /// Interval at which the <see cref="Event"/> occurs
@@ -33,7 +33,7 @@ namespace HoaM.Domain.Features
 
         internal Event() { }
 
-        protected Event(T activity, EventTitle title, Occurance occurance, Schedule? schedule)
+        protected Event(T activity, EventTitle title, Occurrence occurance, Schedule? schedule)
         {
             if (activity is null) throw new DomainException(DomainErrors.Event.ActivityNullOrEmpty);
 
@@ -43,7 +43,7 @@ namespace HoaM.Domain.Features
 
             Activity = activity;
             Title = title;
-            Occurance = occurance;
+            Occurrence = occurance;
             Schedule = schedule;
         }
 
@@ -53,7 +53,7 @@ namespace HoaM.Domain.Features
 
             if (stop == default) throw new DomainException(DomainErrors.Event.StopNullOrEmpty);
 
-            var occurance = new Occurance(start, stop);
+            var occurance = new Occurrence(start, stop);
 
             return new(activity, title, occurance, schedule);
         }
@@ -69,16 +69,24 @@ namespace HoaM.Domain.Features
 
         public IEnumerable<Event<T>> GetInstances(int limit)
         {
+            if (limit <= 0) throw new DomainException(DomainErrors.Event.InvalidLimit);
+
             yield return this;
 
             if (Schedule is null) yield break;
 
-            foreach (var occurance in Schedule.GetOccurances(Occurance, limit))
+            var nextOccurrence = Schedule.NextOccurrence(Occurrence);
+
+            if (nextOccurrence is null) yield break;
+
+            var occurrences = Schedule.GetOccurrences(nextOccurrence, limit - 1).ToList();
+
+            foreach (var occurrence in occurrences)
             {
-                yield return Event<T>.Create(Activity, Title, occurance.Start, occurance.Stop);
+                yield return Event<T>.Create(Activity, Title, occurrence.Start, occurrence.Stop);
             }
         }
     }
 
-    public record Occurance(DateTimeOffset Start, DateTimeOffset Stop);
+    public record Occurrence(DateTimeOffset Start, DateTimeOffset Stop);
 }

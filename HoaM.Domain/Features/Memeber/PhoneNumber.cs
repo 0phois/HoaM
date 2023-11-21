@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="PhoneNumber"/>
         /// </summary>
-        public override PhoneNumberId Id => PhoneNumberId.From(NewId.Next().ToGuid());
+        public override PhoneNumberId Id { get; protected set; } = PhoneNumberId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// International subscriber dialing code (telephone country code)

@@ -11,7 +11,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Document"/>
         /// </summary>
-        public override DocumentId Id => DocumentId.From(NewId.Next().ToGuid());
+        public override DocumentId Id { get; protected set; } = DocumentId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Name of the <see cref="Document"/>

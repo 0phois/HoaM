@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Notification"/>
         /// </summary>
-        public override NotificationId Id => NotificationId.From(NewId.Next().ToGuid());
+        public override NotificationId Id { get; protected set; } = NotificationId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// The <see cref="NotificationTemplate"/> that generated this <see cref="Notification"/>

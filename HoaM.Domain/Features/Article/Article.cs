@@ -9,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="Article"/>
         /// </summary>
-        public override ArticleId Id => ArticleId.From(NewId.Next().ToGuid());
+        public override ArticleId Id { get; protected set; } = ArticleId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Indicates whether the <see cref="Article"/> is pinned
