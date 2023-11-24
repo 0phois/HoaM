@@ -43,7 +43,7 @@ namespace HoaM.Application.Features
     {
         public Task<IResult> Handle(UpdateParcelAddressCommand request, CancellationToken cancellationToken)
         {
-            request.Entity!.WithAddress(request.StreetNumber, request.StreetName);
+            request.Entity!.WithAddress<Parcel>(request.StreetNumber, request.StreetName);
 
             return Results.Success();
         }

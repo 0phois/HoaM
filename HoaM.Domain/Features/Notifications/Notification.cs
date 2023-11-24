@@ -62,6 +62,8 @@ namespace HoaM.Domain.Features
         {
             if (dateRead == default) throw new DomainException(DomainErrors.Notification.DateNullOrEmpty);
 
+            if (ReceivedDate == default) throw new DomainException(DomainErrors.Notification.NotReceived);
+
             ReadDate = dateRead;
         }
 

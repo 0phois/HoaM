@@ -20,7 +20,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Street number for the <see cref="Parcel"/>
         /// </summary>
-        public StreetNumber StreetNumber { get; private protected set; }
+        public StreetNumber? StreetNumber { get; private protected set; }
 
         /// <summary>
         /// Street name for the <see cref="Parcel"/>
@@ -61,16 +61,16 @@ namespace HoaM.Domain.Features
             return (T)this;
         }
 
-        public Parcel WithAddress(StreetNumber houseNumber, StreetName streetName)
+        public T WithAddress<T>(StreetNumber houseNumber, StreetName streetName) where T : Parcel
         {
-            if (houseNumber == default) throw new DomainException(DomainErrors.Parcel.StreetNumberNullOrEmpty);
+            if (houseNumber is null) throw new DomainException(DomainErrors.Parcel.StreetNumberNullOrEmpty);
 
             if (streetName is null) throw new DomainException(DomainErrors.Parcel.StreetNameNullOrEmpty);
 
             StreetNumber = houseNumber;
             StreetName = streetName;
 
-            return this;
+            return (T)this;
         }
 
         public void EditStreetName(StreetName streetName)

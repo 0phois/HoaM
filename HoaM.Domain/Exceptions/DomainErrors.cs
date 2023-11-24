@@ -127,6 +127,7 @@
         {
             public static Error NullOrEmpty => new($"{nameof(Notification)}.{nameof(NullOrEmpty)}", "Notification cannot be null.");
             public static Error DateNullOrEmpty => new($"{nameof(Notification)}.{nameof(DateNullOrEmpty)}", "Date is required.");
+            public static Error NotReceived => new($"{nameof(Notification)}.{nameof(NotReceived)}", "Notification has not been received.");
             public static Error AlreadyPublished => new($"{nameof(Notification)}.{nameof(AlreadyPublished)}", "Notification has already been published.");
         }
 
@@ -148,6 +149,8 @@
         {
             public static Error NullOrEmpty => new($"{nameof(PhoneNumber)}.{nameof(NullOrEmpty)}", "Phone number is required.");
             public static Error PrefixNullOrEmpty => new($"{nameof(PhoneNumber)}.{nameof(PrefixNullOrEmpty)}", "Phone number prefix is required.");
+            public static Error CountryCodeNullOrEmpty => new($"{nameof(PhoneNumber)}.{nameof(CountryCodeNullOrEmpty)}", "Phone number country code is required.");
+            public static Error AreaCodeNullOrEmpty => new($"{nameof(PhoneNumber)}.{nameof(AreaCodeNullOrEmpty)}", "Phone number area code is required.");
             public static Error LastDigitsNullOrEmpty => new($"{nameof(PhoneNumber)}.{nameof(LastDigitsNullOrEmpty)}", "Phone number last four digits are required.");
             public static Error TypeNotDefined => new($"{nameof(PhoneNumber)}.{nameof(TypeNotDefined)}", "Phone number type is invalid.");
             public static Error DuplicateType => new($"{nameof(PhoneNumber)}.{nameof(DuplicateType)}", "The specified phone number type is already registered.");

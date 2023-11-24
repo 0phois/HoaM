@@ -274,13 +274,13 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        public void CompleteActionItem(NoteId descriptionId)
+        public void CompleteActionItem(ActionItem item)
         {
             if (_actionItems.Count == 0) throw new DomainException(DomainErrors.ActionItem.NullOrEmpty);
 
-            if (descriptionId == default) throw new DomainException(DomainErrors.MeetingMinutes.NoteNullOrEmpty);
+            if (item is null) throw new DomainException(DomainErrors.ActionItem.ItemNullOrEmpty);
 
-            var actionItem = _actionItems.Find(x => x.Description.Id.Equals(descriptionId)) ?? throw new DomainException(DomainErrors.ActionItem.NotFound);
+            var actionItem = _actionItems.Find(x => x.Equals(item)) ?? throw new DomainException(DomainErrors.ActionItem.NotFound);
 
             _actionItems.Remove(actionItem);
             _actionItems.Add(actionItem with { IsCompleted = true });

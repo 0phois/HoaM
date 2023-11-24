@@ -133,8 +133,3 @@ namespace HoaM.Domain.Features
         public void RemoveResidence() => Residence = null;
     }
 }
-
-//TODO - User Manager
-/*
- Create a service that facilitates editing email, phone numbers etc
- */

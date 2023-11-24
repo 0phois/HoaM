@@ -56,11 +56,11 @@ namespace HoaM.Domain
             builder.OfString().For("LotNumber").NotEmpty().MaxLength(10);
             builder.OfString().For("Text").NotEmpty();
 
-            builder.OfUShort().For("CountryCallingCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(1);
-            builder.OfUShort().For("AreaCode").NotEmpty().LessThanOrEqualTo(999).GreaterThanOrEqualTo(100);
-            builder.OfUShort().For("PhonePrefix").NotEmpty().LessThan(800).GreaterThanOrEqualTo(200);
-            builder.OfUShort().For("LineNumber").NotEmpty().LessThanOrEqualTo(9999).GreaterThan(0);
-            builder.OfUShort().For("StreetNumber").NotEmpty();
+            builder.OfString().For("CountryCallingCode").NotEmpty().Length(1, 3);
+            builder.OfString().For("AreaCode").NotEmpty().Length(3);
+            builder.OfString().For("PhonePrefix").NotEmpty().Length(3);
+            builder.OfString().For("LineNumber").NotEmpty().Length(4);
+            builder.OfString().For("StreetNumber").NotEmpty();
 
 
         }

@@ -24,14 +24,10 @@
         public void Create_CommitteeWithNullName_ThrowsDomainException()
         {
             // Arrange
-#pragma warning disable CS8600
             CommitteeName name = null;
-#pragma warning restore CS8600
 
             // Act & Assert
-#pragma warning disable CS8604
             Assert.Throws<DomainException>(() => Committee.Create(name));
-#pragma warning restore CS8604
         }
 
         [Fact]

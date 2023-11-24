@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HoaM.Domain.UnitTests
+﻿namespace HoaM.Domain.UnitTests
 {
     public class MeetingMinutesTests
     {
@@ -104,6 +102,58 @@ namespace HoaM.Domain.UnitTests
             Assert.Equal(exception.Message, DomainErrors.AssociationMember.NullOrEmpty.Message);
         }
 
+        [Fact]
+        public void CompleteActionItem_NoActionItems_ThrowsDomainException()
+        {
+            // Arrange
+            var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
+            var item = CreateActionItem();
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(item));
+        }
+
+        [Fact]
+        public void CompleteActionItem_NullItem_ThrowsDomainException()
+        {
+            // Arrange
+            var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
+
+            meetingMinutes.AddActionItem(CreateActionItem());
+
+            //Act & Assert
+            Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(null));
+        }
+
+        [Fact]
+        public void CompleteActionItem_ActionItemNotFound_ThrowsDomainException()
+        {
+            // Arrange
+            var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
+
+            meetingMinutes.AddActionItem(CreateActionItem());
+
+            //Act & Assert
+            Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(CreateActionItem()));
+        }
+
+        [Fact]
+        public void CompleteActionItem_CompletesActionItem()
+        {
+            // Arrange
+            var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
+            var actionItem = CreateActionItem();
+
+            meetingMinutes.AddActionItem(actionItem);
+
+            // Act
+            meetingMinutes.CompleteActionItem(actionItem);
+
+            // Assert
+            Assert.Single(meetingMinutes.ActionItems);
+            Assert.True(meetingMinutes.ActionItems.First().IsCompleted);
+        }
+
         private static Meeting CreateMeeting()
         {
             var title = new MeetingTitle("Meeting Title");
@@ -111,6 +161,14 @@ namespace HoaM.Domain.UnitTests
             var committee = Committee.Create(CommitteeName.From("Executive Committee"));
 
             return Meeting.Create(title, scheduledDate, committee);
+        }
+
+        private static ActionItem CreateActionItem()
+        {
+            var description = Note.Create(Text.From("This needs to be done"));
+            var assignee = AssociationMember.Create(FirstName.From("James"), LastName.From("Bond"));
+
+            return new ActionItem(description, assignee);
         }
     }
 }

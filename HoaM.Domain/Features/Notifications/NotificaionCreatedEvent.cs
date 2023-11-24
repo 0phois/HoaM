@@ -2,10 +2,8 @@
 
 namespace HoaM.Domain.Features
 {
-    public sealed class NotificaionCreatedEvent : DomainEvent
+    public sealed class NotificaionCreatedEvent(Notification notification) : DomainEvent
     {
-        public Notification Notification { get; }
-
-        public NotificaionCreatedEvent(Notification notification) => Notification = notification;
+        public Notification Notification => notification;
     }
 }

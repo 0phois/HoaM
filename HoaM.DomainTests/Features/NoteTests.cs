@@ -21,14 +21,10 @@
         public void Create_NoteWithNullContent_ShouldThrowException()
         {
             // Arrange
-#pragma warning disable CS8600 
             Text content = null;
-#pragma warning restore CS8600 
 
             // Act & Assert
-#pragma warning disable CS8604 
             Assert.Throws<DomainException>(() => Note.Create(content));
-#pragma warning restore CS8604 
         }
 
         [Fact]
@@ -50,14 +46,10 @@
         {
             // Arrange
             var note = Note.Create(new Text("This is a note"));
-#pragma warning disable CS8600
             Text newContent = null;
-#pragma warning restore CS8600
 
             // Act & Assert
-#pragma warning disable CS8604
             Assert.Throws<DomainException>(() => note.EditContent(newContent));
-#pragma warning restore CS8604
         }
     }
 }
