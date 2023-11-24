@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteCommitteeCommand(CommitteeId CommitteeId) : ICommand<IResult>, ICommandBinder<Committee, CommitteeId>
+    public sealed record DeleteCommitteeCommand(CommitteeId CommitteeId) : ICommand, ICommandBinder<Committee, CommitteeId>
     {
         public Committee? Entity { get; set; }
     }
@@ -31,7 +31,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteCommitteeHandler : ICommandHandler<DeleteCommitteeCommand, IResult>
+    internal sealed class DeleteCommitteeHandler : ICommandHandler<DeleteCommitteeCommand>
     {
         private readonly IRepository<Committee> _repository;
 

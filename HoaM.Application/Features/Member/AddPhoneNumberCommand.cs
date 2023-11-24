@@ -8,7 +8,7 @@ using System.Data;
 
 namespace HoaM.Application.Features
 {
-    public sealed record AddPhoneNumberCommand(AssociationMemberId MemberId, PhoneNumber PhoneNumber) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record AddPhoneNumberCommand(AssociationMemberId MemberId, PhoneNumber PhoneNumber) : ICommand, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
@@ -42,7 +42,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class AddPhoneNumberHandler : ICommandHandler<AddPhoneNumberCommand, IResult>
+    internal sealed class AddPhoneNumberHandler : ICommandHandler<AddPhoneNumberCommand>
     {
         public Task<IResult> Handle(AddPhoneNumberCommand request, CancellationToken cancellationToken)
         {

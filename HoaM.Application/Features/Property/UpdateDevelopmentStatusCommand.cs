@@ -6,7 +6,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateDevelopmentStatusCommand(ParcelId ParcelId, DevelopmentStatus Status) : ICommand<IResult>, ICommandBinder<Parcel, ParcelId>
+    public sealed record UpdateDevelopmentStatusCommand(ParcelId ParcelId, DevelopmentStatus Status) : ICommand, ICommandBinder<Parcel, ParcelId>
     {
         public Parcel? Entity { get; set; }
     }
@@ -25,7 +25,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateDevelopmentStatusHandler : ICommandHandler<UpdateDevelopmentStatusCommand, IResult>
+    internal sealed class UpdateDevelopmentStatusHandler : ICommandHandler<UpdateDevelopmentStatusCommand>
     {
         public Task<IResult> Handle(UpdateDevelopmentStatusCommand request, CancellationToken cancellationToken)
         {

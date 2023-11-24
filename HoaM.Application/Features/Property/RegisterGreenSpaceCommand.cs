@@ -6,7 +6,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record RegisterGreenSpaceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<IResult<GreenSpace>> { }
+    public sealed record RegisterGreenSpaceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<GreenSpace> { }
 
     public sealed class RegisterGreenSpaceValidator : AbstractValidator<RegisterGreenSpaceCommand> 
     {
@@ -28,18 +28,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class RegisterGreenSpaceHandler : ICommandHandler<RegisterGreenSpaceCommand, IResult<GreenSpace>> 
+    internal sealed class RegisterGreenSpaceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterGreenSpaceCommand, GreenSpace>
     {
-        private readonly IRepository<Parcel> _repository;
-
-        public RegisterGreenSpaceHandler(IRepository<Parcel> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {
-            var space = (GreenSpace) await _repository.AddAsync(GreenSpace.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
+            var space = (GreenSpace) await repository.AddAsync(GreenSpace.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
 
             return Results.Success(space);
         }

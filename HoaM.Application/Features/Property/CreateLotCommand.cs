@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record CreateLotCommand(LotNumber LotNumber) : ICommand<IResult<Lot>> { }
+    public sealed record CreateLotCommand(LotNumber LotNumber) : ICommand<Lot> { }
 
     public sealed class CreateLotValidator : AbstractValidator<CreateLotCommand>
     {
@@ -30,18 +30,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class CreateLotHandler : ICommandHandler<CreateLotCommand, IResult<Lot>>
+    internal sealed class CreateLotHandler(IRepository<Lot> repository) : ICommandHandler<CreateLotCommand, Lot>
     {
-        private readonly IRepository<Lot> _repository;
-
-        public CreateLotHandler(IRepository<Lot> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IResult<Lot>> Handle(CreateLotCommand request, CancellationToken cancellationToken)
         {
-            var lot = await _repository.AddAsync(Lot.Create(request.LotNumber), cancellationToken);
+            var lot = await repository.AddAsync(Lot.Create(request.LotNumber), cancellationToken);
 
             return Results.Success(lot);
         }

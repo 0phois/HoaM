@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateMissionStatementCommand(CommitteeId CommitteeId, MissionStatement Statement) : ICommand<IResult>, ICommandBinder<Committee, CommitteeId>
+    public sealed record UpdateMissionStatementCommand(CommitteeId CommitteeId, MissionStatement Statement) : ICommand, ICommandBinder<Committee, CommitteeId>
     {
         public Committee? Entity { get; set; }
     }
@@ -36,7 +36,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateMissionStatementHandler : ICommandHandler<UpdateMissionStatementCommand, IResult>
+    internal sealed class UpdateMissionStatementHandler : ICommandHandler<UpdateMissionStatementCommand>
     {
         public Task<IResult> Handle(UpdateMissionStatementCommand request, CancellationToken cancellationToken)
         {

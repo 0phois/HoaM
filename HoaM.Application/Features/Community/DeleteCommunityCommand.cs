@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand<IResult>, ICommandBinder<Community, CommunityId>
+    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand, ICommandBinder<Community, CommunityId>
     {
         public Community? Entity { get; set; }
     }
@@ -28,18 +28,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteCommunityHandler : ICommandHandler<DeleteCommunityCommand, IResult>
+    internal sealed class DeleteCommunityHandler(IRepository<Community> repository) : ICommandHandler<DeleteCommunityCommand>
     {
-        private readonly IRepository<Community> _repository;
-
-        public DeleteCommunityHandler(IRepository<Community> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IResult> Handle(DeleteCommunityCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(request.Entity!, cancellationToken);
+            await repository.DeleteAsync(request.Entity!, cancellationToken);
 
             return Results.Success();
         }

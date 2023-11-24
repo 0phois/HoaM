@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record VerifyEmailAddressCommand(AssociationMemberId MemberId) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record VerifyEmailAddressCommand(AssociationMemberId MemberId) : ICommand, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
@@ -39,7 +39,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand, IResult>
+    internal sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand>
     {
         public Task<IResult> Handle(VerifyEmailAddressCommand request, CancellationToken cancellationToken)
         {

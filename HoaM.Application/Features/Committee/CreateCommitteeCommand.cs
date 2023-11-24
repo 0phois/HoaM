@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record CreateCommitteeCommand(CommitteeName Name, DateOnly? DateEstablished = null) : ICommand<IResult<Committee>> { }
+    public sealed record CreateCommitteeCommand(CommitteeName Name, DateOnly? DateEstablished = null) : ICommand<Committee> { }
 
     public sealed class CreateCommitteeValidator : AbstractValidator<CreateCommitteeCommand>
     {
@@ -30,18 +30,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class CreateCommitteeCommandHandler : ICommandHandler<CreateCommitteeCommand, IResult<Committee>>
+    internal sealed class CreateCommitteeCommandHandler(IRepository<Committee> committeeRepository) : ICommandHandler<CreateCommitteeCommand, Committee>
     {
-        private readonly IRepository<Committee> _committeeRepository;
-
-        public CreateCommitteeCommandHandler(IRepository<Committee> committeeRepository)
-        {
-            _committeeRepository = committeeRepository;
-        }
-
         public async Task<IResult<Committee>> Handle(CreateCommitteeCommand request, CancellationToken cancellationToken)
         {
-            var committee = await _committeeRepository.AddAsync(Committee.Create(request.Name, request.DateEstablished), cancellationToken);
+            var committee = await committeeRepository.AddAsync(Committee.Create(request.Name, request.DateEstablished), cancellationToken);
 
             return Results.Success(committee);
         }

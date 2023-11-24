@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeletePhoneNumberCommand(AssociationMemberId MemberId, PhoneNumber PhoneNumber) : ICommand<IResult>, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record DeletePhoneNumberCommand(AssociationMemberId MemberId, PhoneNumber PhoneNumber) : ICommand, ICommandBinder<AssociationMember, AssociationMemberId>
     {
         public AssociationMember? Entity { get; set; }
     }
@@ -36,7 +36,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeletePhoneNumberHandler : ICommandHandler<DeletePhoneNumberCommand, IResult>
+    internal sealed class DeletePhoneNumberHandler : ICommandHandler<DeletePhoneNumberCommand>
     {
         public Task<IResult> Handle(DeletePhoneNumberCommand request, CancellationToken cancellationToken)
         {

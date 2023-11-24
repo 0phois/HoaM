@@ -6,7 +6,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record RegisterResidenceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<IResult<Residence>> { }
+    public sealed record RegisterResidenceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<Residence> { }
 
     public sealed class RegisterResidenceValidator : AbstractValidator<RegisterResidenceCommand> 
     {
@@ -28,18 +28,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class RegisterResidenceHandler : ICommandHandler<RegisterResidenceCommand, IResult<Residence>>
+    internal sealed class RegisterResidenceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterResidenceCommand, Residence>
     {
-        private readonly IRepository<Parcel> _repository;
-
-        public RegisterResidenceHandler(IRepository<Parcel> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IResult<Residence>> Handle(RegisterResidenceCommand request, CancellationToken cancellationToken)
         {
-            var space = (Residence)await _repository.AddAsync(Residence.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
+            var space = (Residence)await repository.AddAsync(Residence.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
 
             return Results.Success(space);
         }

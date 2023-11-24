@@ -1,10 +1,9 @@
-﻿using HoaM.Domain.Common;
-using MediatR;
-
-namespace HoaM.Application.Common
+﻿namespace HoaM.Application.Common
 {
-    public interface ICommand<out TResponse> : IRequest<TResponse> 
-    {
-        
-    }
+    public interface IBaseCommand { }
+
+    public interface ICommand : IBaseCommand { }
+
+    public interface ICommand<TResponse> : IBaseCommand { }
+
 }

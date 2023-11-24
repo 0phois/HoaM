@@ -11,14 +11,11 @@
 
         public static implicit operator Task<IResult>(Result value) => Task.FromResult<IResult>(value);
         public static implicit operator ValueTask<IResult>(Result value) => ValueTask.FromResult<IResult>(value);
-
     }
 
-    public class Result<T> : Result, IResult<T>
+    public class Result<T>(T value) : Result, IResult<T>
     {
-        public T Value { get; set; }
-
-        public Result(T value) { Value = value; }
+        public T Value => value;
 
         public static implicit operator Task<IResult<T>>(Result<T> value) => Task.FromResult<IResult<T>>(value);
         public static implicit operator ValueTask<IResult<T>>(Result<T> value) => ValueTask.FromResult<IResult<T>>(value);

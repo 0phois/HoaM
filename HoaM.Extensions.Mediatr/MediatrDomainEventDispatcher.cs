@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace HoaM.Application.Common.MediatR
+namespace HoaM.Extensions.Mediatr
 {
     internal sealed class MediatrDomainEventDispatcher : IDomainEventDispatcher
     {
@@ -26,7 +26,7 @@ namespace HoaM.Application.Common.MediatR
 
         private static INotification CreateDomainEventNotification<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : IDomainEvent
         {
-            return new DomainEventMessage<TDomainEvent>(domainEvent);
+            return new MediatrDomainEventMessage<TDomainEvent>(domainEvent);
         }
     }
 }

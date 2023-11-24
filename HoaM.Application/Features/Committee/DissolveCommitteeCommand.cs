@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DissolveCommitteeCommand(CommitteeId CommitteeId) : ICommand<IResult>, ICommandBinder<Committee, CommitteeId>
+    public sealed record DissolveCommitteeCommand(CommitteeId CommitteeId) : ICommand, ICommandBinder<Committee, CommitteeId>
     {
         public Committee? Entity { get; set; }
     }
@@ -34,7 +34,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DissolveCommitteeHandler : ICommandHandler<DissolveCommitteeCommand, IResult>
+    internal sealed class DissolveCommitteeHandler : ICommandHandler<DissolveCommitteeCommand>
     {
         private readonly ISystemClock _clock;
 

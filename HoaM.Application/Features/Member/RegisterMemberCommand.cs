@@ -6,7 +6,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record RegisterMemberCommand(FirstName FirstName, LastName LastName, EmailAddress Email) : ICommand<IResult<AssociationMember>> { }
+    public sealed record RegisterMemberCommand(FirstName FirstName, LastName LastName, EmailAddress Email) : ICommand<AssociationMember> { }
 
     public sealed class RegisterMemberValidator : AbstractValidator<RegisterMemberCommand>
     {
@@ -22,20 +22,13 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class RegisterMemberHandler : ICommandHandler<RegisterMemberCommand, IResult<AssociationMember>>
+    internal sealed class RegisterMemberHandler(IRepository<AssociationMember> repository) : ICommandHandler<RegisterMemberCommand, AssociationMember>
     {
-        private readonly IRepository<AssociationMember> _repository;
-
-        public RegisterMemberHandler(IRepository<AssociationMember> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IResult<AssociationMember>> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
         {
             var member = AssociationMember.Create(request.FirstName, request.LastName).WithEmailAddress(request.Email);
 
-            member = await _repository.AddAsync(member, cancellationToken);
+            member = await repository.AddAsync(member, cancellationToken);
 
             return Results.Success(member);
         }
