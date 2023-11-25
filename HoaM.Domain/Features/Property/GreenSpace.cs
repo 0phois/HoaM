@@ -28,13 +28,15 @@ namespace HoaM.Domain.Features
         /// Amenities available in the <see cref="GreenSpace"/>
         /// </summary>
         public IReadOnlyCollection<Text> Amenities => _amenities.AsReadOnly();
-        private readonly List<Text> _amenities = new();
+        private readonly List<Text> _amenities = [];
 
         /// <summary>
         /// Rules associated with this <see cref="Residence"/>
         /// </summary>
         public IReadOnlyCollection<Text> Rules => _rules.AsReadOnly();
-        private readonly List<Text> _rules = new();
+        private readonly List<Text> _rules = [];
+
+        private GreenSpace() { }
 
         public static GreenSpace Create(DevelopmentStatus status, params Lot[] lots)
         {
@@ -65,7 +67,7 @@ namespace HoaM.Domain.Features
 
         public GreenSpace WithOpeningHours(OpeningHours openingHours)
         {
-            if (OpeningHours is null) throw new DomainException(DomainErrors.GreenSpace.HoursNullOrEmpty);
+            if (openingHours is null) throw new DomainException(DomainErrors.GreenSpace.HoursNullOrEmpty);
 
             OpeningHours = openingHours;
 

@@ -85,6 +85,7 @@
         {
             public static Error NullOrEmpty => new($"{nameof(Lot)}.{nameof(NullOrEmpty)}", "Lot cannot be null.");
             public static Error NumberNullOrEmpty => new($"{nameof(Lot)}.{nameof(NumberNullOrEmpty)}", "Lot number cannot be null.");
+            public static Error DuplicateNumber => new($"{nameof(Lot)}.{nameof(DuplicateNumber)}", "Duplicate lot numbers found for this parcel");
         }
 
         public static class Meeting

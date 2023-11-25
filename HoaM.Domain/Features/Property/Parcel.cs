@@ -46,6 +46,8 @@ namespace HoaM.Domain.Features
         {
             if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
 
+            if (_lots.Exists(x => x.Number.Equals(lot.Number))) throw new DomainException(DomainErrors.Lot.DuplicateNumber);
+
             _lots.Add(lot);
 
             return (T)this;
@@ -54,6 +56,8 @@ namespace HoaM.Domain.Features
         public T WithLots<T>(params Lot[] lots) where T : Parcel
         {
             if (lots is null || lots.Length == 0) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
+
+            if (lots.DistinctBy(x => x.Number).Count() != lots.Length) throw new DomainException(DomainErrors.Lot.DuplicateNumber);
 
             _lots.Clear();
             _lots.AddRange(lots);
@@ -84,7 +88,7 @@ namespace HoaM.Domain.Features
 
         public void EditStreetNumber(StreetNumber streetNumber)
         {
-            if (streetNumber == default) throw new DomainException(DomainErrors.Parcel.StreetNumberNullOrEmpty);
+            if (streetNumber is null) throw new DomainException(DomainErrors.Parcel.StreetNumberNullOrEmpty);
 
             if (streetNumber == StreetNumber) return;
 

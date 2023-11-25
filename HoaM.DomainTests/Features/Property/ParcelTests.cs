@@ -2,236 +2,244 @@
 {
     public class ParcelTests
     {
-        //[Fact]
-        //public void AddLot_ValidLot_ReturnsParcelInstance()
-        //{
-        //    // Arrange
-        //    var parcel = CreateParcel();
+        [Fact]
+        public void CreateParcel_ValidLot_ReturnsParcelInstance()
+        {
+            // Arrange
+            var lot = Lot.Create(LotNumber.From("123"));
 
-        //    // Act
-        //    var result = parcel.AddLot<Parcel>(lot);
+            // Act
+            var parcel = Residence.Create(DevelopmentStatus.EmptyLot, lot);
 
-        //    // Assert
-        //    Assert.NotNull(result);
-        //    Assert.Equal(parcel, result);
-        //}
+            // Assert
+            Assert.NotNull(parcel);
+        }
 
-        //[Fact]
-        //public void AddLot_NullLot_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    Lot lot = null;
+        [Fact]
+        public void AddLot_ValidLot_ReturnsParcelInstance()
+        {
+            // Arrange
+            var lot1 = Lot.Create(LotNumber.From("123"));
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.AddLot<Parcel>(lot));
-        //}
+            var parcel = Residence.Create(DevelopmentStatus.EmptyLot, lot1);
 
-        //[Fact]
-        //public void WithLots_ValidLots_ReturnsParcelInstance()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var lot1 = new Lot();
-        //    var lot2 = new Lot();
+            // Act
+            var lot2 = Lot.Create(LotNumber.From("125"));
+            var result = parcel.AddLot<Parcel>(lot2);
 
-        //    // Act
-        //    var result = parcelMock.WithLots<Parcel>(lot1, lot2);
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(parcel, result);
+        }
 
-        //    // Assert
-        //    Assert.NotNull(result);
-        //    Assert.Equal(parcelMock, result);
-        //}
+        [Fact]
+        public void AddLot_NullLot_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            Lot lot = null;
 
-        //[Fact]
-        //public void WithLots_NullLots_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    Lot[] lots = null;
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.AddLot<Parcel>(lot));
+        }
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.WithLots<Parcel>(lots));
-        //}
+        [Fact]
+        public void AddLot_ThrowsException_WhenDuplicateLotNumber()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var lot = Lot.Create(LotNumber.From("123"));
 
-        //[Fact]
-        //public void WithLots_EmptyLots_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    Lot[] lots = Array.Empty<Lot>();
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.AddLot<Parcel>(lot));
+        }
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.WithLots<Parcel>(lots));
-        //}
+        [Fact]
+        public void WithLots_ValidLots_ReturnsParcelInstance()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var lot1 = Lot.Create(LotNumber.From("455"));
+            var lot2 = Lot.Create(LotNumber.From("456"));
 
-        //[Fact]
-        //public void WithAddress_ValidAddress_ReturnsParcelInstance()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var streetNumber = new StreetNumber("123");
-        //    var streetName = new StreetName("Main Street");
+            // Act
+            var result = parcel.WithLots<Parcel>(lot1, lot2);
 
-        //    // Act
-        //    var result = parcelMock.WithAddress<Parcel>(streetNumber, streetName);
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(parcel, result);
+        }
 
-        //    // Assert
-        //    Assert.NotNull(result);
-        //    Assert.Equal(parcelMock, result);
-        //}
+        [Fact]
+        public void WithLots_NullLots_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            Lot[] lots = null;
 
-        //[Fact]
-        //public void WithAddress_NullStreetNumber_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    StreetNumber streetNumber = null;
-        //    var streetName = new StreetName("Main Street");
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.WithLots<Parcel>(lots));
+        }
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.WithAddress<Parcel>(streetNumber, streetName));
-        //}
+        [Fact]
+        public void WithLots_EmptyLots_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            Lot[] lots = [];
 
-        //[Fact]
-        //public void WithAddress_NullStreetName_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var streetNumber = new StreetNumber("123");
-        //    StreetName streetName = null;
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.WithLots<Parcel>(lots));
+        }
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.WithAddress<Parcel>(streetNumber, streetName));
-        //}
+        [Fact]
+        public void WithLots_ReturnsUpdatedParcel_WhenValidLotsAdded()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var lot1 = Lot.Create(LotNumber.From("455"));
+            var lot2 = Lot.Create(LotNumber.From("456"));
 
-        //[Fact]
-        //public void EditStreetName_SameStreetName_NoChangeInStreetName()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var streetName = new StreetName("Main Street");
-        //    parcelMock.EditStreetName(streetName);
+            // Act
+            var updatedParcel = parcel.WithLots<Parcel>(lot1, lot2);
 
-        //    // Act
-        //    parcelMock.EditStreetName(streetName);
+            // Assert
+            Assert.Same(parcel, updatedParcel);
+            Assert.Equal(2, parcel.Lots.Count);
+            Assert.Contains(lot1, parcel.Lots);
+            Assert.Contains(lot2, parcel.Lots);
+        }
 
-        //    // Assert
-        //    Assert.Equal(streetName, parcelMock.StreetName);
-        //}
+        [Fact]
+        public void WithLots_ThrowsException_WhenDuplicateLotNumberInArray()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var lot1 = Lot.Create(LotNumber.From("123"));
+            var lot2 = Lot.Create(LotNumber.From("123"));
 
-        //[Fact]
-        //public void EditStreetName_DifferentStreetName_ChangesStreetName()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var originalStreetName = new StreetName("Main Street");
-        //    parcelMock.EditStreetName(originalStreetName);
-        //    var newStreetName = new StreetName("New Street");
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.WithLots<Parcel>(lot1, lot2));
+        }
 
-        //    // Act
-        //    parcelMock.EditStreetName(newStreetName);
+        [Fact]
+        public void WithAddress_ValidAddress_ReturnsParcelInstance()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var streetNumber = new StreetNumber("123");
+            var streetName = new StreetName("Main Street");
 
-        //    // Assert
-        //    Assert.Equal(newStreetName, parcelMock.StreetName);
-        //}
+            // Act
+            var result = parcel.WithAddress<Parcel>(streetNumber, streetName);
 
-        //[Fact]
-        //public void EditStreetName_NullStreetName_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    StreetName streetName = null;
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(parcel, result);
+        }
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.EditStreetName(streetName));
-        //}
+        [Fact]
+        public void WithAddress_NullStreetNumber_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            StreetNumber streetNumber = null;
+            var streetName = new StreetName("Main Street");
 
-        //[Fact]
-        //public void EditStreetNumber_SameStreetNumber_NoChangeInStreetNumber()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var streetNumber = new StreetNumber("123");
-        //    parcelMock.EditStreetNumber(streetNumber);
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.WithAddress<Parcel>(streetNumber, streetName));
+        }
 
-        //    // Act
-        //    parcelMock.EditStreetNumber(streetNumber);
+        [Fact]
+        public void WithAddress_NullStreetName_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var streetNumber = new StreetNumber("123");
+            StreetName streetName = null;
 
-        //    // Assert
-        //    Assert.Equal(streetNumber, parcelMock.StreetNumber);
-        //}
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.WithAddress<Parcel>(streetNumber, streetName));
+        }
 
-        //[Fact]
-        //public void EditStreetNumber_DifferentStreetNumber_ChangesStreetNumber()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var originalStreetNumber = new StreetNumber("123");
-        //    parcelMock.EditStreetNumber(originalStreetNumber);
-        //    var newStreetNumber = new StreetNumber("456");
+        [Fact]
+        public void EditStreetName_DifferentStreetName_ChangesStreetName()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var originalStreetName = new StreetName("Main Street");
+            parcel.EditStreetName(originalStreetName);
+            var newStreetName = new StreetName("New Street");
 
-        //    // Act
-        //    parcelMock.EditStreetNumber(newStreetNumber);
+            // Act
+            parcel.EditStreetName(newStreetName);
 
-        //    // Assert
-        //    Assert.Equal(newStreetNumber, parcelMock.StreetNumber);
-        //}
+            // Assert
+            Assert.Equal(newStreetName, parcel.StreetName);
+        }
 
-        //[Fact]
-        //public void EditStreetNumber_DefaultStreetNumber_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var defaultStreetNumber = default(StreetNumber);
+        [Fact]
+        public void EditStreetName_NullStreetName_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            StreetName streetName = null;
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.EditStreetNumber(defaultStreetNumber));
-        //}
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.EditStreetName(streetName));
+        }
 
-        //[Fact]
-        //public void UpdateDevelopmentStatus_ValidStatus_ChangesStatus()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var originalStatus = DevelopmentStatus.Pending;
-        //    parcelMock.UpdateDevelopmentStatus(originalStatus);
-        //    var newStatus = DevelopmentStatus.Completed;
+        [Fact]
+        public void EditStreetNumber_DifferentStreetNumber_ChangesStreetNumber()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var originalStreetNumber = new StreetNumber("123");
+            parcel.EditStreetNumber(originalStreetNumber);
+            var newStreetNumber = new StreetNumber("456");
 
-        //    // Act
-        //    parcelMock.UpdateDevelopmentStatus(newStatus);
+            // Act
+            parcel.EditStreetNumber(newStreetNumber);
 
-        //    // Assert
-        //    Assert.Equal(newStatus, parcelMock.Status);
-        //}
+            // Assert
+            Assert.Equal(newStreetNumber, parcel.StreetNumber);
+        }
 
-        //[Fact]
-        //public void UpdateDevelopmentStatus_SameStatus_NoChangeInStatus()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var originalStatus = DevelopmentStatus.Pending;
-        //    parcelMock.UpdateDevelopmentStatus(originalStatus);
+        [Fact]
+        public void EditStreetNumber_DefaultStreetNumber_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var defaultStreetNumber = default(StreetNumber);
 
-        //    // Act
-        //    parcelMock.UpdateDevelopmentStatus(originalStatus);
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.EditStreetNumber(defaultStreetNumber));
+        }
 
-        //    // Assert
-        //    Assert.Equal(originalStatus, parcelMock.Status);
-        //}
+        [Fact]
+        public void UpdateDevelopmentStatus_ValidStatus_ChangesStatus()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var newStatus = DevelopmentStatus.Completed;
 
-        //[Fact]
-        //public void UpdateDevelopmentStatus_InvalidStatus_ThrowsDomainException()
-        //{
-        //    // Arrange
-        //    var parcelMock = new Mock<Parcel>().Object;
-        //    var originalStatus = DevelopmentStatus.Pending;
-        //    parcelMock.UpdateDevelopmentStatus(originalStatus);
-        //    var invalidStatus = (DevelopmentStatus)10; // Invalid status
+            // Act
+            parcel.UpdateDevelopmentStatus(newStatus);
 
-        //    // Act & Assert
-        //    Assert.Throws<DomainException>(() => parcelMock.UpdateDevelopmentStatus(invalidStatus));
-        //}
+            // Assert
+            Assert.Equal(newStatus, parcel.Status);
+        }
+
+        [Fact]
+        public void UpdateDevelopmentStatus_InvalidStatus_ThrowsDomainException()
+        {
+            // Arrange
+            var parcel = CreateParcel();
+            var invalidStatus = (DevelopmentStatus)10; // Invalid status
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => parcel.UpdateDevelopmentStatus(invalidStatus));
+        }
 
         private static Parcel CreateParcel()
         {

@@ -20,7 +20,8 @@ namespace HoaM.Domain.Features
 
         public static Lot Create(LotNumber number)
         {
-            if (number == null) throw new DomainException(DomainErrors.Lot.NumberNullOrEmpty);
+            if (number is null) throw new DomainException(DomainErrors.Lot.NumberNullOrEmpty);
+
             return new() { Number = number };
         }
     }
