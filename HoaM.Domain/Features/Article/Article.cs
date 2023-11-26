@@ -43,7 +43,7 @@ namespace HoaM.Domain.Features
         public static Article CreateBulletin(ArticleTitle title, Text body)
         {
             if (title is null) throw new DomainException(DomainErrors.Article.TitleNullOrEmpty);
-            
+
             if (body is null) throw new DomainException(DomainErrors.Article.BodyNullOrEmpty);
 
             return new() { Title = title, Body = body, Type = ArticleType.Bulletin };
@@ -61,7 +61,7 @@ namespace HoaM.Domain.Features
         public void EditTitle(ArticleTitle title)
         {
             if (title is null) throw new DomainException(DomainErrors.Article.TitleNullOrEmpty);
-            
+
             if (title == Title) return;
 
             Title = title;
@@ -70,7 +70,7 @@ namespace HoaM.Domain.Features
         public void EditBody(Text body)
         {
             if (body is null) throw new DomainException(DomainErrors.Article.BodyNullOrEmpty);
-           
+
             if (body == Body) return;
 
             Body = body;

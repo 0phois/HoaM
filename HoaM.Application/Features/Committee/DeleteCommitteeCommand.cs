@@ -12,7 +12,7 @@ namespace HoaM.Application.Features
         public Committee? Entity { get; set; }
     }
 
-    public sealed class DeleteCommitteeValidator : AbstractValidator<DeleteCommitteeCommand> 
+    public sealed class DeleteCommitteeValidator : AbstractValidator<DeleteCommitteeCommand>
     {
         public DeleteCommitteeValidator()
         {

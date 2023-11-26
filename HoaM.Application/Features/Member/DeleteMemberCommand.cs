@@ -12,9 +12,9 @@ namespace HoaM.Application.Features
         public AssociationMember? Entity { get; set; }
     }
 
-    public sealed class DeleteMemberValidator :AbstractValidator<DeleteMemberCommand> 
+    public sealed class DeleteMemberValidator : AbstractValidator<DeleteMemberCommand>
     {
-        public DeleteMemberValidator() 
+        public DeleteMemberValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;

@@ -50,7 +50,7 @@
 
         public static class Community
         {
-            public static Error NameNullOrEmpty => new($"{nameof(Community)}.{nameof(NameNullOrEmpty)}","Name is required");
+            public static Error NameNullOrEmpty => new($"{nameof(Community)}.{nameof(NameNullOrEmpty)}", "Name is required");
         }
 
         public static class Parcel

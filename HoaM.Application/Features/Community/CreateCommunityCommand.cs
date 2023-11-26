@@ -21,7 +21,7 @@ namespace HoaM.Application.Features
                 {
                     var spec = new CommunityByNameSpec(name);
                     var community = await repository.FirstOrDefaultAsync(spec, cancellationToken);
-                
+
                     return community is null;
                 })
                 .WithErrorCode(ApplicationErrors.Community.DuplicateName.Code)

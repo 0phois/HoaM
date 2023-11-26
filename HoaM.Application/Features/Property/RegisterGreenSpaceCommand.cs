@@ -8,7 +8,7 @@ namespace HoaM.Application.Features
 {
     public sealed record RegisterGreenSpaceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<GreenSpace> { }
 
-    public sealed class RegisterGreenSpaceValidator : AbstractValidator<RegisterGreenSpaceCommand> 
+    public sealed class RegisterGreenSpaceValidator : AbstractValidator<RegisterGreenSpaceCommand>
     {
         public RegisterGreenSpaceValidator(IReadRepository<Parcel> repository)
         {
@@ -32,7 +32,7 @@ namespace HoaM.Application.Features
     {
         public async Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {
-            var space = (GreenSpace) await repository.AddAsync(GreenSpace.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
+            var space = (GreenSpace)await repository.AddAsync(GreenSpace.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
 
             return Results.Success(space);
         }

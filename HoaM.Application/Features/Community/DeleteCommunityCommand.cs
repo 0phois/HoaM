@@ -12,7 +12,7 @@ namespace HoaM.Application.Features
         public Community? Entity { get; set; }
     }
 
-    public sealed class DeleteCommunityValidator : AbstractValidator<DeleteCommunityCommand> 
+    public sealed class DeleteCommunityValidator : AbstractValidator<DeleteCommunityCommand>
     {
         public DeleteCommunityValidator()
         {

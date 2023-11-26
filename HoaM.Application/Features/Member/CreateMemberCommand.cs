@@ -8,7 +8,7 @@ namespace HoaM.Application.Features
 {
     public sealed record CreateMemberCommand(FirstName FirstName, LastName LastName) : ICommand<AssociationMember> { }
 
-    public sealed class CreateAssociationMemberValidator : AbstractValidator<CreateMemberCommand> 
+    public sealed class CreateAssociationMemberValidator : AbstractValidator<CreateMemberCommand>
     {
         public CreateAssociationMemberValidator()
         {

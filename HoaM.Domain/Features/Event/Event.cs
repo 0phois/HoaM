@@ -61,7 +61,7 @@ namespace HoaM.Domain.Features
         public void EditTitle(EventTitle title)
         {
             if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
-           
+
             if (title == Title) return;
 
             Title = title;

@@ -2,7 +2,6 @@
 using HoaM.Domain.Exceptions;
 using MassTransit;
 using System.IO.Compression;
-using System.Text;
 
 namespace HoaM.Domain.Features
 {
@@ -32,7 +31,7 @@ namespace HoaM.Domain.Features
             if (data is null || data.Length == 0) throw new DomainException(DomainErrors.Document.DataNullOrEmpty);
 
             var compressedData = Compress(data);
-            
+
             return new() { Title = title, Content = compressedData };
         }
 

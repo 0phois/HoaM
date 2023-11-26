@@ -13,7 +13,7 @@ namespace HoaM.Domain.Features
         /// Title of the <see cref="GreenSpace"/>
         /// </summary>
         public ParcelTitle Title { get; private set; } = ParcelTitle.From(Reserved);
-        
+
         /// <summary>
         /// Description of the <see cref="GreenSpace"/>
         /// </summary>
@@ -23,7 +23,7 @@ namespace HoaM.Domain.Features
         /// Opening and closing times for the <see cref="GreenSpace"/>
         /// </summary>
         public OpeningHours OpeningHours { get; private set; } = OpeningHours.TwentyFourHours;
-        
+
         /// <summary>
         /// Amenities available in the <see cref="GreenSpace"/>
         /// </summary>
@@ -61,7 +61,7 @@ namespace HoaM.Domain.Features
             if (description is null) throw new DomainException(DomainErrors.GreenSpace.DescriptionNullOrEmpty);
 
             Description = description;
-            
+
             return this;
         }
 

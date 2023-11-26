@@ -52,7 +52,7 @@ namespace HoaM.Domain.Features
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
-       
+
         public bool IsDeleted => DeletionDate is not null;
         public bool IsDissolved => DissolvedDate is not null;
 
@@ -84,9 +84,9 @@ namespace HoaM.Domain.Features
         public Committee WithMissionStatement(MissionStatement statement)
         {
             CheckForActiveCommittee();
-            
+
             if (statement is null) throw new DomainException(DomainErrors.Committee.MissionNullOrEmpty);
-            
+
             MissionStatement = statement;
 
             return this;

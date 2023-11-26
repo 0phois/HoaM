@@ -31,7 +31,7 @@ namespace HoaM.Domain.Features
         public static NotificationTemplate Create(NotificationTitle title, Text content, NotificationType type)
         {
             if (title is null) throw new DomainException(DomainErrors.NotificationTemplate.TitleNullOrEmpty);
-            
+
             if (content is null) throw new DomainException(DomainErrors.NotificationTemplate.ContentNullOrEmpty);
 
             if (!Enum.IsDefined(typeof(NotificationType), type)) throw new DomainException(DomainErrors.NotificationTemplate.TypeNotDefined);

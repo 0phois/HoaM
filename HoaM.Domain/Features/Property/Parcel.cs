@@ -41,7 +41,7 @@ namespace HoaM.Domain.Features
         public DateTimeOffset? DeletionDate { get; set; }
 
         private protected Parcel() { }
-        
+
         public T AddLot<T>(Lot lot) where T : Parcel
         {
             if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
@@ -61,7 +61,7 @@ namespace HoaM.Domain.Features
 
             _lots.Clear();
             _lots.AddRange(lots);
-            
+
             return (T)this;
         }
 

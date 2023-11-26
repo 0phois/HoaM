@@ -97,7 +97,7 @@ namespace HoaM.Domain.Features
         public AssociationMember AddPhoneNumber(PhoneNumber phoneNumber)
         {
             if (phoneNumber is null) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
-            
+
             if (PhoneNumbers.Exists(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
 
             PhoneNumbers.Add(phoneNumber);
@@ -115,7 +115,7 @@ namespace HoaM.Domain.Features
         public void EditFirstName(FirstName name)
         {
             if (name is null) throw new DomainException(DomainErrors.AssociationMember.FirstNameNullOrEmpty);
-            
+
             if (name == FirstName) return;
 
             FirstName = name;
@@ -124,7 +124,7 @@ namespace HoaM.Domain.Features
         public void EditLastName(LastName surname)
         {
             if (surname is null) throw new DomainException(DomainErrors.AssociationMember.LastNameNullOrEmpty);
-            
+
             if (surname == LastName) return;
 
             LastName = surname;

@@ -63,7 +63,7 @@ namespace HoaM.Domain.Features
         public void EditName(CommunityName name)
         {
             if (name is null) throw new DomainException(DomainErrors.Community.NameNullOrEmpty);
-            
+
             if (name == Name) return;
 
             Name = name;

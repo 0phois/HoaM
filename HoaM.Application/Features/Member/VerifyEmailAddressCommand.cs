@@ -14,7 +14,7 @@ namespace HoaM.Application.Features
 
     public sealed class VerifyEmailAddressValidator : AbstractValidator<VerifyEmailAddressCommand>
     {
-        public VerifyEmailAddressValidator() 
+        public VerifyEmailAddressValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;

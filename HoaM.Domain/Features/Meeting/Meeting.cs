@@ -60,7 +60,7 @@ namespace HoaM.Domain.Features
         public Meeting WithDescription(MeetingDescription description)
         {
             if (description is null) throw new DomainException(DomainErrors.Meeting.DescriptionNullOrEmpty);
-            
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             Description = description;
@@ -71,7 +71,7 @@ namespace HoaM.Domain.Features
         public Meeting WithAgenda(params Note[] agenda)
         {
             if (agenda is null || agenda.Length == 0) throw new DomainException(DomainErrors.Meeting.AgendaNullOrEmpty);
-            
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             _agenda.Clear();
@@ -84,7 +84,7 @@ namespace HoaM.Domain.Features
         public Meeting AddAgendaItem(Note note)
         {
             if (note is null) throw new DomainException(DomainErrors.Meeting.NoteNullOrEmpty);
-            
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             _agenda.Add(note);
@@ -95,7 +95,7 @@ namespace HoaM.Domain.Features
         public Meeting AddAgendaItems(params Note[] notes)
         {
             if (notes is null || notes.Length == 0) throw new DomainException(DomainErrors.Meeting.NoteNullOrEmpty);
-            
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             _agenda.AddRange(notes);
@@ -106,7 +106,7 @@ namespace HoaM.Domain.Features
         public Meeting RemoveAgendaItem(Note note)
         {
             if (note is null) throw new DomainException(DomainErrors.Meeting.NoteNullOrEmpty);
-             
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             _agenda.Remove(note);
@@ -144,7 +144,7 @@ namespace HoaM.Domain.Features
         public void EditTitle(MeetingTitle title)
         {
             if (title is null) throw new DomainException(DomainErrors.Meeting.TitleNullOrEmpty);
-            
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             if (title == Title) return;
@@ -155,7 +155,7 @@ namespace HoaM.Domain.Features
         public void EditScheduledDate(DateTimeOffset date)
         {
             if (date == default) throw new DomainException(DomainErrors.Meeting.DateNullOrEmpty);
-            
+
             if (HasAttachedMinutes) throw new DomainException(DomainErrors.Meeting.MinutesAlreadyAttached);
 
             if (date == ScheduledDate) return;

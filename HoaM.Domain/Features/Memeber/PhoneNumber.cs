@@ -41,7 +41,7 @@ namespace HoaM.Domain.Features
         public static PhoneNumber Create(PhoneType type, CountryCallingCode countryCode, AreaCode areaCode, PhonePrefix prefix, LineNumber lastDigits)
         {
             if (countryCode is null) throw new DomainException(DomainErrors.PhoneNumber.CountryCodeNullOrEmpty);
-         
+
             if (areaCode is null) throw new DomainException(DomainErrors.PhoneNumber.AreaCodeNullOrEmpty);
 
             if (prefix is null) throw new DomainException(DomainErrors.PhoneNumber.PrefixNullOrEmpty);

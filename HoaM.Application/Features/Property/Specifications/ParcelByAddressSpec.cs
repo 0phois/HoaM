@@ -8,7 +8,7 @@ namespace HoaM.Application.Features
     {
         public ParcelByAddressSpec(StreetName streetName, StreetNumber streetNumber)
         {
-            Query.Where(parcel => parcel.StreetName == streetName &&  parcel.StreetNumber == streetNumber).AsNoTracking();
+            Query.Where(parcel => parcel.StreetName == streetName && parcel.StreetNumber == streetNumber).AsNoTracking();
         }
     }
 }

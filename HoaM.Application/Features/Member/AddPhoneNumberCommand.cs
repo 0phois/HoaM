@@ -4,7 +4,6 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
-using System.Data;
 
 namespace HoaM.Application.Features
 {
@@ -13,7 +12,7 @@ namespace HoaM.Application.Features
         public AssociationMember? Entity { get; set; }
     }
 
-    public sealed class AddPhoneNumberValidator : AbstractValidator<AddPhoneNumberCommand> 
+    public sealed class AddPhoneNumberValidator : AbstractValidator<AddPhoneNumberCommand>
     {
         private const int MaxNumbers = 3;
 

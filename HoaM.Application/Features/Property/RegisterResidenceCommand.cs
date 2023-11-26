@@ -8,7 +8,7 @@ namespace HoaM.Application.Features
 {
     public sealed record RegisterResidenceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<Residence> { }
 
-    public sealed class RegisterResidenceValidator : AbstractValidator<RegisterResidenceCommand> 
+    public sealed class RegisterResidenceValidator : AbstractValidator<RegisterResidenceCommand>
     {
         public RegisterResidenceValidator(IReadRepository<Parcel> repository)
         {

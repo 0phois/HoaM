@@ -14,7 +14,7 @@ namespace HoaM.Domain.Features
 
             if (amount == default) throw new DomainException(DomainErrors.Transaction.AmountNullOrEmpty);
 
-            return new Expense() { Title = title, Amount = amount};
+            return new Expense() { Title = title, Amount = amount };
         }
 
         public Expense WithDueDate(DateOnly dueDate)

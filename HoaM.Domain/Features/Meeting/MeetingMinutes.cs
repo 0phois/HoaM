@@ -1,7 +1,6 @@
 ﻿using HoaM.Domain.Common;
 using HoaM.Domain.Exceptions;
 using MassTransit;
-using System.Net.Http.Headers;
 
 namespace HoaM.Domain.Features
 {
@@ -10,7 +9,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Unique ID of the <see cref="MeetingMinutes"/>
         /// </summary>
-        public override MinutesId Id { get; protected set; } =MinutesId.From(NewId.Next().ToGuid());
+        public override MinutesId Id { get; protected set; } = MinutesId.From(NewId.Next().ToGuid());
 
         /// <summary>
         /// Discussions and decisions for <see cref="Meeting"/> agenda items
@@ -190,7 +189,7 @@ namespace HoaM.Domain.Features
         public MeetingMinutes AddNote(Note note)
         {
             if (note is null) throw new DomainException(DomainErrors.MeetingMinutes.NoteNullOrEmpty);
-            
+
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             _notes.Add(note);

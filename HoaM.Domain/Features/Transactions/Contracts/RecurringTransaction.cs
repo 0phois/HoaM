@@ -8,6 +8,7 @@
             : base(transaction,
                    title,
                    new Occurrence(transaction.EffectiveDate.ToDateTime(TimeOnly.MinValue), transaction.EffectiveDate.ToDateTime(TimeOnly.MaxValue)),
-                   schedule) { }
+                   schedule)
+        { }
     }
 }

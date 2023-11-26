@@ -12,7 +12,7 @@ namespace HoaM.Application.Features
         public Committee? Entity { get; set; }
     }
 
-    public sealed class DissolveCommitteeValidator : AbstractValidator<DissolveCommitteeCommand> 
+    public sealed class DissolveCommitteeValidator : AbstractValidator<DissolveCommitteeCommand>
     {
         public DissolveCommitteeValidator()
         {
