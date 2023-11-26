@@ -29,7 +29,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class CreateCommunityCommandHandler(IRepository<Community> repository) : ICommandHandler<CreateCommunityCommand, Community>
+    public sealed class CreateCommunityCommandHandler(IRepository<Community> repository) : ICommandHandler<CreateCommunityCommand, Community>
     {
         public async Task<IResult<Community>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {

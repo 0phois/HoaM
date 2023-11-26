@@ -44,7 +44,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdatePhoneNumbersHandler : ICommandHandler<UpdatePhoneNumbersCommand>
+    public sealed class UpdatePhoneNumbersHandler : ICommandHandler<UpdatePhoneNumbersCommand>
     {
         public Task<IResult> Handle(UpdatePhoneNumbersCommand request, CancellationToken cancellationToken)
         {

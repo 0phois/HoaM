@@ -39,7 +39,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand>
+    public sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand>
     {
         public Task<IResult> Handle(VerifyEmailAddressCommand request, CancellationToken cancellationToken)
         {

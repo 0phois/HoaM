@@ -41,7 +41,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class AddPhoneNumberHandler : ICommandHandler<AddPhoneNumberCommand>
+    public sealed class AddPhoneNumberHandler : ICommandHandler<AddPhoneNumberCommand>
     {
         public Task<IResult> Handle(AddPhoneNumberCommand request, CancellationToken cancellationToken)
         {

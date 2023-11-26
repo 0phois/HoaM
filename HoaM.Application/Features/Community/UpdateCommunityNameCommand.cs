@@ -40,7 +40,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateCommunityNameCommandHandler : ICommandHandler<UpdateCommunityNameCommand>
+    public sealed class UpdateCommunityNameCommandHandler : ICommandHandler<UpdateCommunityNameCommand>
     {
         public Task<IResult> Handle(UpdateCommunityNameCommand request, CancellationToken cancellationToken)
         {

@@ -34,7 +34,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteMemberResidenceHandler : ICommandHandler<DeleteMemberResidenceCommand>
+    public sealed class DeleteMemberResidenceHandler : ICommandHandler<DeleteMemberResidenceCommand>
     {
         public Task<IResult> Handle(DeleteMemberResidenceCommand request, CancellationToken cancellationToken)
         {

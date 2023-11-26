@@ -36,7 +36,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateCommitteeDetailsHandler : ICommandHandler<UpdateCommitteeDetailsCommand>
+    public sealed class UpdateCommitteeDetailsHandler : ICommandHandler<UpdateCommitteeDetailsCommand>
     {
         public Task<IResult> Handle(UpdateCommitteeDetailsCommand request, CancellationToken cancellationToken)
         {

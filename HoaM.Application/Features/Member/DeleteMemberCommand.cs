@@ -31,7 +31,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteMemberHandler(IRepository<AssociationMember> repository) : ICommandHandler<DeleteMemberCommand>
+    public sealed class DeleteMemberHandler(IRepository<AssociationMember> repository) : ICommandHandler<DeleteMemberCommand>
     {
         public async Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
         {

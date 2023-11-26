@@ -36,7 +36,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeletePhoneNumberHandler : ICommandHandler<DeletePhoneNumberCommand>
+    public sealed class DeletePhoneNumberHandler : ICommandHandler<DeletePhoneNumberCommand>
     {
         public Task<IResult> Handle(DeletePhoneNumberCommand request, CancellationToken cancellationToken)
         {

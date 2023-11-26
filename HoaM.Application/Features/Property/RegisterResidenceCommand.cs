@@ -28,7 +28,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class RegisterResidenceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterResidenceCommand, Residence>
+    public sealed class RegisterResidenceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterResidenceCommand, Residence>
     {
         public async Task<IResult<Residence>> Handle(RegisterResidenceCommand request, CancellationToken cancellationToken)
         {

@@ -31,7 +31,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteCommitteeHandler : ICommandHandler<DeleteCommitteeCommand>
+    public sealed class DeleteCommitteeHandler : ICommandHandler<DeleteCommitteeCommand>
     {
         private readonly IRepository<Committee> _repository;
 

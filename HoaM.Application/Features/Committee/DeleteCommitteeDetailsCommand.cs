@@ -34,7 +34,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class DeleteCommitteeDetailsHandler : ICommandHandler<DeleteCommitteeDetailsCommand>
+    public sealed class DeleteCommitteeDetailsHandler : ICommandHandler<DeleteCommitteeDetailsCommand>
     {
         public Task<IResult> Handle(DeleteCommitteeDetailsCommand request, CancellationToken cancellationToken)
         {

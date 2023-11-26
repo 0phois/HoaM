@@ -37,7 +37,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateMemberResidenceHanler : ICommandHandler<UpdateMemberResidenceCommand>
+    public sealed class UpdateMemberResidenceHanler : ICommandHandler<UpdateMemberResidenceCommand>
     {
         public Task<IResult> Handle(UpdateMemberResidenceCommand request, CancellationToken cancellationToken)
         {

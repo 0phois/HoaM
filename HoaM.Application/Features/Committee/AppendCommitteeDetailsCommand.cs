@@ -36,7 +36,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class AppendCommitteeDetailsHandler : ICommandHandler<AppendCommitteeDetailsCommand>
+    public sealed class AppendCommitteeDetailsHandler : ICommandHandler<AppendCommitteeDetailsCommand>
     {
         public Task<IResult> Handle(AppendCommitteeDetailsCommand request, CancellationToken cancellationToken)
         {

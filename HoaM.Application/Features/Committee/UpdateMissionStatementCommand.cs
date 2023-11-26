@@ -36,7 +36,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateMissionStatementHandler : ICommandHandler<UpdateMissionStatementCommand>
+    public sealed class UpdateMissionStatementHandler : ICommandHandler<UpdateMissionStatementCommand>
     {
         public Task<IResult> Handle(UpdateMissionStatementCommand request, CancellationToken cancellationToken)
         {

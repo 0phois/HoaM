@@ -21,7 +21,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class CreateAssociationMemberHandler(IRepository<AssociationMember> repository) : ICommandHandler<CreateMemberCommand, AssociationMember>
+    public sealed class CreateAssociationMemberHandler(IRepository<AssociationMember> repository) : ICommandHandler<CreateMemberCommand, AssociationMember>
     {
         public async Task<IResult<AssociationMember>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {

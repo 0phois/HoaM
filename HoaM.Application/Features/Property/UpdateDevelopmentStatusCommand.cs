@@ -25,7 +25,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateDevelopmentStatusHandler : ICommandHandler<UpdateDevelopmentStatusCommand>
+    public sealed class UpdateDevelopmentStatusHandler : ICommandHandler<UpdateDevelopmentStatusCommand>
     {
         public Task<IResult> Handle(UpdateDevelopmentStatusCommand request, CancellationToken cancellationToken)
         {

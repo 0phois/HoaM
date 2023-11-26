@@ -30,7 +30,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class CreateCommitteeCommandHandler(IRepository<Committee> committeeRepository) : ICommandHandler<CreateCommitteeCommand, Committee>
+    public sealed class CreateCommitteeCommandHandler(IRepository<Committee> committeeRepository) : ICommandHandler<CreateCommitteeCommand, Committee>
     {
         public async Task<IResult<Committee>> Handle(CreateCommitteeCommand request, CancellationToken cancellationToken)
         {

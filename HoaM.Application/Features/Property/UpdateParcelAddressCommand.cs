@@ -39,7 +39,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class UpdateParcelAddressHandler : ICommandHandler<UpdateParcelAddressCommand>
+    public sealed class UpdateParcelAddressHandler : ICommandHandler<UpdateParcelAddressCommand>
     {
         public Task<IResult> Handle(UpdateParcelAddressCommand request, CancellationToken cancellationToken)
         {

@@ -28,7 +28,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class RegisterGreenSpaceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterGreenSpaceCommand, GreenSpace>
+    public sealed class RegisterGreenSpaceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterGreenSpaceCommand, GreenSpace>
     {
         public async Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {

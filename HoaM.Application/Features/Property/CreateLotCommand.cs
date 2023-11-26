@@ -30,7 +30,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    internal sealed class CreateLotHandler(IRepository<Lot> repository) : ICommandHandler<CreateLotCommand, Lot>
+    public sealed class CreateLotHandler(IRepository<Lot> repository) : ICommandHandler<CreateLotCommand, Lot>
     {
         public async Task<IResult<Lot>> Handle(CreateLotCommand request, CancellationToken cancellationToken)
         {
