@@ -14,7 +14,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Represents the basis of the event
         /// </summary>
-        public T Activity { get; private set; } = default!;
+        public T Data { get; private set; } = default!;
 
         /// <summary>
         /// Name of the <see cref="Event"/>
@@ -41,7 +41,7 @@ namespace HoaM.Domain.Features
 
             if (occurance is null) throw new DomainException(DomainErrors.Event.OccuranceNullOrEmpty);
 
-            Activity = activity;
+            Data = activity;
             Title = title;
             Occurrence = occurance;
             Schedule = schedule;
@@ -83,7 +83,7 @@ namespace HoaM.Domain.Features
 
             foreach (var occurrence in occurrences)
             {
-                yield return Event<T>.Create(Activity, Title, occurrence.Start, occurrence.Stop);
+                yield return Event<T>.Create(Data, Title, occurrence.Start, occurrence.Stop);
             }
         }
     }

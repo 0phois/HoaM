@@ -16,7 +16,7 @@
 
             // Assert
             Assert.NotNull(eventInstance);
-            Assert.Equal(activity, eventInstance.Activity);
+            Assert.Equal(activity, eventInstance.Data);
             Assert.Equal(title, eventInstance.Title);
             Assert.Equal(start, eventInstance.Occurrence.Start);
             Assert.Equal(stop, eventInstance.Occurrence.Stop);
@@ -80,7 +80,7 @@
 
             for (int i = 1; i < instances.Count; i++)
             {
-                Assert.Equal(activity, instances[i].Activity);
+                Assert.Equal(activity, instances[i].Data);
                 Assert.Equal(title, instances[i].Title);
                 Assert.Equal(start.AddDays(i), instances[i].Occurrence.Start);
                 Assert.Equal(stop.AddDays(i), instances[i].Occurrence.Stop);

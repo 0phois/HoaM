@@ -22,6 +22,7 @@
         public static class AssociationFee
         {
             public static Error ExpenseNullOrEmpty => new($"{nameof(AssociationFee)}.{nameof(ExpenseNullOrEmpty)}", "Expense is required.");
+            public static Error DateNullOrEmpty => new($"{nameof(AssociationFee)}.{nameof(DateNullOrEmpty)}", "Effective date is required.");
         }
 
         public static class AssociationMember
@@ -117,6 +118,14 @@
             public static Error AttendeesNullOrEmpty => new($"{nameof(MeetingMinutes)}.{nameof(AttendeesNullOrEmpty)}", "Meeting attendees required.");
             public static Error AlreadyPublished => new($"{nameof(MeetingMinutes)}.{nameof(AlreadyPublished)}", "The meeting minutes have already been published.");
             public static Error InvalidAgendaItem => new($"{nameof(MeetingMinutes)}.{nameof(InvalidAgendaItem)}", "No matching agenda item found for agenda note.");
+        }
+
+        public static class Transaction
+        {
+            public static Error TitleNullOrEmpty => new($"{nameof(Note)}.{nameof(TitleNullOrEmpty)}", "Title is required.");
+            public static Error AmountNullOrEmpty => new($"{nameof(Note)}.{nameof(AmountNullOrEmpty)}", "Amount is required.");
+            public static Error MemoNullOrEmpty => new($"{nameof(Note)}.{nameof(MemoNullOrEmpty)}", "Memo is required.");
+            public static Error DateNullOrEmpty => new($"{nameof(Note)}.{nameof(DateNullOrEmpty)}", "Date is required.");
         }
 
         public static class Note

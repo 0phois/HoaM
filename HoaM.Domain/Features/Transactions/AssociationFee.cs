@@ -6,14 +6,15 @@ namespace HoaM.Domain.Features
     {
         private AssociationFee() { }
 
-        private AssociationFee(Expense activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? frequency = null)
-            : base(activity, title, start, stop, frequency) { }
+        private AssociationFee(Expense expense, EventTitle title, Schedule? frequency = null) : base(expense, title, frequency) { }
 
         public static AssociationFee Create(Expense expense, Schedule? frequency = null)
         {
             if (expense is null) throw new DomainException(DomainErrors.AssociationFee.ExpenseNullOrEmpty);
 
-            return new AssociationFee(expense, EventTitle.From(expense.Title.Value), expense.EffectiveDate, expense.EffectiveDate, frequency);
+            if (expense.EffectiveDate == default) throw new DomainException(DomainErrors.AssociationFee.DateNullOrEmpty);
+
+            return new AssociationFee(expense, EventTitle.From(expense.Title.Value), frequency);
         }
     }
 }

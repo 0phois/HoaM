@@ -62,7 +62,7 @@ namespace HoaM.Domain
             builder.OfString().For("LineNumber").NotEmpty().Length(4);
             builder.OfString().For("StreetNumber").NotEmpty();
 
-
+            builder.OfDecimal().For("Money").NotEmpty().GreaterThanOrEqualTo(0);
         }
     }
 }

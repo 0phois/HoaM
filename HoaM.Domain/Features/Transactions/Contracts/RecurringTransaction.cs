@@ -4,7 +4,10 @@
     {
         private protected RecurringTransaction() { }
 
-        protected RecurringTransaction(T activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null)
-            : base(activity, title, new Occurrence(start, stop), schedule) { }
+        protected RecurringTransaction(T transaction, EventTitle title, Schedule? schedule = null)
+            : base(transaction,
+                   title,
+                   new Occurrence(transaction.EffectiveDate.ToDateTime(TimeOnly.MinValue), transaction.EffectiveDate.ToDateTime(TimeOnly.MaxValue)),
+                   schedule) { }
     }
 }

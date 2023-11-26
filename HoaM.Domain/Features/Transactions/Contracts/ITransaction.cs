@@ -7,7 +7,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// <see cref="AssociationMember"/> that submitted the <see cref="ITransaction"/>
         /// </summary>
-        AssociationMember SubmittedBy { get; init; }
+        AssociationMember? SubmittedBy { get; set; }
 
         /// <summary>
         /// Short description of this <see cref="ITransaction"/>
@@ -17,13 +17,13 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Monetary value of this <see cref="ITransaction"/>
         /// </summary>
-        decimal Amount { get; init; }
+        Money Amount { get; init; }
 
         /// <summary>
         /// Date Due when the <see cref="ITransaction"/> is a <see cref="TransactionType.Credit"/> <br></br>
         /// Date Paid when the <see cref="ITransaction"/> is a <see cref="TransactionType.Debit"/>
         /// </summary>
-        DateTimeOffset EffectiveDate { get; set; }
+        DateOnly EffectiveDate { get; }
 
         /// <summary>
         /// The <see cref="TransactionType">type</see> of <see cref="ITransaction"/>
@@ -33,6 +33,6 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Additional details/notes on this <see cref="ITransaction"/> 
         /// </summary>
-        public Note? Memo { get; set; }
+        public Note? Memo { get; }
     }
 }
