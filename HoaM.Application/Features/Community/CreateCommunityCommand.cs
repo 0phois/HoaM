@@ -7,7 +7,7 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record CreateCommunityCommand(CommunityName Name) : ICommand<Community> { }
+    public sealed record CreateCommunityCommand(CommunityName Name) : ICommand<CommunityId> { }
 
     public sealed class CreateCommunityValidator : AbstractValidator<CreateCommunityCommand>
     {
@@ -29,13 +29,13 @@ namespace HoaM.Application.Features
         }
     }
 
-    public sealed class CreateCommunityCommandHandler(IRepository<Community> repository) : ICommandHandler<CreateCommunityCommand, Community>
+    public sealed class CreateCommunityCommandHandler(IRepository<Community> repository) : ICommandHandler<CreateCommunityCommand, CommunityId>
     {
-        public async Task<IResult<Community>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
+        public async Task<IResult<CommunityId>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {
             var community = await repository.AddAsync(Community.Create(request.Name), cancellationToken);
 
-            return Results.Success(community);
+            return Results.Success(community.Id);
         }
     }
 }

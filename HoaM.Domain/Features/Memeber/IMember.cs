@@ -7,6 +7,6 @@
         /// <summary>
         /// Username of the <see cref="IMember"/> 
         /// </summary>
-        Username Username { get; }
+        Username DisplayName { get; }
     }
 }

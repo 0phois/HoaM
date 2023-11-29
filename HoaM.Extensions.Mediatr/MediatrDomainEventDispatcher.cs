@@ -4,16 +4,10 @@ using Microsoft.Extensions.Logging;
 
 namespace HoaM.Extensions.Mediatr
 {
-    internal sealed class MediatrDomainEventDispatcher : IDomainEventDispatcher
+    internal sealed class MediatrDomainEventDispatcher(IMediator mediator, ILogger<MediatrDomainEventDispatcher> logger) : IDomainEventDispatcher
     {
-        private readonly IMediator _mediator;
-        private readonly ILogger<MediatrDomainEventDispatcher> _logger;
-
-        public MediatrDomainEventDispatcher(IMediator mediator, ILogger<MediatrDomainEventDispatcher> logger)
-        {
-            _mediator = mediator;
-            _logger = logger;
-        }
+        private readonly IMediator _mediator = mediator;
+        private readonly ILogger<MediatrDomainEventDispatcher> _logger = logger;
 
         public async Task PublishAsync(IDomainEvent devent)
         {

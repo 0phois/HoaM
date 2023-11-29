@@ -6,6 +6,6 @@ namespace HoaM.Application.Common
 {
     internal class SystemUser : Entity<AssociationMemberId>, IMember
     {
-        public Username Username => Username.From("SystemUser");
+        public Username DisplayName => Username.From("SystemUser");
     }
 }

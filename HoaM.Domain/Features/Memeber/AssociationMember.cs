@@ -32,7 +32,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Contact numbers for the <see cref="AssociationMember"/>
         /// </summary>
-        public List<PhoneNumber> PhoneNumbers { get; protected set; } = new List<PhoneNumber>();
+        public List<PhoneNumber> PhoneNumbers { get; protected set; } = [];
 
         /// <summary>
         /// Resendential address (within the community) of the <see cref="AssociationMember"/>
@@ -48,7 +48,7 @@ namespace HoaM.Domain.Features
         public DateTimeOffset? DeletionDate { get; set; }
         public bool IsDeleted => DeletionDate is not null;
 
-        public Username Username => Username.TryParse(Email?.Address.Value, out var displayName) ? displayName : Username.From($"{FirstName} {LastName}");
+        public Username DisplayName => Username.TryParse(Email?.Address.Value, out var displayName) ? displayName : Username.From($"{FirstName} {LastName}");
 
         private AssociationMember() { }
 
