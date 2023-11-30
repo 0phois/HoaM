@@ -4,6 +4,7 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -31,18 +32,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    public sealed class DeleteCommitteeHandler : ICommandHandler<DeleteCommitteeCommand>
+    public sealed class DeleteCommitteeHandler(IRepository repository) : ICommandHandler<DeleteCommitteeCommand>
     {
-        private readonly IRepository<Committee> _repository;
-
-        public DeleteCommitteeHandler(IRepository<Committee> repository)
+        public Task<IResult> Handle(DeleteCommitteeCommand request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
-
-        public async Task<IResult> Handle(DeleteCommitteeCommand request, CancellationToken cancellationToken)
-        {
-            await _repository.DeleteAsync(request.Entity!, cancellationToken);
+            repository.Remove(request.Entity!);
 
             return Results.Success();
         }

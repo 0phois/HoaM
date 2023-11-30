@@ -3,6 +3,7 @@ using HoaM.Application.Common;
 using HoaM.Application.Exceptions;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -10,7 +11,7 @@ namespace HoaM.Application.Features
 
     public sealed class RegisterGreenSpaceValidator : AbstractValidator<RegisterGreenSpaceCommand>
     {
-        public RegisterGreenSpaceValidator(IReadRepository<Parcel> repository)
+        public RegisterGreenSpaceValidator(IRepository repository)
         {
             RuleFor(command => command.DevelopmentStatus).IsInEnum();
 
@@ -19,7 +20,7 @@ namespace HoaM.Application.Features
                 .MustAsync(async (lots, cancellationToken) =>
                 {
                     var spec = new ParcelByLotsSpec(lots);
-                    var parcel = await repository.FirstOrDefaultAsync(spec, cancellationToken);
+                    var parcel = await repository.GetAsync(spec, true, cancellationToken);
 
                     return parcel is null;
                 })
@@ -32,9 +33,11 @@ namespace HoaM.Application.Features
     {
         public async Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {
-            var space = (GreenSpace)await repository.AddAsync(GreenSpace.Create(request.DevelopmentStatus, request.Lots), cancellationToken);
+            var greenSpace = GreenSpace.Create(request.DevelopmentStatus, request.Lots);
+            
+            await repository.AddAsync<Parcel>(greenSpace, cancellationToken);
 
-            return Results.Success(space);
+            return Results.Success(greenSpace);
         }
     }
 }

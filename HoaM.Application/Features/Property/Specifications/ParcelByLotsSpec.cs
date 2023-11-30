@@ -1,13 +1,13 @@
-﻿using Ardalis.Specification;
-using HoaM.Domain.Features;
+﻿using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
-    internal sealed class ParcelByLotsSpec : Specification<Parcel>, ISingleResultSpecification<Parcel>
+    internal sealed class ParcelByLotsSpec : Specification<Parcel>
     {
         public ParcelByLotsSpec(Lot[] lots)
         {
-            Query.Where(parcel => parcel.Lots.Any(lot => lots.Contains(lot))).AsNoTracking();
+            Conditions.Add(parcel => parcel.Lots.Any(lot => lots.Contains(lot)));
         }
     }
 }

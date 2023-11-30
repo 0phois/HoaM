@@ -3,6 +3,7 @@ using HoaM.Application.Common;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -22,13 +23,13 @@ namespace HoaM.Application.Features
         }
     }
 
-    public sealed class RegisterMemberHandler(IRepository<AssociationMember> repository) : ICommandHandler<RegisterMemberCommand, AssociationMember>
+    public sealed class RegisterMemberHandler(IRepository repository) : ICommandHandler<RegisterMemberCommand, AssociationMember>
     {
         public async Task<IResult<AssociationMember>> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
         {
             var member = AssociationMember.Create(request.FirstName, request.LastName).WithEmailAddress(request.Email);
 
-            member = await repository.AddAsync(member, cancellationToken);
+            await repository.AddAsync(member, cancellationToken);
 
             return Results.Success(member);
         }

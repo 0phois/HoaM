@@ -1,14 +1,14 @@
-﻿using Ardalis.Specification;
-using HoaM.Domain;
+﻿using HoaM.Domain;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
-    internal sealed class LotByNumberSpec : Specification<Lot>, ISingleResultSpecification<Lot>
+    internal sealed class LotByNumberSpec : Specification<Lot>
     {
         public LotByNumberSpec(LotNumber number)
         {
-            Query.Where(lot => lot.Number == number).AsNoTracking();
+            Conditions.Add(lot => lot.Number == number);
         }
     }
 }

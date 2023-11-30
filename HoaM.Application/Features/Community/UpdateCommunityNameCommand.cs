@@ -4,6 +4,7 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -14,7 +15,7 @@ namespace HoaM.Application.Features
 
     public sealed class UpdateCommunityNameValidator : AbstractValidator<UpdateCommunityNameCommand>
     {
-        public UpdateCommunityNameValidator(IReadRepository<Community> repository)
+        public UpdateCommunityNameValidator(IRepository repository)
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -31,7 +32,7 @@ namespace HoaM.Application.Features
                 .MustAsync(async (newName, cancellationToken) =>
                 {
                     var spec = new CommunityByNameSpec(newName);
-                    var community = await repository.FirstOrDefaultAsync(spec, cancellationToken);
+                    var community = await repository.GetAsync(spec, true, cancellationToken);
 
                     return community is null;
                 }).WithErrorCode(ApplicationErrors.Community.DuplicateName.Code)

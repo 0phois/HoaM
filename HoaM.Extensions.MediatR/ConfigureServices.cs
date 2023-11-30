@@ -24,7 +24,7 @@ namespace HoaM.Extensions.MediatR
         {
             var handlerTypes = assemblies
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.GetInterfaces().Any(IsCommandHandlerInterface));
+                .Where(t => Array.Exists(t.GetInterfaces(), IsCommandHandlerInterface));
 
             foreach (var handlerType in handlerTypes)
             {

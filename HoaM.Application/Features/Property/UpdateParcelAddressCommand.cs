@@ -4,6 +4,7 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -14,7 +15,7 @@ namespace HoaM.Application.Features
 
     public sealed class UpdateParcelAddressValidator : AbstractValidator<UpdateParcelAddressCommand>
     {
-        public UpdateParcelAddressValidator(IReadRepository<Parcel> repository)
+        public UpdateParcelAddressValidator(IRepository repository)
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -30,7 +31,7 @@ namespace HoaM.Application.Features
                 .MustAsync(async (cmd, parcel, cancellationToken) =>
                 {
                     var spec = new ParcelByAddressSpec(cmd.StreetName, cmd.StreetNumber);
-                    parcel = await repository.FirstOrDefaultAsync(spec, cancellationToken);
+                    parcel = await repository.GetAsync(spec, true, cancellationToken);
 
                     return parcel is null;
                 })

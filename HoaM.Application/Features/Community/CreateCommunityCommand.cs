@@ -4,6 +4,7 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -11,7 +12,7 @@ namespace HoaM.Application.Features
 
     public sealed class CreateCommunityValidator : AbstractValidator<CreateCommunityCommand>
     {
-        public CreateCommunityValidator(IReadRepository<Community> repository)
+        public CreateCommunityValidator(IRepository repository)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
 
@@ -20,7 +21,7 @@ namespace HoaM.Application.Features
                 .MustAsync(async (name, cancellationToken) =>
                 {
                     var spec = new CommunityByNameSpec(name);
-                    var community = await repository.FirstOrDefaultAsync(spec, cancellationToken);
+                    var community = await repository.GetAsync(spec, true, cancellationToken);
 
                     return community is null;
                 })
@@ -33,7 +34,9 @@ namespace HoaM.Application.Features
     {
         public async Task<IResult<CommunityId>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {
-            var community = await repository.AddAsync(Community.Create(request.Name), cancellationToken);
+            var community = Community.Create(request.Name);
+            
+            await repository.AddAsync(community, cancellationToken);
 
             return Results.Success(community.Id);
         }

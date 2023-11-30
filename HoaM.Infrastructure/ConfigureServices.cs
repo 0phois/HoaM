@@ -20,7 +20,7 @@ namespace HoaM.Infrastructure
         public static InfrastructureBuilder AddIdentityServices<TUser>(this IServiceCollection services, IConfiguration configuration) where TUser : IdentityUser, new()
         {
             services.AddAuthorization();
-            services.AddIdentityApiEndpoints<TUser>() //TODO - create ApplicationUser
+            services.AddIdentityApiEndpoints<TUser>()
                     .AddEntityFrameworkStores<IdentityDbContext<TUser>>();
 
             services.Configure<IdentityOptions>(configuration.GetSection(nameof(IdentityOptions)));

@@ -4,6 +4,7 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -11,7 +12,7 @@ namespace HoaM.Application.Features
 
     public sealed class CreateLotValidator : AbstractValidator<CreateLotCommand>
     {
-        public CreateLotValidator(IReadRepository<Lot> repository)
+        public CreateLotValidator(IRepository repository)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
 
@@ -20,7 +21,7 @@ namespace HoaM.Application.Features
                 .MustAsync(async (number, cancellationToken) =>
                 {
                     var spec = new LotByNumberSpec(number);
-                    var lot = await repository.FirstOrDefaultAsync(spec, cancellationToken);
+                    var lot = await repository.GetAsync(spec, true, cancellationToken);
 
                     return lot is null;
                 })
@@ -34,7 +35,9 @@ namespace HoaM.Application.Features
     {
         public async Task<IResult<Lot>> Handle(CreateLotCommand request, CancellationToken cancellationToken)
         {
-            var lot = await repository.AddAsync(Lot.Create(request.LotNumber), cancellationToken);
+            var lot = Lot.Create(request.LotNumber);
+            
+            await repository.AddAsync(lot, cancellationToken);
 
             return Results.Success(lot);
         }
