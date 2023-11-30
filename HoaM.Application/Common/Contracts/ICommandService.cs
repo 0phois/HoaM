@@ -2,7 +2,7 @@
 {
     public interface ICommandService
     {
-        Task ExecuteAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : ICommand;
+        Task ExecuteAsync(ICommand request, CancellationToken cancellationToken = default);
 
         Task<TResponse> ExecuteAsync<TResponse>(ICommand<TResponse> request, CancellationToken cancellationToken = default);
     }

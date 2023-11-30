@@ -1,13 +1,13 @@
 ﻿using HoaM.Application.Common;
 using MediatR;
 
-namespace HoaM.Extensions.Mediatr
+namespace HoaM.Extensions.MediatR
 {
     public class MediatrCommandService(IMediator mediator) : ICommandService
     {
         private readonly IMediator _mediator = mediator;
 
-        public async Task ExecuteAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : ICommand
+        public async Task ExecuteAsync(ICommand request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(new MediatrCommand<ICommand>(request), cancellationToken).ConfigureAwait(false);
         }

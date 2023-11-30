@@ -8,6 +8,8 @@ namespace HoaM.Infrastructure.Identity
     {
         public Username DisplayName => Username.From(UserName!);
 
+        public ApplicationUser() { }
+
         public ApplicationUser(string username) => UserName = username;
     }
 }

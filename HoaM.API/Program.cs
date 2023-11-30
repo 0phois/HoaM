@@ -1,19 +1,19 @@
 using HoaM.API.Features;
+using HoaM.Infrastructure;
+using HoaM.Extensions.MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>() //TODO - create ApplicationUser
-                .AddEntityFrameworkStores<IdentityDbContext<IdentityUser>>();
-
-builder.Services.Configure<IdentityOptions>(builder.Configuration.GetSection(nameof(IdentityOptions)));
-builder.Services.AddDbContext<IdentityDbContext<IdentityUser>>(options => options.UseInMemoryDatabase("db")); //TODO - remove EF InMemory dependency 
+builder.Services.AddIdentityServices<IdentityUser>(builder.Configuration)
+                .ConfigureDbContext<IdentityDbContext<IdentityUser>>(ctxBuilder: options => options.UseInMemoryDatabase("sample_db")); //TODO - remove EF InMemory dependency 
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.UseMediatR();
 
 var app = builder.Build();
 

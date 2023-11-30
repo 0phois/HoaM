@@ -2,7 +2,7 @@
 using HoaM.Domain.Common;
 using MediatR;
 
-namespace HoaM.Extensions.Mediatr
+namespace HoaM.Extensions.MediatR
 {
     internal sealed class MediatrCommand<TCommand>(TCommand command) : IRequest<IResult> where TCommand : ICommand
     {
