@@ -4,7 +4,6 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
-using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -15,7 +14,7 @@ namespace HoaM.Application.Features
 
     public sealed class UpdateParcelAddressValidator : AbstractValidator<UpdateParcelAddressCommand>
     {
-        public UpdateParcelAddressValidator(IRepository repository)
+        public UpdateParcelAddressValidator(IParcelRepository repository)
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -28,13 +27,7 @@ namespace HoaM.Application.Features
 
             RuleFor(command => command.Entity)
                 .NotEmpty()
-                .MustAsync(async (cmd, parcel, cancellationToken) =>
-                {
-                    var spec = new ParcelByAddressSpec(cmd.StreetName, cmd.StreetNumber);
-                    parcel = await repository.GetAsync(spec, true, cancellationToken);
-
-                    return parcel is null;
-                })
+                .MustAsync((cmd, _, cancellationToken) => repository.IsAddressUniqueAsync(cmd.StreetNumber, cmd.StreetName, cancellationToken))
                 .WithErrorCode(ApplicationErrors.Parcel.DuplicateAddress.Code)
                 .WithMessage(ApplicationErrors.Parcel.DuplicateAddress.Message);
         }

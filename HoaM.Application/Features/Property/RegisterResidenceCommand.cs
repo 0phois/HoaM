@@ -3,7 +3,6 @@ using HoaM.Application.Common;
 using HoaM.Application.Exceptions;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
-using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -11,31 +10,25 @@ namespace HoaM.Application.Features
 
     public sealed class RegisterResidenceValidator : AbstractValidator<RegisterResidenceCommand>
     {
-        public RegisterResidenceValidator(IRepository repository)
+        public RegisterResidenceValidator(IParcelRepository repository)
         {
             RuleFor(command => command.DevelopmentStatus).IsInEnum();
 
             RuleFor(command => command.Lots)
                 .NotEmpty()
-                .MustAsync(async (lots, cancellationToken) =>
-                {
-                    var spec = new ParcelByLotsSpec(lots);
-                    var parcel = await repository.GetAsync(spec, true, cancellationToken);
-
-                    return parcel is null;
-                })
+                .MustAsync(repository.HasUniqueLotsAsync)
                 .WithErrorCode(ApplicationErrors.Lot.AlreadyRegistered.Code)
                 .WithMessage(ApplicationErrors.Lot.AlreadyRegistered.Message);
         }
     }
 
-    public sealed class RegisterResidenceHandler(IRepository repository) : ICommandHandler<RegisterResidenceCommand, Residence>
+    public sealed class RegisterResidenceHandler(IParcelRepository repository) : ICommandHandler<RegisterResidenceCommand, Residence>
     {
-        public async Task<IResult<Residence>> Handle(RegisterResidenceCommand request, CancellationToken cancellationToken)
+        public Task<IResult<Residence>> Handle(RegisterResidenceCommand request, CancellationToken cancellationToken)
         {
             var residence = Residence.Create(request.DevelopmentStatus, request.Lots);
             
-            await repository.AddAsync<Parcel>(residence, cancellationToken);
+            repository.Insert(residence);
 
             return Results.Success(residence);
         }

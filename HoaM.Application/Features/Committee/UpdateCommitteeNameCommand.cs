@@ -4,7 +4,6 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
-using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -15,7 +14,7 @@ namespace HoaM.Application.Features
 
     public sealed class UpdateCommitteeNameValidator : AbstractValidator<UpdateCommitteeNameCommand>
     {
-        public UpdateCommitteeNameValidator(IRepository repository)
+        public UpdateCommitteeNameValidator(ICommitteeRepository repository)
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -32,13 +31,7 @@ namespace HoaM.Application.Features
 
             RuleFor(command => command.NewName)
                 .NotEmpty()
-                .MustAsync(async (newName, cancellationToken) =>
-                {
-                    var spec = new CommitteeByNameSpec(newName);
-                    var committee = await repository.GetAsync(spec, true, cancellationToken);
-
-                    return committee is null;
-                })
+                .MustAsync(repository.IsNameUniqueAsync)
                 .WithErrorCode(ApplicationErrors.Committee.DuplicateName.Code)
                 .WithMessage(ApplicationErrors.Committee.DuplicateName.Message)
                 .When(command => !command.Entity!.Name.Value.Equals(command.NewName.Value, StringComparison.OrdinalIgnoreCase));

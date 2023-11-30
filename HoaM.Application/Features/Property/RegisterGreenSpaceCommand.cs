@@ -3,7 +3,6 @@ using HoaM.Application.Common;
 using HoaM.Application.Exceptions;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
-using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -11,31 +10,25 @@ namespace HoaM.Application.Features
 
     public sealed class RegisterGreenSpaceValidator : AbstractValidator<RegisterGreenSpaceCommand>
     {
-        public RegisterGreenSpaceValidator(IRepository repository)
+        public RegisterGreenSpaceValidator(IParcelRepository repository)
         {
             RuleFor(command => command.DevelopmentStatus).IsInEnum();
 
             RuleFor(command => command.Lots)
                 .NotEmpty()
-                .MustAsync(async (lots, cancellationToken) =>
-                {
-                    var spec = new ParcelByLotsSpec(lots);
-                    var parcel = await repository.GetAsync(spec, true, cancellationToken);
-
-                    return parcel is null;
-                })
+                .MustAsync(repository.HasUniqueLotsAsync)
                 .WithErrorCode(ApplicationErrors.Lot.AlreadyRegistered.Code)
                 .WithMessage(ApplicationErrors.Lot.AlreadyRegistered.Message);
         }
     }
 
-    public sealed class RegisterGreenSpaceHandler(IRepository<Parcel> repository) : ICommandHandler<RegisterGreenSpaceCommand, GreenSpace>
+    public sealed class RegisterGreenSpaceHandler(IParcelRepository repository) : ICommandHandler<RegisterGreenSpaceCommand, GreenSpace>
     {
-        public async Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
+        public Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {
             var greenSpace = GreenSpace.Create(request.DevelopmentStatus, request.Lots);
             
-            await repository.AddAsync<Parcel>(greenSpace, cancellationToken);
+            repository.Insert(greenSpace);
 
             return Results.Success(greenSpace);
         }

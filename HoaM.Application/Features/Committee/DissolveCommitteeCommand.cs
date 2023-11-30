@@ -34,14 +34,9 @@ namespace HoaM.Application.Features
         }
     }
 
-    public sealed class DissolveCommitteeHandler : ICommandHandler<DissolveCommitteeCommand>
+    public sealed class DissolveCommitteeHandler(ISystemClock systemClock) : ICommandHandler<DissolveCommitteeCommand>
     {
-        private readonly ISystemClock _clock;
-
-        public DissolveCommitteeHandler(ISystemClock systemClock)
-        {
-            _clock = systemClock;
-        }
+        private readonly ISystemClock _clock = systemClock;
 
         public Task<IResult> Handle(DissolveCommitteeCommand request, CancellationToken cancellationToken)
         {

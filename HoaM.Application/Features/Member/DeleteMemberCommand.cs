@@ -4,7 +4,6 @@ using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
-using TanvirArjel.EFCore.GenericRepository;
 
 namespace HoaM.Application.Features
 {
@@ -32,11 +31,11 @@ namespace HoaM.Application.Features
         }
     }
 
-    public sealed class DeleteMemberHandler(IRepository repository) : ICommandHandler<DeleteMemberCommand>
+    public sealed class DeleteMemberHandler(IMemberRepository repository) : ICommandHandler<DeleteMemberCommand>
     {
         public Task<IResult> Handle(DeleteMemberCommand request, CancellationToken cancellationToken)
         {
-            repository.Remove(request.Entity);
+            repository.Remove(request.Entity!);
 
             return Results.Success();
         }
