@@ -6,7 +6,7 @@
         public void PublishArticle_WhenArticleIsNotPublished_ReturnsSuccess()
         {
             // Arrange
-            var systemClock = new SystemClock();
+            var systemClock = TimeProvider.System;
             var articleService = new ArticleService(systemClock);
             var article = Article.CreateAnnouncement(ArticleTitle.From("New Announcement"), Text.From("Successfully published article"));
 
@@ -21,7 +21,7 @@
         public void PublishArticle_WhenArticleIsAlreadyPublished_ReturnsFailedResult()
         {
             // Arrange
-            var systemClock = new SystemClock();
+            var systemClock = TimeProvider.System;
             var articleService = new ArticleService(systemClock);
             var article = Article.CreateAnnouncement(ArticleTitle.From("New Announcement"), Text.From("Successfully published article"));
 
@@ -40,12 +40,10 @@
         public void PublishArticle_WhenArticlePublishThrowsDomainException_ReturnsExceptionResult()
         {
             // Arrange
-            var systemClock = Substitute.For<ISystemClock>();
+            var systemClock = TimeProvider.System;
             var articleService = new ArticleService(systemClock);
             var article = Article.CreateAnnouncement(ArticleTitle.From("New Announcement"), Text.From("Announcement content"));
             
-            systemClock.UtcNow.Returns(default(DateTimeOffset));
-
             // Act
             var result = articleService.PublishArticle(article);
 

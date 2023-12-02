@@ -136,12 +136,12 @@ namespace HoaM.Domain.Features
             Name = name;
         }
 
-        public bool TryDissolve(ISystemClock systemClock)
+        public bool TryDissolve(TimeProvider systemClock)
         {
             if (DeletionDate.HasValue) return false;
             if (DissolvedDate.HasValue) return false;
 
-            DissolvedDate = DateOnly.FromDateTime(systemClock.UtcNow.DateTime);
+            DissolvedDate = DateOnly.FromDateTime(systemClock.GetUtcNow().DateTime);
 
             AddDomainEvent(new CommitteeDissolvedNotification(this));
 

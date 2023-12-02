@@ -171,10 +171,10 @@
         {
             // Arrange
             var committee = Committee.Create(new CommitteeName("Test Committee"));
-            committee.TryDissolve(new SystemClock());
+            committee.TryDissolve(TimeProvider.System);
 
             // Act
-            var result = committee.TryDissolve(new SystemClock());
+            var result = committee.TryDissolve(TimeProvider.System);
 
             // Assert
             Assert.False(result);
@@ -189,7 +189,7 @@
             committee.DeletionDate = DateTimeOffset.Now;
 
             // Act
-            var result = committee.TryDissolve(new SystemClock());
+            var result = committee.TryDissolve(TimeProvider.System);
 
             // Assert
             Assert.False(result);
@@ -200,7 +200,7 @@
         {
             // Arrange
             var committee = Committee.Create(new CommitteeName("Test Committee"));
-            var systemClock = new SystemClock();
+            var systemClock = TimeProvider.System;
 
             // Act
             var result = committee.TryDissolve(systemClock);

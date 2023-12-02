@@ -2,8 +2,8 @@
 {
     public interface ICommandService
     {
-        Task ExecuteAsync(ICommand request, CancellationToken cancellationToken = default);
+        Task ExecuteAsync<TCommand>(TCommand request, CancellationToken cancellationToken = default) where TCommand : ICommand;
 
-        Task<TResponse> ExecuteAsync<TResponse>(ICommand<TResponse> request, CancellationToken cancellationToken = default);
+        Task<TResponse> ExecuteAsync<TCommand, TResponse>(TCommand request, CancellationToken cancellationToken = default) where TCommand : ICommand<TResponse>;
     }
 }

@@ -9,13 +9,13 @@ namespace HoaM.Domain.UnitTests
         {
             // Arrange
             var currentUserService = Substitute.For<ICurrentUserService>();
-            var systemClock = Substitute.For<ISystemClock>();
+            var systemClock = Substitute.For<TimeProvider>();
             var meetingService = new MeetingService(currentUserService, systemClock);
 
             var meeting = CreateMeeting();
             meeting.GenerateMinutes();
 
-            systemClock.UtcNow.Returns(DateTime.UtcNow);
+            systemClock.GetUtcNow().Returns(DateTime.UtcNow);
             currentUserService.GetCommitteeMember().Returns(CommitteeMember.Create(FirstName.From("Jane"), LastName.From("Doe")));
 
             // Act
@@ -32,7 +32,7 @@ namespace HoaM.Domain.UnitTests
         {
             // Arrange
             var currentUserService = Substitute.For<ICurrentUserService>();
-            var systemClock = Substitute.For<ISystemClock>();
+            var systemClock = Substitute.For<TimeProvider>();
             var meetingService = new MeetingService(currentUserService, systemClock);
 
             var meeting = CreateMeeting();
@@ -51,7 +51,7 @@ namespace HoaM.Domain.UnitTests
         {
             // Arrange
             var currentUserService = Substitute.For<ICurrentUserService>();
-            var systemClock = Substitute.For<ISystemClock>();
+            var systemClock = Substitute.For<TimeProvider>();
             var meetingService = new MeetingService(currentUserService, systemClock);
 
             var meeting = CreateMeeting();
@@ -59,7 +59,7 @@ namespace HoaM.Domain.UnitTests
 
             meeting.GenerateMinutes();
 
-            systemClock.UtcNow.Returns(DateTime.UtcNow);
+            systemClock.GetUtcNow().Returns(DateTime.UtcNow);
             currentUserService.GetCommitteeMember().Returns(CommitteeMember.Create(FirstName.From("Jane"), LastName.From("Doe")));
 
             await meetingService.PublishMeetingMinutesAsync(meeting);
@@ -79,7 +79,7 @@ namespace HoaM.Domain.UnitTests
         {
             // Arrange
             var currentUserService = Substitute.For<ICurrentUserService>();
-            var systemClock = Substitute.For<ISystemClock>();
+            var systemClock = Substitute.For<TimeProvider>();
             var meetingService = new MeetingService(currentUserService, systemClock);
 
             var meeting = CreateMeeting();

@@ -4,8 +4,10 @@ namespace HoaM.Application
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection UseDefaultTimeProvider(this IServiceCollection services)
         {
+            services.AddSingleton(TimeProvider.System);
+
             return services;
         }
     }

@@ -1,6 +1,6 @@
-﻿using HoaM.Infrastructure.Data;
+﻿using HoaM.Domain.Features;
+using HoaM.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace HoaM.Infrastructure
 {
-    public sealed class InfrastructureBuilder(IServiceCollection services, IConfiguration configuration) 
+    public sealed class InfrastructureBuilder<TDbContext>(IServiceCollection services, IConfiguration configuration) where TDbContext : DbContext
     {
         public IServiceCollection ServiceCollection { get; } = services; 
         public IConfiguration Configuration { get; } = configuration;
@@ -17,25 +17,34 @@ namespace HoaM.Infrastructure
 
     public static class ConfigureServices
     {
-        public static InfrastructureBuilder AddIdentityServices<TUser>(this IServiceCollection services, IConfiguration configuration) where TUser : IdentityUser, new()
+        public static InfrastructureBuilder<TDbContext> AddIdentityServices<TUser, TRole, TDbContext>(this IServiceCollection services,
+                                                                                   IConfiguration configuration,
+                                                                                   Action<IdentityBuilder>? identityBuilder = null)
+            where TUser : class, new()
+            where TRole : class
+            where TDbContext : DbContext
         {
             services.AddAuthorization();
-            services.AddIdentityApiEndpoints<TUser>()
-                    .AddEntityFrameworkStores<IdentityDbContext<TUser>>();
+
+            var defaultIdentityBuilder = services.AddIdentityApiEndpoints<TUser>().AddRoles<TRole>().AddEntityFrameworkStores<TDbContext>();
+            
+            identityBuilder?.Invoke(defaultIdentityBuilder);
 
             services.Configure<IdentityOptions>(configuration.GetSection(nameof(IdentityOptions)));
 
-            return new InfrastructureBuilder(services, configuration);
+            return new InfrastructureBuilder<TDbContext>(services, configuration);
         }
 
-        public static IServiceCollection ConfigureDbContext<TContext>(this InfrastructureBuilder builder,
-                                                                      IOptions<DatabaseOptions>? dbOptions = null,
-                                                                      Action<DbContextOptionsBuilder>? ctxBuilder = null) where TContext : DbContext
+        public static InfrastructureBuilder<TContext> ConfigureDbContext<TContext>(this InfrastructureBuilder<TContext> builder,
+                                                                                   IOptions<DatabaseOptions>? dbOptions = null,
+                                                                                   Action<DbContextOptionsBuilder>? ctxBuilder = null) where TContext : DbContext
         {
             var optionsBuilder = ctxBuilder;
             var databaseOptions = dbOptions?.Value ?? new();
             var services = builder.ServiceCollection;
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = string.IsNullOrEmpty(databaseOptions.ConnectionString) 
+                ? builder.Configuration.GetConnectionString("DefaultConnection")
+                : databaseOptions.ConnectionString;
 
             services.AddDbContext<TContext>((sp, options) =>
             {
@@ -55,10 +64,23 @@ namespace HoaM.Infrastructure
 
             });
             
-            services.AddScoped(provider => provider.GetRequiredService<TContext>());
+            services.AddScoped<DbContext>(provider => provider.GetRequiredService<TContext>());
 
             //TODO - get assemblies with IEntity | Register type configurations
-            return services; 
+            return builder; 
+        }
+
+        public static IServiceCollection WithDefaultRepositories<TContext>(this InfrastructureBuilder<TContext> builder) where TContext : DbContext
+        {
+            var services = builder.ServiceCollection;
+
+            services.AddScoped<ICommunityRepository, CommunityRepository>();
+            services.AddScoped<ICommitteeRepository, CommitteeRepository>();
+            services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<IParcelRepository, ParcelRepository>();
+            services.AddScoped<ILotRepository, LotRepository>();
+
+            return services;
         }
     }
 }

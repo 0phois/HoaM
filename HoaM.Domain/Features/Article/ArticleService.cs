@@ -5,9 +5,9 @@ namespace HoaM.Domain.Features
 {
     public sealed class ArticleService : IArticleManager
     {
-        public ISystemClock SystemClock { get; }
+        public TimeProvider SystemClock { get; }
 
-        public ArticleService(ISystemClock systemClock) => SystemClock = systemClock;
+        public ArticleService(TimeProvider systemClock) => SystemClock = systemClock;
 
         public IResult PublishArticle(Article article)
         {
@@ -15,7 +15,7 @@ namespace HoaM.Domain.Features
 
             try
             {
-                article.Publish(SystemClock.UtcNow);
+                article.Publish(SystemClock.GetUtcNow());
             }
             catch (DomainException ex)
             {

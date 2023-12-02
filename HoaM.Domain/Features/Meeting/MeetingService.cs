@@ -6,9 +6,9 @@ namespace HoaM.Domain.Features
     public sealed class MeetingService : IMeetingManager
     {
         private readonly ICurrentUserService _currentUserService;
-        private readonly ISystemClock _systemClock;
+        private readonly TimeProvider _systemClock;
 
-        public MeetingService(ICurrentUserService currentUserService, ISystemClock systemClock)
+        public MeetingService(ICurrentUserService currentUserService, TimeProvider systemClock)
         {
             _currentUserService = currentUserService;
             _systemClock = systemClock;
@@ -24,7 +24,7 @@ namespace HoaM.Domain.Features
             {
                 var publisher = await _currentUserService.GetCommitteeMember();
 
-                meeting.Minutes.Publish(publisher, _systemClock.UtcNow);
+                meeting.Minutes.Publish(publisher, _systemClock.GetUtcNow());
             }
             catch (DomainException ex)
             {
