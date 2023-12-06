@@ -27,7 +27,7 @@ namespace HoaM.Application.Features
         public Task<IResult<Residence>> Handle(RegisterResidenceCommand request, CancellationToken cancellationToken)
         {
             var residence = Residence.Create(request.DevelopmentStatus, request.Lots);
-            
+
             repository.Insert(residence);
 
             return Results.Success(residence);

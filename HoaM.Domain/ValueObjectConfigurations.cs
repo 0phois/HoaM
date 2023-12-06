@@ -17,6 +17,7 @@ namespace HoaM.Domain
             entityId.For("NotificationId");
             entityId.For("PhoneNumberId");
             entityId.For("TransactionId");
+            entityId.For("ActionItemId");
             entityId.For("CommitteeId");
             entityId.For("CommunityId");
             entityId.For("DocumentId");
@@ -30,7 +31,7 @@ namespace HoaM.Domain
             entityId.For("NoteId");
             entityId.For("LotId");
 
-            var name = builder.OfString().NotEmpty().MaxLength(50).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
+            var name = builder.OfString().NotEmpty().MaxLength(75).Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 
             name.For("CommitteeRole").AsClass();
             name.For("TransactionTitle");

@@ -6,7 +6,7 @@
     {
         public static class ActionItem
         {
-            public static Error NullOrEmpty => new($"{nameof(ActionItem)}.{nameof(NullOrEmpty)}", "Action items contains no elements.");
+            public static Error NullOrEmpty => new($"{nameof(ActionItem)}.{nameof(NullOrEmpty)}", "No available action items exist");
             public static Error ItemNullOrEmpty => new($"{nameof(ActionItem)}.{nameof(ItemNullOrEmpty)}", "Action item cannot be null.");
             public static Error NotFound => new($"{nameof(ActionItem)}.{nameof(NotFound)}", "Action item does not exist.");
         }

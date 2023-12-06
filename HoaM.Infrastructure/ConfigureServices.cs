@@ -3,9 +3,9 @@ using HoaM.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace HoaM.Infrastructure
 {
@@ -35,19 +35,20 @@ namespace HoaM.Infrastructure
             return new InfrastructureBuilder<TDbContext>(services, configuration);
         }
 
-        public static InfrastructureBuilder<TContext> ConfigureDbContext<TContext>(this InfrastructureBuilder<TContext> builder,
-                                                                                   IOptions<DatabaseOptions>? dbOptions = null,
-                                                                                   Action<DbContextOptionsBuilder>? ctxBuilder = null) where TContext : DbContext
+        public static InfrastructureBuilder<TContext> ConfigureDbContext<TContext>(this InfrastructureBuilder<TContext> builder, Action<DbContextOptionsBuilder>? ctxBuilder = null) where TContext : DbContext
         {
             var optionsBuilder = ctxBuilder;
-            var databaseOptions = dbOptions?.Value ?? new();
             var services = builder.ServiceCollection;
+            var databaseOptions = builder.Configuration.GetSection(nameof(DatabaseOptions)).Get<DatabaseOptions>() ?? new();
+
             var connectionString = string.IsNullOrEmpty(databaseOptions.ConnectionString) 
                 ? builder.Configuration.GetConnectionString("DefaultConnection")
-                : databaseOptions.ConnectionString;
+                : databaseOptions.ConnectionString;            
 
             services.AddDbContext<TContext>((sp, options) =>
             {
+                options.ReplaceService<IValueConverterSelector, TypelyValueConverterSelector>();
+
                 optionsBuilder?.Invoke(options);
 
                 if (databaseOptions.ProviderType != ProviderType.InMemory)
@@ -63,8 +64,8 @@ namespace HoaM.Infrastructure
                 };
 
             });
-            
-            services.AddScoped<DbContext>(provider => provider.GetRequiredService<TContext>());
+
+            services.AddScoped<DbContext, TContext>();
 
             //TODO - get assemblies with IEntity | Register type configurations
             return builder; 

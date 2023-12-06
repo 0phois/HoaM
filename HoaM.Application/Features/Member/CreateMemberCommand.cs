@@ -26,7 +26,7 @@ namespace HoaM.Application.Features
         public Task<IResult<AssociationMember>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
             var member = AssociationMember.Create(request.FirstName, request.LastName);
-            
+
             repository.Insert(member);
 
             return Results.Success(member);

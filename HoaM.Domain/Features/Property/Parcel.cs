@@ -35,7 +35,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Summary of all <see cref="ITransaction"/>s linked to this <seealso cref="Parcel"/>
         /// </summary>
-        public IReadOnlyCollection<ITransaction> Transactions { get; private protected set; } = new List<ITransaction>().AsReadOnly();
+        public IReadOnlyCollection<Transaction> Transactions { get; private protected set; } = new List<Transaction>().AsReadOnly();
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }

@@ -4,9 +4,9 @@
     {
         private protected RecurringTransaction() { }
 
-        protected RecurringTransaction(T transaction, EventTitle title, Schedule? schedule = null)
+        protected RecurringTransaction(T transaction, Schedule? schedule = null)
             : base(transaction,
-                   title,
+                  EventTitle.From(transaction.Title.Value),
                    new Occurrence(transaction.EffectiveDate.ToDateTime(TimeOnly.MinValue), transaction.EffectiveDate.ToDateTime(TimeOnly.MaxValue)),
                    schedule)
         { }

@@ -27,7 +27,7 @@ namespace HoaM.Application.Features
         public Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {
             var greenSpace = GreenSpace.Create(request.DevelopmentStatus, request.Lots);
-            
+
             repository.Insert(greenSpace);
 
             return Results.Success(greenSpace);

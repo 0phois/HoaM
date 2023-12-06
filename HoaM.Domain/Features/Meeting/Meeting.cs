@@ -46,15 +46,15 @@ namespace HoaM.Domain.Features
 
         private Meeting() { }
 
-        public static Meeting Create(MeetingTitle title, DateTimeOffset scheduledDate, Committee host)
+        public static Meeting Create(MeetingTitle title, DateTimeOffset scheduledDate, Committee hostedBy)
         {
             if (title is null) throw new DomainException(DomainErrors.Meeting.TitleNullOrEmpty);
 
             if (scheduledDate == default) throw new DomainException(DomainErrors.Meeting.DateNullOrEmpty);
 
-            if (host is null) throw new DomainException(DomainErrors.Meeting.HostNullOrEmpty);
+            if (hostedBy is null) throw new DomainException(DomainErrors.Meeting.HostNullOrEmpty);
 
-            return new Meeting() { Title = title, ScheduledDate = scheduledDate, Committee = host };
+            return new Meeting() { Title = title, ScheduledDate = scheduledDate, Committee = hostedBy };
         }
 
         public Meeting WithDescription(MeetingDescription description)

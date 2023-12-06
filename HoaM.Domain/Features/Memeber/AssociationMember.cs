@@ -48,9 +48,11 @@ namespace HoaM.Domain.Features
         public DateTimeOffset? DeletionDate { get; set; }
         public bool IsDeleted => DeletionDate is not null;
 
-        public Username DisplayName => Username.TryParse(Email?.Address.Value, out var displayName) ? displayName : Username.From($"{FirstName} {LastName}");
+        public Username DisplayName => Username.TryParse(Email?.Address.Value, out var displayName) 
+            ? displayName 
+            : Username.From($"{FirstName} {LastName}");
 
-        private AssociationMember() { }
+        private protected AssociationMember() { }
 
         protected AssociationMember(FirstName name, LastName surname)
         {

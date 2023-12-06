@@ -19,37 +19,57 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Collection of members of the Home Owner's Association
         /// </summary>
-        public IReadOnlyCollection<AssociationMember> AssociationMembers { get; private set; } = new HashSet<AssociationMember>();
+        public IReadOnlyCollection<AssociationMember> AssociationMembers { get; private set; } = [];
 
         /// <summary>
         /// Collection of recurring <see cref="AssociationFee"/>s managed by the Home Owner's Association
         /// </summary>
-        public IReadOnlyCollection<AssociationFee> AssociationFees { get; private set; } = new List<AssociationFee>();
+        public IReadOnlyCollection<AssociationFee> AssociationFees { get; private set; } = [];
 
         /// <summary>
         /// Collection of all <see cref="Transaction"/>s within the <see cref="Community"/>
         /// </summary>
-        public IReadOnlyCollection<Transaction> Transactions { get; private set; } = new List<Transaction>();
+        public IReadOnlyCollection<Transaction> Transactions { get; private set; } = [];
 
         /// <summary>
         /// Collection of <see cref="Committee"/>s within the Home Owner's Association
         /// </summary>
-        public IReadOnlyCollection<Committee> Committees { get; private set; } = new HashSet<Committee>();
+        public IReadOnlyCollection<Committee> Committees { get; private set; } = [];
+
+        /// <summary>
+        /// Collection of <see cref="Meeting"/>s held in the <see cref="Community"/>
+        /// </summary>
+        public IReadOnlyCollection<Meeting> Meeting { get; private set; } = [];
+
+        /// <summary>
+        /// Collection of <see cref="Event"/>s for the <see cref="Community"/>
+        /// </summary>
+        public IReadOnlyCollection<Event> Events { get; private set; } = [];
+
+        /// <summary>
+        /// Collection of <see cref="Lot"/>s in the <see cref="Community"/>
+        /// </summary>
+        public IReadOnlyCollection<Lot> Lots { get; private set; } = [];
 
         /// <summary>
         /// Collection of properties within the <see cref="Community"/>
         /// </summary>
-        public IReadOnlyCollection<Residence> Residences { get; private set; } = new HashSet<Residence>();
+        public IReadOnlyCollection<Parcel> Parcels { get; private set; } = [];
 
         /// <summary>
         /// Collection of <see cref="Article"/>s posted in the <seealso cref="Community"/>
         /// </summary>
-        public IReadOnlyCollection<Article> Articles { get; private set; } = new List<Article>();
+        public IReadOnlyCollection<Article> Articles { get; private set; } = [];
+
+        /// <summary>
+        /// Collection of <see cref="Document"/>s stored for the <see cref="Community"/>
+        /// </summary>
+        public IReadOnlyCollection<Document> Documents { get; private set; } = [];
 
         /// <summary>
         /// Collection of <see cref="NotificationTemplate"/>s generated within the <see cref="Community"/>
         /// </summary>
-        public IReadOnlyCollection<NotificationTemplate> Notifications { get; private set; } = new List<NotificationTemplate>();
+        public IReadOnlyCollection<NotificationTemplate> Notifications { get; private set; } = [];
 
         private Community() { }
 

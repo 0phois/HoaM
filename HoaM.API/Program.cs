@@ -1,3 +1,4 @@
+using HoaM.API;
 using HoaM.API.Features;
 using HoaM.Application;
 using HoaM.Extensions.MediatR;
@@ -5,16 +6,14 @@ using HoaM.Infrastructure;
 using HoaM.Infrastructure.Data;
 using HoaM.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityServices<ApplicationUser, ApplicationRole, ApplicationDbContext>(builder.Configuration)
-                .ConfigureDbContext(ctxBuilder: options => options.UseInMemoryDatabase("sample_db")) //TODO - remove EF InMemory dependency 
+                .ConfigureDbContext()
                 .WithDefaultRepositories();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointServices();
 
 builder.Services.UseMediatR();
 builder.Services.UseDefaultTimeProvider();

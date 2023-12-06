@@ -1,13 +1,9 @@
-﻿namespace HoaM.Domain.Features
-{
-    public interface IMemberRepository
-    {
-        Task<AssociationMember> GetByIdAsync(AssociationMemberId committeeId, CancellationToken cancellationToken = default);
-        
-        Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
-        
-        void Insert(AssociationMember community);
+﻿using HoaM.Domain.Common;
 
-        void Remove(AssociationMember community);
+namespace HoaM.Domain.Features
+{
+    public interface IMemberRepository : IBaseRepository<AssociationMember, AssociationMemberId>
+    {
+        Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
     }
 }

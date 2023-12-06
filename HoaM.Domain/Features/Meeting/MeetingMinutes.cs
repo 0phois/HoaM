@@ -14,8 +14,8 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Discussions and decisions for <see cref="Meeting"/> agenda items
         /// </summary>
-        public IReadOnlyDictionary<NoteId, Text> AgendaNotes => _agendaNotes.AsReadOnly();
-        private readonly Dictionary<NoteId, Text> _agendaNotes = [];
+        public IReadOnlyCollection<Note> AgendaNotes => _agendaNotes.AsReadOnly();
+        private readonly List<Note> _agendaNotes = [];
 
         /// <summary>
         /// Tasks identified for follow-up
@@ -51,11 +51,6 @@ namespace HoaM.Domain.Features
         /// <see cref="Entities.Meeting"/> for which the <seealso cref="MeetingMinutes"/> were recorded
         /// </summary>
         public Meeting Meeting { get; private set; } = null!;
-
-        /// <summary>
-        /// Next scheduled <see cref="Meeting"/>
-        /// </summary>
-        public Meeting? NextMeeting { get; private set; }
 
         private MeetingMinutes() { }
 
@@ -120,38 +115,34 @@ namespace HoaM.Domain.Features
             return this;
         }
 
-        public MeetingMinutes WithAgendaNotes(Dictionary<NoteId, Text> agendaNotes)
+        public MeetingMinutes WithAgendaNotes(List<Note> agendaNotes)
         {
             if (agendaNotes is null || agendaNotes.Count == 0) throw new DomainException(DomainErrors.MeetingMinutes.NoteNullOrEmpty);
 
-            if (!agendaNotes.Keys.Except(Meeting.Agenda.Select(agenda => agenda.Id)).Any()) throw new DomainException(DomainErrors.MeetingMinutes.InvalidAgendaItem);
-
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
-            foreach (var note in agendaNotes)
-                _agendaNotes[note.Key] = note.Value;
+            _agendaNotes.Clear();
+            _agendaNotes.AddRange(agendaNotes);
 
             return this;
         }
 
-        public MeetingMinutes AddAgendaNote(NoteId agendaId, Text agendaNote)
+        public MeetingMinutes AddAgendaNote(Note agendaNote)
         {
-            if (agendaId == default) throw new DomainException(DomainErrors.MeetingMinutes.AgendaNullOrEmpty);
-
             if (agendaNote is null) throw new DomainException(DomainErrors.MeetingMinutes.NoteNullOrEmpty);
 
-            if (!Meeting.Agenda.Any(agenda => agenda.Id == agendaId)) throw new DomainException(DomainErrors.MeetingMinutes.InvalidAgendaItem);
+            if (!Meeting.Agenda.Any(agenda => agenda.Id == agendaNote.Id)) return this;
 
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
-            _agendaNotes[agendaId] = agendaNote;
+            _agendaNotes.Add(agendaNote);
 
             return this;
         }
 
-        public MeetingMinutes RemoveAgendaNote(NoteId agendaId)
+        public MeetingMinutes RemoveAgendaNote(Note agendaNote)
         {
-            _agendaNotes.Remove(agendaId);
+            _agendaNotes.Remove(agendaNote);
 
             return this;
         }
@@ -279,10 +270,14 @@ namespace HoaM.Domain.Features
 
             if (item is null) throw new DomainException(DomainErrors.ActionItem.ItemNullOrEmpty);
 
-            var actionItem = _actionItems.Find(x => x.Equals(item)) ?? throw new DomainException(DomainErrors.ActionItem.NotFound);
+            var actionItem = _actionItems.Find(x => x.Id.Equals(item.Id)) ?? throw new DomainException(DomainErrors.ActionItem.NotFound);
 
-            _actionItems.Remove(actionItem);
-            _actionItems.Add(actionItem with { IsCompleted = true });
+            if (_actionItems.Remove(actionItem))
+            {
+                actionItem.Complete();
+
+                _actionItems.Add(actionItem);
+            }
         }
 
         internal void Publish(CommitteeMember publisher, DateTimeOffset datePublished)
@@ -297,6 +292,4 @@ namespace HoaM.Domain.Features
             Publisher = publisher;
         }
     }
-
-    public sealed record ActionItem(Note Description, AssociationMember AssignedTo, bool IsCompleted = false);
 }

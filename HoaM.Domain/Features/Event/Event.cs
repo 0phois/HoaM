@@ -4,13 +4,16 @@ using MassTransit;
 
 namespace HoaM.Domain.Features
 {
-    public class Event<T> : AuditableSoftDeleteEntity<EventId>
+    public abstract class Event : AuditableSoftDeleteEntity<EventId>
     {
         /// <summary>
         /// Unique ID of the <see cref="Event"/>
         /// </summary>
         public override EventId Id { get; protected set; } = EventId.From(NewId.Next().ToGuid());
+    }
 
+    public class Event<T> : Event
+    {
         /// <summary>
         /// Represents the basis of the event
         /// </summary>
@@ -31,18 +34,17 @@ namespace HoaM.Domain.Features
         /// </summary>
         public Schedule? Schedule { get; init; }
 
-        internal Event() { }
+        private protected Event() { }
 
-        protected Event(T activity, EventTitle title, Occurrence occurance, Schedule? schedule)
+        private protected Event(T activity, EventTitle title, Occurrence occurance, Schedule? schedule)
         {
             if (activity is null) throw new DomainException(DomainErrors.Event.ActivityNullOrEmpty);
-
+            
             if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
 
             if (occurance is null) throw new DomainException(DomainErrors.Event.OccuranceNullOrEmpty);
 
             Data = activity;
-            Title = title;
             Occurrence = occurance;
             Schedule = schedule;
         }
@@ -88,5 +90,5 @@ namespace HoaM.Domain.Features
         }
     }
 
-    public record Occurrence(DateTimeOffset Start, DateTimeOffset Stop);
+    public sealed record Occurrence(DateTimeOffset Start, DateTimeOffset Stop);
 }

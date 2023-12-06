@@ -28,7 +28,7 @@ namespace HoaM.Application.Features
         public Task<IResult<Lot>> Handle(CreateLotCommand request, CancellationToken cancellationToken)
         {
             var lot = Lot.Create(request.LotNumber);
-            
+
             repository.Insert(lot);
 
             return Results.Success(lot);

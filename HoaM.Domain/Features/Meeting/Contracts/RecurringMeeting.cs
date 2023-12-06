@@ -4,7 +4,7 @@
     {
         private protected RecurringMeeting() { }
 
-        protected RecurringMeeting(T activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null)
-            : base(activity, title, new Occurrence(start, stop), schedule) { }
+        protected RecurringMeeting(T activity, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null)
+            : base(activity, EventTitle.From(activity.Title.Value), new Occurrence(start, stop), schedule) { }
     }
 }

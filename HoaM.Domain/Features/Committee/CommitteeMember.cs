@@ -13,7 +13,9 @@ namespace HoaM.Domain.Features
         /// <see cref="Committee"/> to which this <seealso cref="CommitteeMember"/> belongs
         /// </summary>
         public IReadOnlyCollection<Committee> Committees => _committees.AsReadOnly();
-        private readonly List<Committee> _committees = new();
+        private readonly List<Committee> _committees = [];
+
+        private CommitteeMember() { }
 
         private CommitteeMember(FirstName name, LastName surname) : base(name, surname) { }
 

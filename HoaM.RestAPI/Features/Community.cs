@@ -19,7 +19,9 @@ namespace HoaM.API.Features
 
         public static async Task<CommunityId> CreateCommunity([FromServices] ICommandService commandService, CommunityName name)
         {
-            return await commandService.ExecuteAsync<CreateCommunityCommand, CommunityId>(new CreateCommunityCommand(name));
+            var result = await commandService.ExecuteAsync<CreateCommunityCommand, CommunityId>(new CreateCommunityCommand(name));
+            //TODO map result to value or error
+            return result.Value;
         }
 
         public static async Task<IResult> UpdateCommunityName([FromServices] ICommandService commandService, CommunityId id, CommunityName newName)

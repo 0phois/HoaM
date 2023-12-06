@@ -28,7 +28,7 @@ namespace HoaM.Domain.Features
         /// Other relevant details about the <see cref="Committee"/>
         /// </summary>
         public IReadOnlyCollection<Note> AdditionalDetails => _additionalDetails.AsReadOnly();
-        private readonly List<Note> _additionalDetails = new();
+        private readonly List<Note> _additionalDetails = [];
 
         /// <summary>
         /// Date the <see cref="Committee"/> was created

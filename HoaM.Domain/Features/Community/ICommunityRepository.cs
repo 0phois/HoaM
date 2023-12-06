@@ -1,13 +1,9 @@
-﻿namespace HoaM.Domain.Features
+﻿using HoaM.Domain.Common;
+
+namespace HoaM.Domain.Features
 {
-    public interface ICommunityRepository
+    public interface ICommunityRepository : IBaseRepository<Community, CommunityId>
     {
-        Task<Community> GetByIdAsync(CommunityId communityId, CancellationToken cancellationToken = default);
-
         Task<bool> IsNameUniqueAsync(CommunityName name, CancellationToken cancellationToken = default);
-
-        void Insert(Community community);
-
-        void Remove(Community community);
     }
 }

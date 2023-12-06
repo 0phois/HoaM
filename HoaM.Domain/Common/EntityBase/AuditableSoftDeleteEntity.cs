@@ -2,8 +2,9 @@
 {
     public abstract class AuditableSoftDeleteEntity<TId> : AuditableEntity<TId>, ISoftDelete
     {
-        public bool IsDeleted { get; }
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
+    
+        public bool IsDeleted => DeletionDate is not null;
     }
 }

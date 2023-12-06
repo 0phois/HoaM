@@ -6,14 +6,14 @@ namespace HoaM.Domain.Features
     {
         private PeriodicMeeting() { }
 
-        private PeriodicMeeting(Meeting activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? frequency = null)
-            : base(activity, title, start, stop, frequency) { }
+        private PeriodicMeeting(Meeting activity, DateTimeOffset start, DateTimeOffset stop, Schedule? frequency = null)
+            : base(activity, start, stop, frequency) { }
 
         public static PeriodicMeeting Create(Meeting meeting, Schedule? frequeny = null)
         {
             if (meeting is null) throw new DomainException(DomainErrors.Meeting.NullOrEmpty);
 
-            return new PeriodicMeeting(meeting, EventTitle.From(meeting.Title.Value), meeting.ScheduledDate, meeting.ScheduledDate, frequeny);
+            return new PeriodicMeeting(meeting, meeting.ScheduledDate, meeting.ScheduledDate, frequeny);
         }
     }
 }

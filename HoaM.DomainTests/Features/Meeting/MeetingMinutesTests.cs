@@ -107,7 +107,7 @@
         {
             // Arrange
             var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
-            var item = CreateActionItem();
+            var item = ActionItem.Create(Text.From("This needs to be done"));
 
             // Act & Assert
             Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(item));
@@ -119,7 +119,7 @@
             // Arrange
             var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
 
-            meetingMinutes.AddActionItem(CreateActionItem());
+            meetingMinutes.AddActionItem(ActionItem.Create(Text.From("This needs to be done")));
 
             //Act & Assert
             Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(null));
@@ -131,10 +131,10 @@
             // Arrange
             var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
 
-            meetingMinutes.AddActionItem(CreateActionItem());
+            meetingMinutes.AddActionItem(ActionItem.Create(Text.From("This needs to be done")));
 
             //Act & Assert
-            Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(CreateActionItem()));
+            Assert.Throws<DomainException>(() => meetingMinutes.CompleteActionItem(ActionItem.Create(Text.From("This needs to be done"))));
         }
 
         [Fact]
@@ -142,7 +142,7 @@
         {
             // Arrange
             var meetingMinutes = MeetingMinutes.CreateFor(CreateMeeting());
-            var actionItem = CreateActionItem();
+            var actionItem = ActionItem.Create(Text.From("This needs to be done"));
 
             meetingMinutes.AddActionItem(actionItem);
 
@@ -161,14 +161,6 @@
             var committee = Committee.Create(CommitteeName.From("Executive Committee"));
 
             return Meeting.Create(title, scheduledDate, committee);
-        }
-
-        private static ActionItem CreateActionItem()
-        {
-            var description = Note.Create(Text.From("This needs to be done"));
-            var assignee = AssociationMember.Create(FirstName.From("James"), LastName.From("Bond"));
-
-            return new ActionItem(description, assignee);
         }
     }
 }

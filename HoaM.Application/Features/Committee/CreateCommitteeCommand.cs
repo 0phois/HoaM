@@ -30,7 +30,7 @@ namespace HoaM.Application.Features
         public Task<IResult<Committee>> Handle(CreateCommitteeCommand request, CancellationToken cancellationToken)
         {
             var committee = Committee.Create(request.Name, request.DateEstablished);
-            
+
             repository.Insert(committee);
 
             return Results.Success(committee);

@@ -6,7 +6,7 @@ namespace HoaM.Domain.Features
     {
         private AssociationFee() { }
 
-        private AssociationFee(Expense expense, EventTitle title, Schedule? frequency = null) : base(expense, title, frequency) { }
+        private AssociationFee(Expense expense, Schedule? frequency = null) : base(expense, frequency) { }
 
         public static AssociationFee Create(Expense expense, Schedule? frequency = null)
         {
@@ -14,7 +14,7 @@ namespace HoaM.Domain.Features
 
             if (expense.EffectiveDate == default) throw new DomainException(DomainErrors.AssociationFee.DateNullOrEmpty);
 
-            return new AssociationFee(expense, EventTitle.From(expense.Title.Value), frequency);
+            return new AssociationFee(expense, frequency);
         }
     }
 }

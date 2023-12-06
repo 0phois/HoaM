@@ -3,11 +3,9 @@ using HoaM.Domain.Exceptions;
 
 namespace HoaM.Domain.Features
 {
-    public sealed class ArticleService : IArticleManager
+    public sealed class ArticleService(TimeProvider systemClock) : IArticleManager
     {
-        public TimeProvider SystemClock { get; }
-
-        public ArticleService(TimeProvider systemClock) => SystemClock = systemClock;
+        public TimeProvider SystemClock { get; } = systemClock;
 
         public IResult PublishArticle(Article article)
         {
