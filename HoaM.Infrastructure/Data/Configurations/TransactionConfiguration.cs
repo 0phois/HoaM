@@ -31,6 +31,7 @@ namespace HoaM.Infrastructure.Data
                 navigationBuilder.Property(note => note.LastModifiedDate);
             });
 
+            builder.HasQueryFilter(transaction => transaction.DeletionDate == null);
         }
     }
 

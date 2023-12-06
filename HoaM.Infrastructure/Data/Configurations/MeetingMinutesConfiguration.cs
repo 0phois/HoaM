@@ -53,6 +53,8 @@ namespace HoaM.Infrastructure.Data
                    .IsRequired(false);
 
             builder.Property(minutes => minutes.PublishedDate).IsRequired(false);
+
+            builder.HasQueryFilter(minutes => minutes.DeletionDate == null);
         }
     }
 }

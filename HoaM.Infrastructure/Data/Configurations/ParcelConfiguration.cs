@@ -33,6 +33,7 @@ namespace HoaM.Infrastructure.Data
                    .HasValue<GreenSpace>("GreenSpace")
                    .HasValue<Residence>("Residence");
 
+            builder.HasQueryFilter(parcel => parcel.DeletionDate == null);
         }
     }
 

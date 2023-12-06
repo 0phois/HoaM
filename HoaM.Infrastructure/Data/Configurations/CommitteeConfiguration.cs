@@ -42,6 +42,8 @@ namespace HoaM.Infrastructure.Data
             builder.Ignore(committee => committee.IsDeleted);
             builder.Ignore(committee => committee.IsDissolved);
             builder.Ignore(committee => committee.IsActive);
+
+            builder.HasQueryFilter(committee => committee.DeletionDate == null);
         }
     }
 }

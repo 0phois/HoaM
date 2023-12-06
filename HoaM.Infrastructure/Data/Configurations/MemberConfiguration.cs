@@ -42,6 +42,8 @@ namespace HoaM.Infrastructure.Data
             builder.HasDiscriminator<string>("MemberType")
                    .HasValue<AssociationMember>("Association")
                    .HasValue<CommitteeMember>("Committee");
+
+            builder.HasQueryFilter(member => member.DeletionDate == null);
         }
     }
 

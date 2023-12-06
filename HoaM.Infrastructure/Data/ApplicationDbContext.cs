@@ -30,7 +30,7 @@ namespace HoaM.Infrastructure.Data
     internal sealed class JsonConverter<T> : ValueConverter<T, string> where T : class
     {
         public JsonConverter() : base(
-                v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-                v => JsonSerializer.Deserialize<T>(v, new JsonSerializerOptions())) { }
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                v => JsonSerializer.Deserialize<T>(v, (JsonSerializerOptions?)null)) { }
     }
 }

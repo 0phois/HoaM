@@ -36,8 +36,4 @@
     <ProjectReference Include="..\HoaM.Domain\HoaM.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Interceptors\" />
-  </ItemGroup>
-
 </Project>

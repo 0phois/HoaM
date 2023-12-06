@@ -13,7 +13,7 @@ namespace HoaM.Domain.Common
     {
         public virtual TId Id { get; protected set; } = default!;
 
-        private readonly ConcurrentBag<IDomainEvent> _domainEvents = new();
+        private readonly ConcurrentBag<IDomainEvent> _domainEvents = [];
 
         [NotMapped]
         public IProducerConsumerCollection<IDomainEvent> DomainEvents => _domainEvents;
@@ -23,7 +23,7 @@ namespace HoaM.Domain.Common
             _domainEvents.Add(domainEvent);
         }
 
-        internal void ClearDomainEvents()
+        public void ClearDomainEvents()
         {
             _domainEvents.Clear();
         }

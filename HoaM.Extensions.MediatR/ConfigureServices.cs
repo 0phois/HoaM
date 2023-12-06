@@ -18,6 +18,7 @@ namespace HoaM.Extensions.MediatR
             });
 
             services.AddScoped<ICommandService, MediatrCommandService>();
+            services.AddScoped<IDomainEventDispatcher, MediatrDomainEventDispatcher>();
 
             return services;
         }

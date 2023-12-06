@@ -7,6 +7,8 @@ namespace HoaM.Domain.Common
         IProducerConsumerCollection<IDomainEvent> DomainEvents { get; }
 
         void AddDomainEvent(IDomainEvent domainEvent);
+
+        void ClearDomainEvents();
     }
 
     public interface IEntity<TId> : IEntity, IEquatable<IEntity<TId>>

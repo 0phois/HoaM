@@ -1,5 +1,6 @@
 ﻿using HoaM.Domain.Features;
 using HoaM.Infrastructure.Data;
+using HoaM.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -26,7 +27,9 @@ namespace HoaM.Infrastructure
         {
             services.AddAuthorization();
 
-            var defaultIdentityBuilder = services.AddIdentityApiEndpoints<TUser>().AddRoles<TRole>().AddEntityFrameworkStores<TDbContext>();
+            var defaultIdentityBuilder = services.AddIdentityApiEndpoints<TUser>()
+                                                 .AddEntityFrameworkStores<TDbContext>()
+                                                 .AddRoles<TRole>();
             
             identityBuilder?.Invoke(defaultIdentityBuilder);
 
@@ -43,16 +46,22 @@ namespace HoaM.Infrastructure
 
             var connectionString = string.IsNullOrEmpty(databaseOptions.ConnectionString) 
                 ? builder.Configuration.GetConnectionString("DefaultConnection")
-                : databaseOptions.ConnectionString;            
+                : databaseOptions.ConnectionString;
 
-            services.AddDbContext<TContext>((sp, options) =>
+            services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, SoftDeleteEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+
+            services.AddDbContext<TContext>((provider, options) =>
             {
                 options.ReplaceService<IValueConverterSelector, TypelyValueConverterSelector>();
 
                 optionsBuilder?.Invoke(options);
 
                 if (databaseOptions.ProviderType != ProviderType.InMemory)
-                    options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+                {
+                    options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
+                }
 
                 options = databaseOptions.ProviderType switch
                 {
@@ -60,14 +69,13 @@ namespace HoaM.Infrastructure
                     ProviderType.PostgreSQL => options.UseNpgsql(connectionString, contextBuilder => contextBuilder.MigrationsAssembly(databaseOptions.MigrationsAssembly).UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)),
                     ProviderType.SQLServer => options.UseSqlServer(connectionString, contextBuilder => contextBuilder.MigrationsAssembly(databaseOptions.MigrationsAssembly).UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)),
                     ProviderType.SQLite => options.UseSqlite(connectionString, contextBuilder => contextBuilder.MigrationsAssembly(databaseOptions.MigrationsAssembly).UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)),
-                    _ => throw new InvalidOperationException("Unsupported database")
+                    _ => throw new InvalidOperationException("Unsupported database provider")
                 };
 
             });
 
             services.AddScoped<DbContext, TContext>();
 
-            //TODO - get assemblies with IEntity | Register type configurations
             return builder; 
         }
 
@@ -75,11 +83,20 @@ namespace HoaM.Infrastructure
         {
             var services = builder.ServiceCollection;
 
+            services.AddScoped(typeof(GenericRepository<,>));
+            services.AddScoped<ILotRepository, LotRepository>();
+            services.AddScoped<IParcelRepository, ParcelRepository>();
+            services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<IArticleRepository, ArticleRepository>();
+            services.AddScoped<IMeetingRepository, MeetingRepository>();
+            services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<ICommunityRepository, CommunityRepository>();
             services.AddScoped<ICommitteeRepository, CommitteeRepository>();
-            services.AddScoped<IMemberRepository, MemberRepository>();
-            services.AddScoped<IParcelRepository, ParcelRepository>();
-            services.AddScoped<ILotRepository, LotRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped(typeof(IEventRepository<>), typeof(EventRepository<>));
+            services.AddScoped<INotificationTemplateRepository, NotificationTemplateRepository>();
 
             return services;
         }

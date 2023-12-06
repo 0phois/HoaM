@@ -27,24 +27,24 @@ namespace HoaM.Infrastructure.Data
         /// Inserts the specified entity into the database.
         /// </summary>
         /// <param name="entity">The entity to be inserted into the database.</param>
-        public void Insert(TEntity entity) => DbContext.Set<TEntity>().Add(entity);
+        public virtual void Insert(TEntity entity) => DbContext.Set<TEntity>().Add(entity);
 
         /// <summary>
         /// Inserts the specified entities to the database.
         /// </summary>
         /// <param name="entities">The entities to be inserted into the database.</param>
-        public void InsertRange(IReadOnlyCollection<TEntity> entities) => DbContext.Set<TEntity>().AddRange(entities);
+        public virtual void InsertRange(IReadOnlyCollection<TEntity> entities) => DbContext.Set<TEntity>().AddRange(entities);
 
         /// <summary>
         /// Updates the specified entity in the database.
         /// </summary>
         /// <param name="entity">The entity to be updated.</param>
-        public void Update(TEntity entity) => DbContext.Set<TEntity>().Update(entity);
+        public virtual void Update(TEntity entity) => DbContext.Set<TEntity>().Update(entity);
 
         /// <summary>
         /// Removes the specified entity from the database.
         /// </summary>
         /// <param name="entity">The entity to be removed from the database.</param>
-        public void Remove(TEntity entity) => DbContext.Set<TEntity>().Remove(entity);
+        public virtual void Remove(TEntity entity) => DbContext.Set<TEntity>().Remove(entity);
     }
 }

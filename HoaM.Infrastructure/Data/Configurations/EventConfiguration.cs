@@ -33,6 +33,8 @@ namespace HoaM.Infrastructure.Data
                 schedule.Property(s => s.Interval);
                 schedule.Property(s => s.EndsAt);
             });
+
+            builder.HasQueryFilter(@event => @event.DeletionDate == null);
         }
     }
 

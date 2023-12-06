@@ -13,25 +13,27 @@ namespace HoaM.Infrastructure.Data
 
             builder.ToTable("AssociationFees");
 
-            builder.HasKey(@event => @event.Id);
+            builder.HasKey(fee => fee.Id);
 
-            builder.Property(@event => @event.Title).IsRequired();
+            builder.Property(fee => fee.Title).IsRequired();
 
-            builder.Property(@event => @event.Data).IsRequired()
+            builder.Property(fee => fee.Data).IsRequired()
                    .HasConversion(TValue => JsonSerializer.Serialize(TValue, jsonOptions),
                                   jsonString => JsonSerializer.Deserialize<Expense>(jsonString, jsonOptions)!);
 
-            builder.OwnsOne(@event => @event.Occurrence, occurrence =>
+            builder.OwnsOne(fee => fee.Occurrence, occurrence =>
             {
                 occurrence.Property(o => o.Start).IsRequired();
                 occurrence.Property(o => o.Stop).IsRequired();
             });
 
-            builder.OwnsOne(@event => @event.Schedule, schedule =>
+            builder.OwnsOne(fee => fee.Schedule, schedule =>
             {
                 schedule.Property(s => s.Interval);
                 schedule.Property(s => s.EndsAt);
             });
+
+            builder.HasQueryFilter(fee => fee.DeletionDate == null);
         }
     }
 }

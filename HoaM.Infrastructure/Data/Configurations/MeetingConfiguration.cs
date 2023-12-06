@@ -38,6 +38,7 @@ namespace HoaM.Infrastructure.Data
                    .HasForeignKey("CommitteeId")
                    .IsRequired();
 
+            builder.HasQueryFilter(meeting => meeting.DeletionDate == null);
         }
     }
 }
