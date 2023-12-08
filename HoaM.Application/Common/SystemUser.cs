@@ -2,9 +2,9 @@
 using HoaM.Domain.Common;
 using HoaM.Domain.Features;
 
-namespace HoaM.Application.Common
+namespace HoaM.Application
 {
-    internal class SystemUser : Entity<AssociationMemberId>, IMember
+    public sealed class SystemUser : Entity<AssociationMemberId>, IMember
     {
         public Username DisplayName => Username.From("SystemUser");
     }

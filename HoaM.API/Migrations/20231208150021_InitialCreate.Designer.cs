@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HoaM.SampleAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231205183928_InitialCreate")]
+    [Migration("20231208150021_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,6 +19,21 @@ namespace HoaM.SampleAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+
+            modelBuilder.Entity("AssociationMemberCommittee", b =>
+                {
+                    b.Property<Guid>("CommitteeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("MembersId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CommitteeId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("AssociationMemberCommittee");
+                });
 
             modelBuilder.Entity("AssociationMemberMeetingMinutes", b =>
                 {
@@ -33,21 +48,6 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasIndex("MeetingMinutesId");
 
                     b.ToTable("AssociationMemberMeetingMinutes");
-                });
-
-            modelBuilder.Entity("CommitteeCommitteeMember", b =>
-                {
-                    b.Property<Guid>("CommitteesId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("MembersId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CommitteesId", "MembersId");
-
-                    b.HasIndex("MembersId");
-
-                    b.ToTable("CommitteeCommitteeMember");
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.Article", b =>
@@ -159,11 +159,6 @@ namespace HoaM.SampleAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MemberType")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid?>("ParcelId")
                         .HasColumnType("TEXT");
 
@@ -174,10 +169,6 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasIndex("ParcelId");
 
                     b.ToTable("AssociationMembers", (string)null);
-
-                    b.HasDiscriminator<string>("MemberType").HasValue("Association");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.AuditLog", b =>
@@ -309,19 +300,30 @@ namespace HoaM.SampleAPI.Migrations
                     b.Property<DateTimeOffset?>("DeletionDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("LastModifiedDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CommunityId");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Event");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.Lot", b =>
@@ -401,9 +403,6 @@ namespace HoaM.SampleAPI.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("AssociationMemberId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("TEXT");
 
@@ -428,9 +427,10 @@ namespace HoaM.SampleAPI.Migrations
                     b.Property<DateTimeOffset?>("PublishedDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<Guid?>("Publisher")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("AssociationMemberId");
+                    b.HasKey("Id");
 
                     b.HasIndex("MeetingId")
                         .IsUnique();
@@ -780,19 +780,6 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.CommitteeMember", b =>
-                {
-                    b.HasBaseType("HoaM.Domain.Features.AssociationMember");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.ToTable("AssociationMembers", (string)null);
-
-                    b.HasDiscriminator().HasValue("Committee");
-                });
-
             modelBuilder.Entity("HoaM.Domain.Features.PeriodicMeeting", b =>
                 {
                     b.HasBaseType("HoaM.Domain.Features.Event");
@@ -801,11 +788,9 @@ namespace HoaM.SampleAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.ToTable("Events", (string)null);
+
+                    b.HasDiscriminator().HasValue("PeriodicMeeting");
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.GreenSpace", b =>
@@ -848,6 +833,21 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasDiscriminator().HasValue("Payment");
                 });
 
+            modelBuilder.Entity("AssociationMemberCommittee", b =>
+                {
+                    b.HasOne("HoaM.Domain.Features.Committee", null)
+                        .WithMany()
+                        .HasForeignKey("CommitteeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HoaM.Domain.Features.AssociationMember", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AssociationMemberMeetingMinutes", b =>
                 {
                     b.HasOne("HoaM.Domain.Features.AssociationMember", null)
@@ -859,21 +859,6 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasOne("HoaM.Domain.Features.MeetingMinutes", null)
                         .WithMany()
                         .HasForeignKey("MeetingMinutesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CommitteeCommitteeMember", b =>
-                {
-                    b.HasOne("HoaM.Domain.Features.Committee", null)
-                        .WithMany()
-                        .HasForeignKey("CommitteesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HoaM.Domain.Features.CommitteeMember", null)
-                        .WithMany()
-                        .HasForeignKey("MembersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -945,6 +930,30 @@ namespace HoaM.SampleAPI.Migrations
                         .WithMany("Residents")
                         .HasForeignKey("ParcelId");
 
+                    b.OwnsMany("HoaM.Domain.CommitteeAssignment", "Commitments", b1 =>
+                        {
+                            b1.Property<Guid>("AssociationMemberId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<Guid>("CommitteeId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("CommitteeRole")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("AssociationMemberId", "Id");
+
+                            b1.ToTable("CommitteeAssignment");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AssociationMemberId");
+                        });
+
                     b.OwnsOne("HoaM.Domain.Features.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -1007,6 +1016,8 @@ namespace HoaM.SampleAPI.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AssociationMemberId");
                         });
+
+                    b.Navigation("Commitments");
 
                     b.Navigation("Email");
 
@@ -1077,6 +1088,49 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasOne("HoaM.Domain.Features.Community", null)
                         .WithMany("Events")
                         .HasForeignKey("CommunityId");
+
+                    b.OwnsOne("HoaM.Domain.Features.Occurrence", "Occurrence", b1 =>
+                        {
+                            b1.Property<Guid>("EventId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTimeOffset>("Start")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTimeOffset>("Stop")
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("EventId");
+
+                            b1.ToTable("Events");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EventId");
+                        });
+
+                    b.OwnsOne("HoaM.Domain.Features.Schedule", "Schedule", b1 =>
+                        {
+                            b1.Property<Guid>("EventId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTimeOffset?>("EndsAt")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<TimeSpan>("Interval")
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("EventId");
+
+                            b1.ToTable("Events");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EventId");
+                        });
+
+                    b.Navigation("Occurrence")
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.Lot", b =>
@@ -1141,10 +1195,6 @@ namespace HoaM.SampleAPI.Migrations
 
             modelBuilder.Entity("HoaM.Domain.Features.MeetingMinutes", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.CommitteeMember", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("AssociationMemberId");
-
                     b.HasOne("HoaM.Domain.Features.Meeting", "Meeting")
                         .WithOne("Minutes")
                         .HasForeignKey("HoaM.Domain.Features.MeetingMinutes", "MeetingId");
@@ -1258,8 +1308,6 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Meeting");
 
                     b.Navigation("Notes");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.Notification", b =>
@@ -1393,58 +1441,6 @@ namespace HoaM.SampleAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HoaM.Domain.Features.PeriodicMeeting", b =>
-                {
-                    b.HasOne("HoaM.Domain.Features.Event", null)
-                        .WithOne()
-                        .HasForeignKey("HoaM.Domain.Features.PeriodicMeeting", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("HoaM.Domain.Features.Occurrence", "Occurrence", b1 =>
-                        {
-                            b1.Property<Guid>("PeriodicMeetingId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<DateTimeOffset>("Start")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<DateTimeOffset>("Stop")
-                                .HasColumnType("TEXT");
-
-                            b1.HasKey("PeriodicMeetingId");
-
-                            b1.ToTable("Events");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PeriodicMeetingId");
-                        });
-
-                    b.OwnsOne("HoaM.Domain.Features.Schedule", "Schedule", b1 =>
-                        {
-                            b1.Property<Guid>("PeriodicMeetingId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<DateTimeOffset?>("EndsAt")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<TimeSpan>("Interval")
-                                .HasColumnType("TEXT");
-
-                            b1.HasKey("PeriodicMeetingId");
-
-                            b1.ToTable("Events");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PeriodicMeetingId");
-                        });
-
-                    b.Navigation("Occurrence")
-                        .IsRequired();
-
-                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("HoaM.Domain.Features.GreenSpace", b =>

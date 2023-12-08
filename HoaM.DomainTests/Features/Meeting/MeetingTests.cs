@@ -188,8 +188,9 @@
         {
             // Arrange
             var meeting = CreateMeeting();
-            meeting.GenerateMinutes()
-                   .Publish(CommitteeMember.Create(FirstName.From("Alexander"), LastName.From("Pope")), DateTimeOffset.UtcNow);
+            var member = AssociationMember.Create(FirstName.From("Alexander"), LastName.From("Pope"));
+            
+            meeting.GenerateMinutes().Publish(member.Id, DateTimeOffset.UtcNow);
 
             // Act & Assert
             Assert.Throws<DomainException>(() => meeting.RemoveMinutes());

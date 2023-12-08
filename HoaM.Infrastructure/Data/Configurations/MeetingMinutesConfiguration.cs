@@ -47,11 +47,7 @@ namespace HoaM.Infrastructure.Data
 
             builder.HasMany(minutes => minutes.Attendees).WithMany();
 
-            builder.HasOne(minutes => minutes.Publisher)
-                   .WithMany()
-                   .HasForeignKey("AssociationMemberId")
-                   .IsRequired(false);
-
+            builder.Property(minutes => minutes.Publisher).IsRequired(false);
             builder.Property(minutes => minutes.PublishedDate).IsRequired(false);
 
             builder.HasQueryFilter(minutes => minutes.DeletionDate == null);

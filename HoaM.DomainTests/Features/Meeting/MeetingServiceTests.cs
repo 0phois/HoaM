@@ -16,7 +16,7 @@ namespace HoaM.Domain.UnitTests
             meeting.GenerateMinutes();
 
             systemClock.GetUtcNow().Returns(DateTime.UtcNow);
-            currentUserService.GetCommitteeMember().Returns(CommitteeMember.Create(FirstName.From("Jane"), LastName.From("Doe")));
+            currentUserService.CurrentUser.Returns(AssociationMember.Create(FirstName.From("Jane"), LastName.From("Doe")));
 
             // Act
             var result = await meetingService.PublishMeetingMinutesAsync(meeting);
@@ -24,7 +24,6 @@ namespace HoaM.Domain.UnitTests
             // Assert
             Assert.True(result.IsSuccess);
             Assert.True(meeting.Minutes!.IsPublished);
-            await currentUserService.Received(1).GetCommitteeMember();
         }
 
         [Fact]
@@ -43,7 +42,6 @@ namespace HoaM.Domain.UnitTests
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Equal(DomainErrors.MeetingMinutes.NullOrEmpty.Message, result.Message);
-            await currentUserService.DidNotReceive().GetCommitteeMember();
         }
 
         [Fact]
@@ -60,7 +58,7 @@ namespace HoaM.Domain.UnitTests
             meeting.GenerateMinutes();
 
             systemClock.GetUtcNow().Returns(DateTime.UtcNow);
-            currentUserService.GetCommitteeMember().Returns(CommitteeMember.Create(FirstName.From("Jane"), LastName.From("Doe")));
+            currentUserService.CurrentUser.Returns(AssociationMember.Create(FirstName.From("Jane"), LastName.From("Doe")));
 
             await meetingService.PublishMeetingMinutesAsync(meeting);
             currentUserService.ClearReceivedCalls();
@@ -71,32 +69,6 @@ namespace HoaM.Domain.UnitTests
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Equal(DomainErrors.MeetingMinutes.AlreadyPublished.Message, result.Message);
-            await currentUserService.DidNotReceive().GetCommitteeMember();
-        }
-
-        [Fact]
-        public async Task PublishMeetingMinutesAsync_ExceptionOccurs_FailsWithErrorDetails()
-        {
-            // Arrange
-            var currentUserService = Substitute.For<ICurrentUserService>();
-            var systemClock = Substitute.For<TimeProvider>();
-            var meetingService = new MeetingService(currentUserService, systemClock);
-
-            var meeting = CreateMeeting();
-            meeting.GenerateMinutes();
-
-            var errorCode = "UnitTest.Error";
-            var errorMessage = "An error occurred.";
-            
-            currentUserService.GetCommitteeMember().Throws(new DomainException(new Error(errorCode, errorMessage)));
-
-            // Act
-            var result = await meetingService.PublishMeetingMinutesAsync(meeting);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.Equal(errorMessage, result.Message);
-            await currentUserService.Received(1).GetCommitteeMember();
         }
 
         private static Meeting CreateMeeting()

@@ -206,12 +206,12 @@ namespace HoaM.SampleAPI.Migrations
                     LastModifiedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     DeletedBy = table.Column<Guid>(type: "TEXT", nullable: true),
                     DeletionDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    Data = table.Column<string>(type: "TEXT", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Occurrence_Start = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     Occurrence_Stop = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     Schedule_Interval = table.Column<TimeSpan>(type: "TEXT", nullable: true),
-                    Schedule_EndsAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    Schedule_EndsAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    Data = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -266,11 +266,18 @@ namespace HoaM.SampleAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Event",
+                name: "Events",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Occurrence_Start = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    Occurrence_Stop = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    Schedule_Interval = table.Column<TimeSpan>(type: "TEXT", nullable: true),
+                    Schedule_EndsAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     CommunityId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 21, nullable: false),
+                    Data = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "TEXT", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -280,9 +287,9 @@ namespace HoaM.SampleAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Event", x => x.Id);
+                    table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Event_Communities_CommunityId",
+                        name: "FK_Events_Communities_CommunityId",
                         column: x => x.CommunityId,
                         principalTable: "Communities",
                         principalColumn: "Id");
@@ -397,29 +404,6 @@ namespace HoaM.SampleAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Data = table.Column<string>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Occurrence_Start = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    Occurrence_Stop = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    Schedule_Interval = table.Column<TimeSpan>(type: "TEXT", nullable: true),
-                    Schedule_EndsAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Events_Event_Id",
-                        column: x => x.Id,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AssociationMembers",
                 columns: table => new
                 {
@@ -429,9 +413,7 @@ namespace HoaM.SampleAPI.Migrations
                     ParcelId = table.Column<Guid>(type: "TEXT", nullable: true),
                     DeletedBy = table.Column<Guid>(type: "TEXT", nullable: true),
                     DeletionDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    CommunityId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    MemberType = table.Column<string>(type: "TEXT", maxLength: 13, nullable: false),
-                    Position = table.Column<string>(type: "TEXT", nullable: true)
+                    CommunityId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -511,6 +493,31 @@ namespace HoaM.SampleAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MeetingMinutes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Publisher = table.Column<Guid>(type: "TEXT", nullable: true),
+                    PublishedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    MeetingId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "TEXT", nullable: false),
+                    LastModifiedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeetingMinutes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MeetingMinutes_Meetings_MeetingId",
+                        column: x => x.MeetingId,
+                        principalTable: "Meetings",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Meetings_Agenda",
                 columns: table => new
                 {
@@ -529,6 +536,30 @@ namespace HoaM.SampleAPI.Migrations
                         name: "FK_Meetings_Agenda_Meetings_MeetingId",
                         column: x => x.MeetingId,
                         principalTable: "Meetings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssociationMemberCommittee",
+                columns: table => new
+                {
+                    CommitteeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    MembersId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssociationMemberCommittee", x => new { x.CommitteeId, x.MembersId });
+                    table.ForeignKey(
+                        name: "FK_AssociationMemberCommittee_AssociationMembers_MembersId",
+                        column: x => x.MembersId,
+                        principalTable: "AssociationMembers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AssociationMemberCommittee_Committees_CommitteeId",
+                        column: x => x.CommitteeId,
+                        principalTable: "Committees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -559,25 +590,21 @@ namespace HoaM.SampleAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CommitteeCommitteeMember",
+                name: "CommitteeAssignment",
                 columns: table => new
                 {
-                    CommitteesId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    MembersId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    AssociationMemberId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    CommitteeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CommitteeRole = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommitteeCommitteeMember", x => new { x.CommitteesId, x.MembersId });
+                    table.PrimaryKey("PK_CommitteeAssignment", x => new { x.AssociationMemberId, x.Id });
                     table.ForeignKey(
-                        name: "FK_CommitteeCommitteeMember_AssociationMembers_MembersId",
-                        column: x => x.MembersId,
+                        name: "FK_CommitteeAssignment_AssociationMembers_AssociationMemberId",
+                        column: x => x.AssociationMemberId,
                         principalTable: "AssociationMembers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CommitteeCommitteeMember_Committees_CommitteesId",
-                        column: x => x.CommitteesId,
-                        principalTable: "Committees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -600,36 +627,6 @@ namespace HoaM.SampleAPI.Migrations
                         principalTable: "AssociationMembers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MeetingMinutes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AssociationMemberId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    PublishedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    MeetingId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LastModifiedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "TEXT", nullable: true),
-                    DeletionDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MeetingMinutes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MeetingMinutes_AssociationMembers_AssociationMemberId",
-                        column: x => x.AssociationMemberId,
-                        principalTable: "AssociationMembers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_MeetingMinutes_Meetings_MeetingId",
-                        column: x => x.MeetingId,
-                        principalTable: "Meetings",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -869,6 +866,11 @@ namespace HoaM.SampleAPI.Migrations
                 column: "CommunityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssociationMemberCommittee_MembersId",
+                table: "AssociationMemberCommittee",
+                column: "MembersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AssociationMemberMeetingMinutes_MeetingMinutesId",
                 table: "AssociationMemberMeetingMinutes",
                 column: "MeetingMinutesId");
@@ -889,11 +891,6 @@ namespace HoaM.SampleAPI.Migrations
                 column: "Who");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommitteeCommitteeMember_MembersId",
-                table: "CommitteeCommitteeMember",
-                column: "MembersId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Committees_CommunityId",
                 table: "Committees",
                 column: "CommunityId");
@@ -910,8 +907,8 @@ namespace HoaM.SampleAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_CommunityId",
-                table: "Event",
+                name: "IX_Events_CommunityId",
+                table: "Events",
                 column: "CommunityId");
 
             migrationBuilder.CreateIndex(
@@ -923,11 +920,6 @@ namespace HoaM.SampleAPI.Migrations
                 name: "IX_Lots_ParcelId",
                 table: "Lots",
                 column: "ParcelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MeetingMinutes_AssociationMemberId",
-                table: "MeetingMinutes",
-                column: "AssociationMemberId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MeetingMinutes_MeetingId",
@@ -1014,13 +1006,16 @@ namespace HoaM.SampleAPI.Migrations
                 name: "AssociationFees");
 
             migrationBuilder.DropTable(
+                name: "AssociationMemberCommittee");
+
+            migrationBuilder.DropTable(
                 name: "AssociationMemberMeetingMinutes");
 
             migrationBuilder.DropTable(
                 name: "AuditLogs");
 
             migrationBuilder.DropTable(
-                name: "CommitteeCommitteeMember");
+                name: "CommitteeAssignment");
 
             migrationBuilder.DropTable(
                 name: "Committees_AdditionalDetails");
@@ -1066,9 +1061,6 @@ namespace HoaM.SampleAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Event");
 
             migrationBuilder.DropTable(
                 name: "MeetingMinutes");

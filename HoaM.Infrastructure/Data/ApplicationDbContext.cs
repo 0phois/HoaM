@@ -1,15 +1,13 @@
 ﻿using HoaM.Domain;
-using HoaM.Domain.Features;
 using HoaM.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Reflection;
-using System.Text.Json;
 
 namespace HoaM.Infrastructure.Data
 {
-    public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, AssociationMemberId>(options)
+    public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+        : IdentityDbContext<ApplicationUser, ApplicationRole, AssociationMemberId>(options)
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -17,20 +15,5 @@ namespace HoaM.Infrastructure.Data
             
             base.OnModelCreating(builder);
         }
-
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        {
-            configurationBuilder.Properties<Occurrence>().HaveConversion<JsonConverter<Occurrence>>();
-            configurationBuilder.Properties<Schedule>().HaveConversion<JsonConverter<Schedule>>();
-
-            base.ConfigureConventions(configurationBuilder);
-        }
-    }
-
-    internal sealed class JsonConverter<T> : ValueConverter<T, string> where T : class
-    {
-        public JsonConverter() : base(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<T>(v, (JsonSerializerOptions?)null)) { }
     }
 }

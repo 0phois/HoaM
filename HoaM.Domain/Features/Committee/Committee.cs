@@ -43,7 +43,7 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// <see cref="AssociationMember"/>s that make up the <seealso cref="Committee"/>
         /// </summary>
-        public ICollection<CommitteeMember> Members { get; set; } = new HashSet<CommitteeMember>();
+        public ICollection<AssociationMember> Members { get; set; } = new HashSet<AssociationMember>();
 
         /// <summary>
         /// All meetings held by this <see cref="Committee"/>

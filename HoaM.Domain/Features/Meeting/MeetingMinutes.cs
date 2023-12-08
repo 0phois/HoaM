@@ -36,9 +36,9 @@ namespace HoaM.Domain.Features
         private readonly List<AssociationMember> _attendees = [];
 
         /// <summary>
-        /// <see cref="CommitteeMember"/> that published the <see cref="MeetingMinutes"/>
+        /// <see cref="AssociationMember"/> that published the <see cref="MeetingMinutes"/>
         /// </summary>
-        public CommitteeMember? Publisher { get; private set; }
+        public AssociationMemberId? Publisher { get; private set; }
 
         /// <summary>
         /// Date and time the <see cref="MeetingMinutes"/> were published
@@ -280,16 +280,16 @@ namespace HoaM.Domain.Features
             }
         }
 
-        internal void Publish(CommitteeMember publisher, DateTimeOffset datePublished)
+        internal void Publish(AssociationMemberId memberId, DateTimeOffset datePublished)
         {
-            if (publisher is null) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
+            if (memberId == default) throw new DomainException(DomainErrors.AssociationMember.NullOrEmpty);
 
             if (IsPublished) throw new DomainException(DomainErrors.MeetingMinutes.AlreadyPublished);
 
             if (datePublished == default) throw new DomainException(DomainErrors.MeetingMinutes.DateNullOrEmpty);
 
             PublishedDate = datePublished;
-            Publisher = publisher;
+            Publisher = memberId;
         }
     }
 }

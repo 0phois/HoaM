@@ -10,14 +10,6 @@ namespace HoaM.Domain.Features
         /// Unique ID of the <see cref="Event"/>
         /// </summary>
         public override EventId Id { get; protected set; } = EventId.From(NewId.Next().ToGuid());
-    }
-
-    public class Event<T> : Event
-    {
-        /// <summary>
-        /// Represents the basis of the event
-        /// </summary>
-        public T Data { get; private set; } = default!;
 
         /// <summary>
         /// Name of the <see cref="Event"/>
@@ -33,6 +25,23 @@ namespace HoaM.Domain.Features
         /// Interval at which the <see cref="Event"/> occurs
         /// </summary>
         public Schedule? Schedule { get; init; }
+
+        public void EditTitle(EventTitle title)
+        {
+            if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
+
+            if (title == Title) return;
+
+            Title = title;
+        }
+    }
+
+    public class Event<T> : Event
+    {
+        /// <summary>
+        /// Represents the basis of the event
+        /// </summary>
+        public T Data { get; private set; } = default!;
 
         private protected Event() { }
 
@@ -58,15 +67,6 @@ namespace HoaM.Domain.Features
             var occurance = new Occurrence(start, stop);
 
             return new(activity, title, occurance, schedule);
-        }
-
-        public void EditTitle(EventTitle title)
-        {
-            if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
-
-            if (title == Title) return;
-
-            Title = title;
         }
 
         public IEnumerable<Event<T>> GetInstances(int limit)

@@ -27,9 +27,8 @@ namespace HoaM.Infrastructure
         {
             services.AddAuthorization();
 
-            var defaultIdentityBuilder = services.AddIdentityApiEndpoints<TUser>()
-                                                 .AddEntityFrameworkStores<TDbContext>()
-                                                 .AddRoles<TRole>();
+            var defaultIdentityBuilder = services.AddIdentityApiEndpoints<TUser>().AddRoles<TRole>()
+                                                 .AddEntityFrameworkStores<TDbContext>();
             
             identityBuilder?.Invoke(defaultIdentityBuilder);
 
@@ -83,7 +82,6 @@ namespace HoaM.Infrastructure
         {
             var services = builder.ServiceCollection;
 
-            services.AddScoped(typeof(GenericRepository<,>));
             services.AddScoped<ILotRepository, LotRepository>();
             services.AddScoped<IParcelRepository, ParcelRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();

@@ -1,6 +1,7 @@
 using HoaM.API;
 using HoaM.API.Features;
 using HoaM.Application;
+using HoaM.Domain.Features;
 using HoaM.Extensions.MediatR;
 using HoaM.Infrastructure;
 using HoaM.Infrastructure.Data;
@@ -17,6 +18,8 @@ builder.Services.AddEndpointServices();
 
 builder.Services.UseMediatR();
 builder.Services.UseDefaultTimeProvider();
+
+builder.Services.AddScoped<IMember, SystemUser>(); //TODO - review current user implementation
 
 var app = builder.Build();
 

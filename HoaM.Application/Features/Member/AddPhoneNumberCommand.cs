@@ -32,7 +32,7 @@ namespace HoaM.Application.Features
                 .Must(member => !member!.IsDeleted)
                     .WithErrorCode(ApplicationErrors.AssociationMember.AlreadyDeleted.Code)
                     .WithMessage(ApplicationErrors.AssociationMember.AlreadyDeleted.Message)
-                .Must((cmd, member) => member!.PhoneNumbers.Exists((x) => x.Type == cmd.PhoneNumber.Type))
+                .Must((cmd, member) => member!.PhoneNumbers.Any((x) => x.Type == cmd.PhoneNumber.Type))
                     .WithErrorCode(ApplicationErrors.AssociationMember.DuplicatePhone.Code)
                     .WithMessage(ApplicationErrors.AssociationMember.DuplicatePhone.Message)
                 .Must(member => member!.PhoneNumbers.Count < MaxNumbers)

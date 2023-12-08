@@ -58,15 +58,15 @@
             // Arrange
             var meeting = CreateMeeting();
             var meetingMinutes = MeetingMinutes.CreateFor(meeting);
-            var publisher = CommitteeMember.Create(FirstName.From("Bob"), LastName.From("Barker"));
+            var publisher = AssociationMember.Create(FirstName.From("Bob"), LastName.From("Barker"));
             var datePublished = DateTimeOffset.Now;
 
             // Act
-            meetingMinutes.Publish(publisher, datePublished);
+            meetingMinutes.Publish(publisher.Id, datePublished);
 
             // Assert
             Assert.Equal(datePublished, meetingMinutes.PublishedDate);
-            Assert.Equal(publisher, meetingMinutes.Publisher);
+            Assert.Equal(publisher.Id, meetingMinutes.Publisher);
         }
 
         [Fact]
@@ -75,12 +75,12 @@
             // Arrange
             var meeting = CreateMeeting();
             var meetingMinutes = MeetingMinutes.CreateFor(meeting);
-            var publisher = CommitteeMember.Create(FirstName.From("Peter"), LastName.From("Parker"));
+            var publisher = AssociationMember.Create(FirstName.From("Peter"), LastName.From("Parker"));
 
-            meetingMinutes.Publish(publisher, DateTimeOffset.Now);
+            meetingMinutes.Publish(publisher.Id, DateTimeOffset.Now);
 
             // Act
-            Action action = () => meetingMinutes.Publish(publisher, DateTimeOffset.Now);
+            Action action = () => meetingMinutes.Publish(publisher.Id, DateTimeOffset.Now);
 
             // Assert
             var exception = Assert.Throws<DomainException>(action);
@@ -95,7 +95,7 @@
             var meetingMinutes = MeetingMinutes.CreateFor(meeting);
 
             // Act
-            Action action = () => meetingMinutes.Publish(null, DateTimeOffset.Now);
+            Action action = () => meetingMinutes.Publish(default, DateTimeOffset.Now);
 
             // Assert
             var exception = Assert.Throws<DomainException>(action);

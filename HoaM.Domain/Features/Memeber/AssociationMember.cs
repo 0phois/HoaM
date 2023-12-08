@@ -32,7 +32,14 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// Contact numbers for the <see cref="AssociationMember"/>
         /// </summary>
-        public List<PhoneNumber> PhoneNumbers { get; protected set; } = [];
+        public IReadOnlyCollection<PhoneNumber> PhoneNumbers => _phoneNumbers.AsReadOnly();
+        private readonly List<PhoneNumber> _phoneNumbers = [];
+
+        /// <summary>
+        /// Collection of <see cref="Committee"/>s that the <see cref="AssociationMember"/> serves
+        /// </summary>
+        public IReadOnlyCollection<CommitteeAssignment> Commitments => _commitments.AsReadOnly();
+        private readonly List<CommitteeAssignment> _commitments = [];
 
         /// <summary>
         /// Resendential address (within the community) of the <see cref="AssociationMember"/>
@@ -42,7 +49,8 @@ namespace HoaM.Domain.Features
         /// <summary>
         /// <see cref="Notification"/>s delivered to this <see cref="AssociationMember"/>
         /// </summary>
-        public IReadOnlyCollection<Notification> Notifications { get; } = new List<Notification>().AsReadOnly();
+        public IReadOnlyCollection<Notification> Notifications => _notifications.AsReadOnly();
+        private readonly List<Notification> _notifications = [];
 
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
@@ -91,7 +99,7 @@ namespace HoaM.Domain.Features
         {
             if (numbers is null || numbers.Length == 0) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
 
-            PhoneNumbers.AddRange(numbers);
+            _phoneNumbers.AddRange(numbers);
 
             return this;
         }
@@ -100,9 +108,9 @@ namespace HoaM.Domain.Features
         {
             if (phoneNumber is null) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
 
-            if (PhoneNumbers.Exists(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
+            if (_phoneNumbers.Exists(p => p.Type == phoneNumber.Type)) throw new DomainException(DomainErrors.PhoneNumber.DuplicateType);
 
-            PhoneNumbers.Add(phoneNumber);
+            _phoneNumbers.Add(phoneNumber);
 
             return this;
         }
@@ -111,7 +119,7 @@ namespace HoaM.Domain.Features
         {
             if (phoneNumber is null) throw new DomainException(DomainErrors.PhoneNumber.NullOrEmpty);
 
-            PhoneNumbers.Remove(phoneNumber);
+            _phoneNumbers.Remove(phoneNumber);
         }
 
         public void EditFirstName(FirstName name)

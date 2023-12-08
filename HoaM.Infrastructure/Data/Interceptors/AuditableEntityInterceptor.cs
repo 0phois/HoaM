@@ -27,6 +27,7 @@ namespace HoaM.Infrastructure.Data
 
         public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
         {
+            //TODO - implement audit logs
             //https://github.com/thepirat000/Audit.NET/blob/master/src/Audit.EntityFramework/DbContextHelper.cs#L531
             //https://github.com/thepirat000/Audit.NET/blob/master/src/Audit.EntityFramework/DbContextHelper.Core.cs#L314
             return base.SavedChanges(eventData, result);

@@ -36,24 +36,16 @@ namespace HoaM.Infrastructure.Data
                 navigationBuilder.WithOwner().HasForeignKey("AssociationMemberId");
             });
 
+            builder.OwnsMany(member => member.Commitments, navigationBuilder =>
+            {
+                navigationBuilder.Property(x => x.CommitteeId).IsRequired();
+                navigationBuilder.Property(x => x.CommitteeRole).IsRequired();
+            });
+
             builder.Property(member => member.DeletedBy).IsRequired(false);
             builder.Property(member => member.DeletionDate).IsRequired(false);
 
-            builder.HasDiscriminator<string>("MemberType")
-                   .HasValue<AssociationMember>("Association")
-                   .HasValue<CommitteeMember>("Committee");
-
             builder.HasQueryFilter(member => member.DeletionDate == null);
-        }
-    }
-
-    internal sealed class CommitteeMemberConfiguration : IEntityTypeConfiguration<CommitteeMember>
-    {
-        public void Configure(EntityTypeBuilder<CommitteeMember> builder)
-        {
-            builder.ToTable("AssociationMembers");
-
-            builder.Property(cm => cm.Position).IsRequired();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace HoaM.Infrastructure.Data
             });
 
             builder.HasMany(committee => committee.Members)
-                   .WithMany(x => x.Committees);
+                   .WithMany();
 
             builder.HasMany(committee => committee.Meetings)
                    .WithOne()

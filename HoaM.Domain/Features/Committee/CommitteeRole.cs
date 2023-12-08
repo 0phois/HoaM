@@ -10,4 +10,6 @@
         public static CommitteeRole Liaison => From("Liaison");
         public static CommitteeRole Member => From("Member");
     }
+
+    public sealed record CommitteeAssignment(CommitteeId CommitteeId, CommitteeRole CommitteeRole);
 }
