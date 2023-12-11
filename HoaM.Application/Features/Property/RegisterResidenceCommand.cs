@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record RegisterResidenceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<Residence> { }
+    public sealed record RegisterResidenceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<IResult<Residence>> { }
 
     public sealed class RegisterResidenceValidator : AbstractValidator<RegisterResidenceCommand>
     {
@@ -22,7 +22,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class RegisterResidenceHandler(IParcelRepository repository) : ICommandHandler<RegisterResidenceCommand, Residence>
+    public sealed class RegisterResidenceHandler(IParcelRepository repository) : ICommandHandler<RegisterResidenceCommand, IResult<Residence>>
     {
         public Task<IResult<Residence>> Handle(RegisterResidenceCommand request, CancellationToken cancellationToken)
         {

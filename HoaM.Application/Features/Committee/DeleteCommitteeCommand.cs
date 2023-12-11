@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record DeleteCommitteeCommand(CommitteeId CommitteeId) : ICommand, ICommitteeBinder
+    public sealed record DeleteCommitteeCommand(CommitteeId CommitteeId) : ICommand<IResult>, ICommitteeBinder
     {
         public CommitteeId Id => CommitteeId;
         public Committee? Entity { get; set; }
@@ -31,7 +31,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class DeleteCommitteeHandler(ICommitteeRepository repository) : ICommandHandler<DeleteCommitteeCommand>
+    public sealed class DeleteCommitteeHandler(ICommitteeRepository repository) : ICommandHandler<DeleteCommitteeCommand, IResult>
     {
         public Task<IResult> Handle(DeleteCommitteeCommand request, CancellationToken cancellationToken)
         {

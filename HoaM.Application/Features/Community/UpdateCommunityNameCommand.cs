@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record UpdateCommunityNameCommand(CommunityId CommunityId, CommunityName NewName) : ICommand, ICommunityBinder
+    public sealed record UpdateCommunityNameCommand(CommunityId CommunityId, CommunityName NewName) : ICommand<IResult>, ICommunityBinder
     {
         public CommunityId Id => CommunityId;
         public Community? Entity { get; set; }
@@ -35,7 +35,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class UpdateCommunityNameCommandHandler : ICommandHandler<UpdateCommunityNameCommand>
+    public sealed class UpdateCommunityNameCommandHandler : ICommandHandler<UpdateCommunityNameCommand, IResult>
     {
         public Task<IResult> Handle(UpdateCommunityNameCommand request, CancellationToken cancellationToken)
         {

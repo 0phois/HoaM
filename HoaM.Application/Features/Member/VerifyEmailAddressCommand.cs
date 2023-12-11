@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record VerifyEmailAddressCommand(AssociationMemberId MemberId) : ICommand, IMemberBinder
+    public sealed record VerifyEmailAddressCommand(AssociationMemberId MemberId) : ICommand<IResult>, IMemberBinder
     {
         public AssociationMemberId Id => MemberId;
         public AssociationMember? Entity { get; set; }
@@ -39,7 +39,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand>
+    public sealed class VerifyEmailAddressHandler : ICommandHandler<VerifyEmailAddressCommand, IResult>
     {
         public Task<IResult> Handle(VerifyEmailAddressCommand request, CancellationToken cancellationToken)
         {

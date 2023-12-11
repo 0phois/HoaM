@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand, ICommunityBinder
+    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand<IResult>, ICommunityBinder
     {
         public CommunityId Id => CommunityId;
 
@@ -29,7 +29,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class DeleteCommunityHandler(ICommunityRepository repository) : ICommandHandler<DeleteCommunityCommand>
+    public sealed class DeleteCommunityHandler(ICommunityRepository repository) : ICommandHandler<DeleteCommunityCommand, IResult>
     {
         public Task<IResult> Handle(DeleteCommunityCommand request, CancellationToken cancellationToken)
         {

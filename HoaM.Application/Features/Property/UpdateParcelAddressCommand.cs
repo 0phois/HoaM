@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record UpdateParcelAddressCommand(ParcelId ParcelId, StreetName StreetName, StreetNumber StreetNumber) : ICommand, IParcelBinder
+    public sealed record UpdateParcelAddressCommand(ParcelId ParcelId, StreetName StreetName, StreetNumber StreetNumber) : ICommand<IResult>, IParcelBinder
     {
         public ParcelId Id => ParcelId;
         public Parcel? Entity { get; set; }
@@ -33,7 +33,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class UpdateParcelAddressHandler : ICommandHandler<UpdateParcelAddressCommand>
+    public sealed class UpdateParcelAddressHandler : ICommandHandler<UpdateParcelAddressCommand, IResult>
     {
         public Task<IResult> Handle(UpdateParcelAddressCommand request, CancellationToken cancellationToken)
         {

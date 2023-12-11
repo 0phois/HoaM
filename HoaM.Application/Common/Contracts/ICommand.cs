@@ -1,8 +1,6 @@
-﻿namespace HoaM.Application.Common
+﻿using HoaM.Domain.Common;
+
+namespace HoaM.Application.Common
 {
-    public interface IBaseCommand { }
-
-    public interface ICommand : IBaseCommand { }
-
-    public interface ICommand<TResponse> : IBaseCommand { }
+    public interface ICommand<TResponse> where TResponse : IResult { }
 }

@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record CreateCommitteeCommand(CommitteeName Name, DateOnly? DateEstablished = null) : ICommand<Committee> { }
+    public sealed record CreateCommitteeCommand(CommitteeName Name, DateOnly? DateEstablished = null) : ICommand<IResult<Committee>> { }
 
     public sealed class CreateCommitteeValidator : AbstractValidator<CreateCommitteeCommand>
     {
@@ -24,7 +24,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class CreateCommitteeCommandHandler(ICommitteeRepository repository) : ICommandHandler<CreateCommitteeCommand, Committee>
+    public sealed class CreateCommitteeCommandHandler(ICommitteeRepository repository) : ICommandHandler<CreateCommitteeCommand, IResult<Committee>>
     {
         public Task<IResult<Committee>> Handle(CreateCommitteeCommand request, CancellationToken cancellationToken)
         {

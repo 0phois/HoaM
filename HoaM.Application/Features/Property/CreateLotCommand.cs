@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record CreateLotCommand(LotNumber LotNumber) : ICommand<Lot> { }
+    public sealed record CreateLotCommand(LotNumber LotNumber) : ICommand<IResult<Lot>> { }
 
     public sealed class CreateLotValidator : AbstractValidator<CreateLotCommand>
     {
@@ -22,7 +22,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class CreateLotHandler(ILotRepository repository) : ICommandHandler<CreateLotCommand, Lot>
+    public sealed class CreateLotHandler(ILotRepository repository) : ICommandHandler<CreateLotCommand, IResult<Lot>>
     {
         public Task<IResult<Lot>> Handle(CreateLotCommand request, CancellationToken cancellationToken)
         {

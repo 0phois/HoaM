@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record UpdatePhoneNumbersCommand(AssociationMemberId MemberId, params PhoneNumber[] PhoneNumbers) : ICommand, IMemberBinder
+    public sealed record UpdatePhoneNumbersCommand(AssociationMemberId MemberId, params PhoneNumber[] PhoneNumbers) : ICommand<IResult>, IMemberBinder
     {
         public AssociationMemberId Id => MemberId;
         public AssociationMember? Entity { get; set; }
@@ -44,7 +44,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class UpdatePhoneNumbersHandler : ICommandHandler<UpdatePhoneNumbersCommand>
+    public sealed class UpdatePhoneNumbersHandler : ICommandHandler<UpdatePhoneNumbersCommand, IResult>
     {
         public Task<IResult> Handle(UpdatePhoneNumbersCommand request, CancellationToken cancellationToken)
         {

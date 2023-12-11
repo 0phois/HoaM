@@ -5,7 +5,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record RegisterMemberCommand(FirstName FirstName, LastName LastName, EmailAddress Email) : ICommand<AssociationMember> { }
+    public sealed record RegisterMemberCommand(FirstName FirstName, LastName LastName, EmailAddress Email) : ICommand<IResult<AssociationMember>> { }
 
     public sealed class RegisterMemberValidator : AbstractValidator<RegisterMemberCommand>
     {
@@ -21,7 +21,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class RegisterMemberHandler(IAssociationMemberRepository repository) : ICommandHandler<RegisterMemberCommand, AssociationMember>
+    public sealed class RegisterMemberHandler(IAssociationMemberRepository repository) : ICommandHandler<RegisterMemberCommand, IResult<AssociationMember>>
     {
         public Task<IResult<AssociationMember>> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
         {

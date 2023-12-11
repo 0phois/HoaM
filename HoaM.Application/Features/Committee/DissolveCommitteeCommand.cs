@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record DissolveCommitteeCommand(CommitteeId CommitteeId) : ICommand, ICommitteeBinder
+    public sealed record DissolveCommitteeCommand(CommitteeId CommitteeId) : ICommand<IResult>, ICommitteeBinder
     {
         public CommitteeId Id => CommitteeId;
         public Committee? Entity { get; set; }
@@ -34,7 +34,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class DissolveCommitteeHandler(TimeProvider systemClock) : ICommandHandler<DissolveCommitteeCommand>
+    public sealed class DissolveCommitteeHandler(TimeProvider systemClock) : ICommandHandler<DissolveCommitteeCommand, IResult>
     {
         private readonly TimeProvider _clock = systemClock;
 

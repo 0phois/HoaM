@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record CreateCommunityCommand(CommunityName Name) : ICommand<CommunityId> { }
+    public sealed record CreateCommunityCommand(CommunityName Name) : ICommand<IResult<CommunityId>> { }
 
     public sealed class CreateCommunityValidator : AbstractValidator<CreateCommunityCommand>
     {
@@ -22,7 +22,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class CreateCommunityCommandHandler(ICommunityRepository repository) : ICommandHandler<CreateCommunityCommand, CommunityId>
+    public sealed class CreateCommunityCommandHandler(ICommunityRepository repository) : ICommandHandler<CreateCommunityCommand, IResult<CommunityId>>
     {
         public Task<IResult<CommunityId>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {

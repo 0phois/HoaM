@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record UpdateCommitteeDetailsCommand(CommitteeId CommitteeId, params Note[] Details) : ICommand, ICommitteeBinder
+    public sealed record UpdateCommitteeDetailsCommand(CommitteeId CommitteeId, params Note[] Details) : ICommand<IResult>, ICommitteeBinder
     {
         public CommitteeId Id => CommitteeId;
         public Committee? Entity { get; set; }
@@ -36,7 +36,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class UpdateCommitteeDetailsHandler : ICommandHandler<UpdateCommitteeDetailsCommand>
+    public sealed class UpdateCommitteeDetailsHandler : ICommandHandler<UpdateCommitteeDetailsCommand, IResult>
     {
         public Task<IResult> Handle(UpdateCommitteeDetailsCommand request, CancellationToken cancellationToken)
         {

@@ -4,8 +4,8 @@ namespace HoaM.Application.Common
 {
     public interface ICommandService
     {
-        Task<IResult> ExecuteAsync<TCommand>(TCommand request, CancellationToken cancellationToken = default) where TCommand : ICommand;
+        Task<IResult> ExecuteAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default);
 
-        Task<IResult<TResponse>> ExecuteAsync<TCommand, TResponse>(TCommand request, CancellationToken cancellationToken = default) where TCommand : ICommand<TResponse>;
+        Task<IResult<TResponse>> ExecuteAsync<TCommand, TResponse>(TCommand command, CancellationToken cancellationToken = default);
     }
 }

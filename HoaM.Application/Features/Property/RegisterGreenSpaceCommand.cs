@@ -6,7 +6,7 @@ using HoaM.Domain.Common;
 
 namespace HoaM.Application
 {
-    public sealed record RegisterGreenSpaceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<GreenSpace> { }
+    public sealed record RegisterGreenSpaceCommand(DevelopmentStatus DevelopmentStatus, params Lot[] Lots) : ICommand<IResult<GreenSpace>> { }
 
     public sealed class RegisterGreenSpaceValidator : AbstractValidator<RegisterGreenSpaceCommand>
     {
@@ -22,7 +22,7 @@ namespace HoaM.Application
         }
     }
 
-    public sealed class RegisterGreenSpaceHandler(IParcelRepository repository) : ICommandHandler<RegisterGreenSpaceCommand, GreenSpace>
+    public sealed class RegisterGreenSpaceHandler(IParcelRepository repository) : ICommandHandler<RegisterGreenSpaceCommand, IResult<GreenSpace>>
     {
         public Task<IResult<GreenSpace>> Handle(RegisterGreenSpaceCommand request, CancellationToken cancellationToken)
         {
