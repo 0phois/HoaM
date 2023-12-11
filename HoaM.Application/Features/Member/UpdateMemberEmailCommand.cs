@@ -7,8 +7,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateMemberEmailCommand(AssociationMemberId MemberId, EmailAddress EmailAddress) : ICommand, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record UpdateMemberEmailCommand(AssociationMemberId MemberId, EmailAddress EmailAddress) : ICommand, IMemberBinder
     {
+        public AssociationMemberId Id => MemberId;
         public AssociationMember? Entity { get; set; }
     }
 

@@ -22,7 +22,7 @@ namespace HoaM.Application.Features
         }
     }
 
-    public sealed class RegisterMemberHandler(IMemberRepository repository) : ICommandHandler<RegisterMemberCommand, AssociationMember>
+    public sealed class RegisterMemberHandler(IAssociationMemberRepository repository) : ICommandHandler<RegisterMemberCommand, AssociationMember>
     {
         public Task<IResult<AssociationMember>> Handle(RegisterMemberCommand request, CancellationToken cancellationToken)
         {

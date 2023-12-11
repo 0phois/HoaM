@@ -1,9 +1,10 @@
-﻿using HoaM.Domain.Common;
+﻿using HoaM.Domain;
+using HoaM.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace HoaM.Infrastructure.Data
 {
-    internal abstract class GenericRepository<TEntity, TId> where TEntity : Entity<TId>
+    internal class GenericRepository<TEntity, TId> : IBaseRepository<TEntity, TId> where TEntity : Entity<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericRepository{TEntity}"/> class.

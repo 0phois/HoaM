@@ -1,8 +1,8 @@
 ﻿using HoaM.Application.Common;
 using HoaM.Domain.Common;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace HoaM.Extensions.MediatR
 {
@@ -10,11 +10,12 @@ namespace HoaM.Extensions.MediatR
     {
         public static IServiceCollection UseMediatR(this IServiceCollection services)
         {
-            services.RegisterCommandHandlerDecorators(AppDomain.CurrentDomain.GetAssemblies());
+            services.RegisterCommandHandlerDecorators();
 
             services.AddMediatR(config =>
             {
-                config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+                config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+                      .AddCommandBinders();
             });
 
             services.AddScoped<ICommandService, MediatrCommandService>();
@@ -23,8 +24,20 @@ namespace HoaM.Extensions.MediatR
             return services;
         }
 
-        private static void RegisterCommandHandlerDecorators(this IServiceCollection services, Assembly[] assemblies)
+        private static MediatRServiceConfiguration AddCommandBinders(this MediatRServiceConfiguration configuration)
         {
+            configuration.AddOpenBehavior(typeof(RequestPreProcessorBehavior<,>), ServiceLifetime.Scoped);
+            configuration.AddOpenRequestPreProcessor(typeof(CommunityBinder<>), ServiceLifetime.Scoped);
+            configuration.AddOpenRequestPreProcessor(typeof(CommitteeBinder<>), ServiceLifetime.Scoped);
+            configuration.AddOpenRequestPreProcessor(typeof(PropertyBinder<>), ServiceLifetime.Scoped);
+            configuration.AddOpenRequestPreProcessor(typeof(AssociationMemberBinder<>), ServiceLifetime.Scoped);
+
+            return configuration;
+        }
+
+        private static void RegisterCommandHandlerDecorators(this IServiceCollection services)
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var handlerTypes = assemblies.SelectMany(a => a.GetTypes())
                                          .Where(t => Array.Exists(t.GetInterfaces(), IsCommandHandlerInterface));
 

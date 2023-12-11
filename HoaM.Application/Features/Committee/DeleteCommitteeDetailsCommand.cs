@@ -7,8 +7,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteCommitteeDetailsCommand(CommitteeId CommitteeId) : ICommand, ICommandBinder<Committee, CommitteeId>
+    public sealed record DeleteCommitteeDetailsCommand(CommitteeId CommitteeId) : ICommand, ICommitteeBinder
     {
+        public CommitteeId Id => CommitteeId;
         public Committee? Entity { get; set; }
     }
 

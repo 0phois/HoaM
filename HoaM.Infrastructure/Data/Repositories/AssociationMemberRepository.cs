@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HoaM.Infrastructure.Data
 {
-    internal sealed class MemberRepository(DbContext dbContext) : GenericRepository<AssociationMember, AssociationMemberId>(dbContext), IMemberRepository
+    internal sealed class AssociationMemberRepository(DbContext dbContext) : GenericRepository<AssociationMember, AssociationMemberId>(dbContext), IAssociationMemberRepository
     {
         public Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
         {

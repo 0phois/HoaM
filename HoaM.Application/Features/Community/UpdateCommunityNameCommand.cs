@@ -7,8 +7,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateCommunityNameCommand(CommunityId CommunityId, CommunityName NewName) : ICommand, ICommandBinder<Community, CommunityId>
+    public sealed record UpdateCommunityNameCommand(CommunityId CommunityId, CommunityName NewName) : ICommand, ICommunityBinder
     {
+        public CommunityId Id => CommunityId;
         public Community? Entity { get; set; }
     }
 

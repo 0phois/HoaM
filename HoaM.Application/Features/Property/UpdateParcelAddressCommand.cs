@@ -7,8 +7,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateParcelAddressCommand(ParcelId ParcelId, StreetName StreetName, StreetNumber StreetNumber) : ICommand, ICommandBinder<Parcel, ParcelId>
+    public sealed record UpdateParcelAddressCommand(ParcelId ParcelId, StreetName StreetName, StreetNumber StreetNumber) : ICommand, IParcelBinder
     {
+        public ParcelId Id => ParcelId;
         public Parcel? Entity { get; set; }
     }
 

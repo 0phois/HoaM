@@ -2,7 +2,7 @@
 
 namespace HoaM.Domain.Features
 {
-    public interface IMemberRepository : IBaseRepository<AssociationMember, AssociationMemberId>
+    public interface IAssociationMemberRepository : IBaseRepository<AssociationMember, AssociationMemberId>
     {
         Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
     }

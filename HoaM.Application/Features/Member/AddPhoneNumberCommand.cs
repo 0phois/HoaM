@@ -7,8 +7,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record AddPhoneNumberCommand(AssociationMemberId MemberId, PhoneNumber PhoneNumber) : ICommand, ICommandBinder<AssociationMember, AssociationMemberId>
+    public sealed record AddPhoneNumberCommand(AssociationMemberId MemberId, PhoneNumber PhoneNumber) : ICommand, IMemberBinder
     {
+        public AssociationMemberId Id => MemberId;
         public AssociationMember? Entity { get; set; }
     }
 

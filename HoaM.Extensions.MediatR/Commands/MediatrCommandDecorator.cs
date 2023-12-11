@@ -9,6 +9,11 @@ namespace HoaM.Extensions.MediatR
         public TCommand Command { get; } = command;
     }
 
+    internal sealed class BoundMediatrCommand<TCommand>(TCommand command) : IRequest<IResult> where TCommand : ICommand, IBaseCommandBinder
+    {
+        public TCommand Command { get; } = command;
+    }
+
     internal sealed class MediatrCommand<TCommand, TResponse>(TCommand command) : IRequest<IResult<TResponse>> where TCommand : ICommand<TResponse>
     {
         public TCommand Command { get; } = command;

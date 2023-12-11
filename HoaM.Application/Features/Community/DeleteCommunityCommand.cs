@@ -7,8 +7,10 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand, ICommandBinder<Community, CommunityId>
+    public sealed record DeleteCommunityCommand(CommunityId CommunityId) : ICommand, ICommunityBinder
     {
+        public CommunityId Id => CommunityId;
+
         public Community? Entity { get; set; }
     }
 

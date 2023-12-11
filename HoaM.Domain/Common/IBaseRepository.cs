@@ -1,4 +1,6 @@
-﻿namespace HoaM.Domain.Common
+﻿using HoaM.Domain.Common;
+
+namespace HoaM.Domain
 {
     public interface IBaseRepository<TEntity, TId> where TEntity : Entity<TId>
     {

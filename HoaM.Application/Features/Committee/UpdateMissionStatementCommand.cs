@@ -7,8 +7,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateMissionStatementCommand(CommitteeId CommitteeId, MissionStatement Statement) : ICommand, ICommandBinder<Committee, CommitteeId>
+    public sealed record UpdateMissionStatementCommand(CommitteeId CommitteeId, MissionStatement Statement) : ICommand, ICommitteeBinder
     {
+        public CommitteeId Id => CommitteeId;
         public Committee? Entity { get; set; }
     }
 

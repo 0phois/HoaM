@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaM.Domain.UnitTests", "Ho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaM.Extensions.MediatR", "HoaM.Extensions.Mediatr\HoaM.Extensions.MediatR.csproj", "{89526310-C205-4D6E-9F8D-006CEEA970FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaM.SampleAPI", "HoaM.API\HoaM.SampleAPI.csproj", "{69516673-89F6-4286-AB35-87E633D1B5A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaM.SampleAPI", "HoaM.SampleAPI\HoaM.SampleAPI.csproj", "{69516673-89F6-4286-AB35-87E633D1B5A9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaM.Infrastructure", "HoaM.Infrastructure\HoaM.Infrastructure.csproj", "{89E13804-4505-4D75-8FE0-32966B6917BD}"
 EndProject

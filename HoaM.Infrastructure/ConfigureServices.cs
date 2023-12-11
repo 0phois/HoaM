@@ -1,12 +1,12 @@
-﻿using HoaM.Domain.Features;
+﻿using HoaM.Domain;
 using HoaM.Infrastructure.Data;
-using HoaM.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace HoaM.Infrastructure
 {
@@ -82,21 +82,43 @@ namespace HoaM.Infrastructure
         {
             var services = builder.ServiceCollection;
 
-            services.AddScoped<ILotRepository, LotRepository>();
-            services.AddScoped<IParcelRepository, ParcelRepository>();
-            services.AddScoped<IMemberRepository, MemberRepository>();
-            services.AddScoped<IArticleRepository, ArticleRepository>();
-            services.AddScoped<IMeetingRepository, MeetingRepository>();
-            services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-            services.AddScoped<IDocumentRepository, DocumentRepository>();
-            services.AddScoped<ICommunityRepository, CommunityRepository>();
-            services.AddScoped<ICommitteeRepository, CommitteeRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddScoped(typeof(IEventRepository<>), typeof(EventRepository<>));
-            services.AddScoped<INotificationTemplateRepository, NotificationTemplateRepository>();
+            services.ConfigureRepositories();
+
+            //services.AddScoped(typeof(IEventRepository<>), typeof(EventRepository<>));
+            //services.AddScoped(typeof(IBaseRepository<,>), typeof(GenericRepository<,>));
 
             return services;
         }
+
+        private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
+        {
+            var repositoryTypes = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(type => type.IsClass &&
+                               !type.IsAbstract &&
+                               type.BaseType != null &&
+                               type.BaseType.IsGenericType &&
+                               type.BaseType.GetGenericTypeDefinition() == typeof(GenericRepository<,>));
+
+            foreach (var repositoryType in repositoryTypes)
+            {
+                var entityType = repositoryType.BaseType?.GetGenericArguments()[0];
+                var entityIdType = repositoryType.BaseType?.GetGenericArguments()[1];
+
+                if (entityType!.FullName is null) continue;
+
+                var genericRepositoryType = typeof(GenericRepository<,>).MakeGenericType(entityType!, entityIdType!);
+                services.AddScoped(genericRepositoryType, repositoryType);
+
+                var interfaceType = Array.Find(repositoryType.GetInterfaces(), inter => inter.Name == $"I{entityType!.Name}Repository");
+
+                if (interfaceType != null)
+                {
+                    services.AddScoped(interfaceType, repositoryType);
+                }
+            }
+
+            return services;
+        }
+
     }
 }

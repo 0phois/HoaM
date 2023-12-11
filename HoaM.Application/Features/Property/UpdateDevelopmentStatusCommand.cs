@@ -6,8 +6,9 @@ using HoaM.Domain.Features;
 
 namespace HoaM.Application.Features
 {
-    public sealed record UpdateDevelopmentStatusCommand(ParcelId ParcelId, DevelopmentStatus Status) : ICommand, ICommandBinder<Parcel, ParcelId>
+    public sealed record UpdateDevelopmentStatusCommand(ParcelId ParcelId, DevelopmentStatus Status) : ICommand, IParcelBinder
     {
+        public ParcelId Id => ParcelId;
         public Parcel? Entity { get; set; }
     }
 
