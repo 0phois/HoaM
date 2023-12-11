@@ -1,7 +1,6 @@
 using HoaM.API;
-using HoaM.API.Features;
 using HoaM.Application;
-using HoaM.Domain.Features;
+using HoaM.Domain;
 using HoaM.Extensions.MediatR;
 using HoaM.Infrastructure;
 using HoaM.Infrastructure.Data;

@@ -1,5 +1,4 @@
 ﻿using HoaM.Domain;
-using HoaM.Domain.Features;
 using Microsoft.AspNetCore.Identity;
 
 namespace HoaM.Infrastructure.Identity

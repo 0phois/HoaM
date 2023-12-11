@@ -2,9 +2,8 @@
 using HoaM.Application.Common;
 using HoaM.Domain;
 using HoaM.Domain.Common;
-using HoaM.Domain.Features;
 
-namespace HoaM.Application.Features
+namespace HoaM.Application
 {
     public sealed record CreateMemberCommand(FirstName FirstName, LastName LastName) : ICommand<AssociationMember> { }
 

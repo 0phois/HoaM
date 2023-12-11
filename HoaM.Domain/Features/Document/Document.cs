@@ -3,7 +3,7 @@ using HoaM.Domain.Exceptions;
 using MassTransit;
 using System.IO.Compression;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public sealed class Document : Entity<DocumentId>
     {

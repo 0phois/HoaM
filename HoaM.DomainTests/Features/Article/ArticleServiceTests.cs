@@ -43,7 +43,7 @@
             var systemClock = TimeProvider.System;
             var articleService = new ArticleService(systemClock);
             var article = Article.CreateAnnouncement(ArticleTitle.From("New Announcement"), Text.From("Announcement content"));
-            
+
             // Act
             var result = articleService.PublishArticle(article);
 

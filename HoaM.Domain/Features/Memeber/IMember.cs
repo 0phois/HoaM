@@ -1,4 +1,4 @@
-﻿namespace HoaM.Domain.Features
+﻿namespace HoaM.Domain
 {
     public interface IMember
     {

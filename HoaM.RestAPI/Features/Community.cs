@@ -1,11 +1,11 @@
-﻿using HoaM.Application.Common;
-using HoaM.Application.Features;
+﻿using HoaM.Application;
+using HoaM.Application.Common;
 using HoaM.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace HoaM.API.Features
+namespace HoaM.API
 {
     public class Community : EndpointGroupBase
     {

@@ -2,7 +2,7 @@
 using HoaM.Domain.Exceptions;
 using MassTransit;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public sealed class Lot : Entity<LotId>
     {

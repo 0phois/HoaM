@@ -1,4 +1,4 @@
-﻿namespace HoaM.Domain.Features
+﻿namespace HoaM.Domain
 {
     public abstract class RecurringMeeting<T> : Event<T> where T : Meeting
     {

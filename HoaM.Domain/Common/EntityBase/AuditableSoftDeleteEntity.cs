@@ -4,7 +4,7 @@
     {
         public AssociationMemberId? DeletedBy { get; set; }
         public DateTimeOffset? DeletionDate { get; set; }
-    
+
         public bool IsDeleted => DeletionDate is not null;
     }
 }

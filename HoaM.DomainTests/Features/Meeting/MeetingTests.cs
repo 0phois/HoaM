@@ -189,7 +189,7 @@
             // Arrange
             var meeting = CreateMeeting();
             var member = AssociationMember.Create(FirstName.From("Alexander"), LastName.From("Pope"));
-            
+
             meeting.GenerateMinutes().Publish(member.Id, DateTimeOffset.UtcNow);
 
             // Act & Assert

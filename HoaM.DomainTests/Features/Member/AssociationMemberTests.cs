@@ -31,7 +31,7 @@
             var lastName = new LastName("Doe");
 
             // Act
-            var exception = Record.Exception( () => AssociationMember.Create(firstName, lastName));
+            var exception = Record.Exception(() => AssociationMember.Create(firstName, lastName));
 
             // Assert
             Assert.IsType<DomainException>(exception);
@@ -46,7 +46,7 @@
 
             // Act
             var exception = Record.Exception(() => AssociationMember.Create(firstName, lastName));
-            
+
             // Assert
             Assert.IsType<DomainException>(exception);
         }

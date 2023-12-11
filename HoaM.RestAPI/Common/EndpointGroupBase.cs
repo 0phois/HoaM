@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 
-namespace HoaM.API.Features
+namespace HoaM.API
 {
     public abstract class EndpointGroupBase
     {

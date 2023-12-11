@@ -1,6 +1,4 @@
-﻿using HoaM.Domain.Common;
-
-namespace HoaM.Domain.Features
+﻿namespace HoaM.Domain
 {
     public interface ICommunityRepository : IBaseRepository<Community, CommunityId>
     {

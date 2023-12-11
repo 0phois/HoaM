@@ -2,7 +2,7 @@
 using HoaM.Domain.Exceptions;
 using MassTransit;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     /// <summary>
     /// Defines a committee within the Home Owner's Association

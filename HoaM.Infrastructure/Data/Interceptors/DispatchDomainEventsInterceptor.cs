@@ -33,7 +33,7 @@ namespace HoaM.Infrastructure.Data
         public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
         {
             await DispatchDomainEvents<DomainNotification>(eventData.Context);
-            
+
             return await base.SavedChangesAsync(eventData, result, cancellationToken);
         }
 
@@ -47,7 +47,7 @@ namespace HoaM.Infrastructure.Data
 
             var domainEvents = entities.SelectMany(e => e.DomainEvents.OfType<TEventType>()).ToImmutableArray();
 
-            if (typeof(TEventType) == typeof(DomainNotification)) 
+            if (typeof(TEventType) == typeof(DomainNotification))
                 entities.ToList().ForEach(e => e.ClearDomainEvents());
 
             foreach (var domainEvent in domainEvents)

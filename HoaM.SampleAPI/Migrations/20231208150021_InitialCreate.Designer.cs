@@ -50,7 +50,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("AssociationMemberMeetingMinutes");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Article", b =>
+            modelBuilder.Entity("HoaM.Domain.Article", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -96,7 +96,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Articles", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AssociationFee", b =>
+            modelBuilder.Entity("HoaM.Domain.AssociationFee", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -137,7 +137,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("AssociationFees", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AssociationMember", b =>
+            modelBuilder.Entity("HoaM.Domain.AssociationMember", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -171,7 +171,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("AssociationMembers", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AuditLog", b =>
+            modelBuilder.Entity("HoaM.Domain.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -209,7 +209,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("AuditLogs", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Committee", b =>
+            modelBuilder.Entity("HoaM.Domain.Committee", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -243,7 +243,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Committees", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Community", b =>
+            modelBuilder.Entity("HoaM.Domain.Community", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -257,7 +257,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Communities", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Document", b =>
+            modelBuilder.Entity("HoaM.Domain.Document", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -280,7 +280,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Documents", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Event", b =>
+            modelBuilder.Entity("HoaM.Domain.Event", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -326,7 +326,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Lot", b =>
+            modelBuilder.Entity("HoaM.Domain.Lot", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -350,7 +350,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Lots", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Meeting", b =>
+            modelBuilder.Entity("HoaM.Domain.Meeting", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -398,7 +398,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Meetings", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.MeetingMinutes", b =>
+            modelBuilder.Entity("HoaM.Domain.MeetingMinutes", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -438,7 +438,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("MeetingMinutes", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Notification", b =>
+            modelBuilder.Entity("HoaM.Domain.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -464,7 +464,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("Notifications", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.NotificationTemplate", b =>
+            modelBuilder.Entity("HoaM.Domain.NotificationTemplate", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -490,7 +490,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("NotificationTemplates", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Parcel", b =>
+            modelBuilder.Entity("HoaM.Domain.Parcel", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -529,7 +529,7 @@ namespace HoaM.SampleAPI.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Transaction", b =>
+            modelBuilder.Entity("HoaM.Domain.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -780,9 +780,9 @@ namespace HoaM.SampleAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.PeriodicMeeting", b =>
+            modelBuilder.Entity("HoaM.Domain.PeriodicMeeting", b =>
                 {
-                    b.HasBaseType("HoaM.Domain.Features.Event");
+                    b.HasBaseType("HoaM.Domain.Event");
 
                     b.Property<string>("Data")
                         .IsRequired()
@@ -793,9 +793,9 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasDiscriminator().HasValue("PeriodicMeeting");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.GreenSpace", b =>
+            modelBuilder.Entity("HoaM.Domain.GreenSpace", b =>
                 {
-                    b.HasBaseType("HoaM.Domain.Features.Parcel");
+                    b.HasBaseType("HoaM.Domain.Parcel");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -806,27 +806,27 @@ namespace HoaM.SampleAPI.Migrations
                     b.HasDiscriminator().HasValue("GreenSpace");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Residence", b =>
+            modelBuilder.Entity("HoaM.Domain.Residence", b =>
                 {
-                    b.HasBaseType("HoaM.Domain.Features.Parcel");
+                    b.HasBaseType("HoaM.Domain.Parcel");
 
                     b.ToTable("Parcels", (string)null);
 
                     b.HasDiscriminator().HasValue("Residence");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Expense", b =>
+            modelBuilder.Entity("HoaM.Domain.Expense", b =>
                 {
-                    b.HasBaseType("HoaM.Domain.Features.Transaction");
+                    b.HasBaseType("HoaM.Domain.Transaction");
 
                     b.ToTable("Transactions", (string)null);
 
                     b.HasDiscriminator().HasValue("Expense");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Payment", b =>
+            modelBuilder.Entity("HoaM.Domain.Payment", b =>
                 {
-                    b.HasBaseType("HoaM.Domain.Features.Transaction");
+                    b.HasBaseType("HoaM.Domain.Transaction");
 
                     b.ToTable("Transactions", (string)null);
 
@@ -835,13 +835,13 @@ namespace HoaM.SampleAPI.Migrations
 
             modelBuilder.Entity("AssociationMemberCommittee", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Committee", null)
+                    b.HasOne("HoaM.Domain.Committee", null)
                         .WithMany()
                         .HasForeignKey("CommitteeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HoaM.Domain.Features.AssociationMember", null)
+                    b.HasOne("HoaM.Domain.AssociationMember", null)
                         .WithMany()
                         .HasForeignKey("MembersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -850,33 +850,33 @@ namespace HoaM.SampleAPI.Migrations
 
             modelBuilder.Entity("AssociationMemberMeetingMinutes", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.AssociationMember", null)
+                    b.HasOne("HoaM.Domain.AssociationMember", null)
                         .WithMany()
                         .HasForeignKey("AttendeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HoaM.Domain.Features.MeetingMinutes", null)
+                    b.HasOne("HoaM.Domain.MeetingMinutes", null)
                         .WithMany()
                         .HasForeignKey("MeetingMinutesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Article", b =>
+            modelBuilder.Entity("HoaM.Domain.Article", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Articles")
                         .HasForeignKey("CommunityId");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AssociationFee", b =>
+            modelBuilder.Entity("HoaM.Domain.AssociationFee", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("AssociationFees")
                         .HasForeignKey("CommunityId");
 
-                    b.OwnsOne("HoaM.Domain.Features.Occurrence", "Occurrence", b1 =>
+                    b.OwnsOne("HoaM.Domain.Occurrence", "Occurrence", b1 =>
                         {
                             b1.Property<Guid>("AssociationFeeId")
                                 .HasColumnType("TEXT");
@@ -895,7 +895,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("AssociationFeeId");
                         });
 
-                    b.OwnsOne("HoaM.Domain.Features.Schedule", "Schedule", b1 =>
+                    b.OwnsOne("HoaM.Domain.Schedule", "Schedule", b1 =>
                         {
                             b1.Property<Guid>("AssociationFeeId")
                                 .HasColumnType("TEXT");
@@ -920,13 +920,13 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Schedule");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AssociationMember", b =>
+            modelBuilder.Entity("HoaM.Domain.AssociationMember", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("AssociationMembers")
                         .HasForeignKey("CommunityId");
 
-                    b.HasOne("HoaM.Domain.Features.Residence", "Residence")
+                    b.HasOne("HoaM.Domain.Residence", "Residence")
                         .WithMany("Residents")
                         .HasForeignKey("ParcelId");
 
@@ -954,7 +954,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("AssociationMemberId");
                         });
 
-                    b.OwnsOne("HoaM.Domain.Features.Email", "Email", b1 =>
+                    b.OwnsOne("HoaM.Domain.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("TEXT");
@@ -980,7 +980,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("AssociationMemberId");
                         });
 
-                    b.OwnsMany("HoaM.Domain.Features.PhoneNumber", "PhoneNumbers", b1 =>
+                    b.OwnsMany("HoaM.Domain.PhoneNumber", "PhoneNumbers", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("TEXT");
@@ -1026,22 +1026,22 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Residence");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AuditLog", b =>
+            modelBuilder.Entity("HoaM.Domain.AuditLog", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.AssociationMember", null)
+                    b.HasOne("HoaM.Domain.AssociationMember", null)
                         .WithMany()
                         .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Committee", b =>
+            modelBuilder.Entity("HoaM.Domain.Committee", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Committees")
                         .HasForeignKey("CommunityId");
 
-                    b.OwnsMany("HoaM.Domain.Features.Note", "AdditionalDetails", b1 =>
+                    b.OwnsMany("HoaM.Domain.Note", "AdditionalDetails", b1 =>
                         {
                             b1.Property<Guid>("CommitteeId")
                                 .HasColumnType("TEXT");
@@ -1076,20 +1076,20 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("AdditionalDetails");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Document", b =>
+            modelBuilder.Entity("HoaM.Domain.Document", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Documents")
                         .HasForeignKey("CommunityId");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Event", b =>
+            modelBuilder.Entity("HoaM.Domain.Event", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Events")
                         .HasForeignKey("CommunityId");
 
-                    b.OwnsOne("HoaM.Domain.Features.Occurrence", "Occurrence", b1 =>
+                    b.OwnsOne("HoaM.Domain.Occurrence", "Occurrence", b1 =>
                         {
                             b1.Property<Guid>("EventId")
                                 .HasColumnType("TEXT");
@@ -1108,7 +1108,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("EventId");
                         });
 
-                    b.OwnsOne("HoaM.Domain.Features.Schedule", "Schedule", b1 =>
+                    b.OwnsOne("HoaM.Domain.Schedule", "Schedule", b1 =>
                         {
                             b1.Property<Guid>("EventId")
                                 .HasColumnType("TEXT");
@@ -1133,30 +1133,30 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Schedule");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Lot", b =>
+            modelBuilder.Entity("HoaM.Domain.Lot", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Lots")
                         .HasForeignKey("CommunityId");
 
-                    b.HasOne("HoaM.Domain.Features.Parcel", null)
+                    b.HasOne("HoaM.Domain.Parcel", null)
                         .WithMany("Lots")
                         .HasForeignKey("ParcelId");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Meeting", b =>
+            modelBuilder.Entity("HoaM.Domain.Meeting", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Committee", "Committee")
+                    b.HasOne("HoaM.Domain.Committee", "Committee")
                         .WithMany("Meetings")
                         .HasForeignKey("CommitteeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Meeting")
                         .HasForeignKey("CommunityId");
 
-                    b.OwnsMany("HoaM.Domain.Features.Note", "Agenda", b1 =>
+                    b.OwnsMany("HoaM.Domain.Note", "Agenda", b1 =>
                         {
                             b1.Property<Guid>("MeetingId")
                                 .HasColumnType("TEXT");
@@ -1193,13 +1193,13 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Committee");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.MeetingMinutes", b =>
+            modelBuilder.Entity("HoaM.Domain.MeetingMinutes", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Meeting", "Meeting")
+                    b.HasOne("HoaM.Domain.Meeting", "Meeting")
                         .WithOne("Minutes")
-                        .HasForeignKey("HoaM.Domain.Features.MeetingMinutes", "MeetingId");
+                        .HasForeignKey("HoaM.Domain.MeetingMinutes", "MeetingId");
 
-                    b.OwnsMany("HoaM.Domain.Features.ActionItem", "ActionItems", b1 =>
+                    b.OwnsMany("HoaM.Domain.ActionItem", "ActionItems", b1 =>
                         {
                             b1.Property<Guid>("MeetingMinutesId")
                                 .HasColumnType("TEXT");
@@ -1237,7 +1237,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("MeetingMinutesId");
                         });
 
-                    b.OwnsMany("HoaM.Domain.Features.Note", "AgendaNotes", b1 =>
+                    b.OwnsMany("HoaM.Domain.Note", "AgendaNotes", b1 =>
                         {
                             b1.Property<Guid>("MeetingMinutesId")
                                 .HasColumnType("TEXT");
@@ -1269,7 +1269,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("MeetingMinutesId");
                         });
 
-                    b.OwnsMany("HoaM.Domain.Features.Note", "Notes", b1 =>
+                    b.OwnsMany("HoaM.Domain.Note", "Notes", b1 =>
                         {
                             b1.Property<Guid>("MeetingMinutesId")
                                 .HasColumnType("TEXT");
@@ -1310,13 +1310,13 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Notes");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Notification", b =>
+            modelBuilder.Entity("HoaM.Domain.Notification", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.AssociationMember", "Recipient")
+                    b.HasOne("HoaM.Domain.AssociationMember", "Recipient")
                         .WithMany("Notifications")
                         .HasForeignKey("AssociationMemberId");
 
-                    b.HasOne("HoaM.Domain.Features.NotificationTemplate", "Template")
+                    b.HasOne("HoaM.Domain.NotificationTemplate", "Template")
                         .WithMany()
                         .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1327,35 +1327,35 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Template");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.NotificationTemplate", b =>
+            modelBuilder.Entity("HoaM.Domain.NotificationTemplate", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Notifications")
                         .HasForeignKey("CommunityId");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Parcel", b =>
+            modelBuilder.Entity("HoaM.Domain.Parcel", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Parcels")
                         .HasForeignKey("CommunityId");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Transaction", b =>
+            modelBuilder.Entity("HoaM.Domain.Transaction", b =>
                 {
-                    b.HasOne("HoaM.Domain.Features.AssociationMember", "SubmittedBy")
+                    b.HasOne("HoaM.Domain.AssociationMember", "SubmittedBy")
                         .WithMany()
                         .HasForeignKey("AssociationMemberId");
 
-                    b.HasOne("HoaM.Domain.Features.Community", null)
+                    b.HasOne("HoaM.Domain.Community", null)
                         .WithMany("Transactions")
                         .HasForeignKey("CommunityId");
 
-                    b.HasOne("HoaM.Domain.Features.Parcel", null)
+                    b.HasOne("HoaM.Domain.Parcel", null)
                         .WithMany("Transactions")
                         .HasForeignKey("ParcelId");
 
-                    b.OwnsOne("HoaM.Domain.Features.Note", "Memo", b1 =>
+                    b.OwnsOne("HoaM.Domain.Note", "Memo", b1 =>
                         {
                             b1.Property<Guid>("TransactionId")
                                 .HasColumnType("TEXT");
@@ -1443,9 +1443,9 @@ namespace HoaM.SampleAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.GreenSpace", b =>
+            modelBuilder.Entity("HoaM.Domain.GreenSpace", b =>
                 {
-                    b.OwnsOne("HoaM.Domain.Features.Note", "Description", b1 =>
+                    b.OwnsOne("HoaM.Domain.Note", "Description", b1 =>
                         {
                             b1.Property<Guid>("GreenSpaceId")
                                 .HasColumnType("TEXT");
@@ -1477,7 +1477,7 @@ namespace HoaM.SampleAPI.Migrations
                                 .HasForeignKey("GreenSpaceId");
                         });
 
-                    b.OwnsOne("HoaM.Domain.Features.OpeningHours", "OpeningHours", b1 =>
+                    b.OwnsOne("HoaM.Domain.OpeningHours", "OpeningHours", b1 =>
                         {
                             b1.Property<Guid>("GreenSpaceId")
                                 .HasColumnType("TEXT");
@@ -1548,17 +1548,17 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Rules");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.AssociationMember", b =>
+            modelBuilder.Entity("HoaM.Domain.AssociationMember", b =>
                 {
                     b.Navigation("Notifications");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Committee", b =>
+            modelBuilder.Entity("HoaM.Domain.Committee", b =>
                 {
                     b.Navigation("Meetings");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Community", b =>
+            modelBuilder.Entity("HoaM.Domain.Community", b =>
                 {
                     b.Navigation("Articles");
 
@@ -1583,19 +1583,19 @@ namespace HoaM.SampleAPI.Migrations
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Meeting", b =>
+            modelBuilder.Entity("HoaM.Domain.Meeting", b =>
                 {
                     b.Navigation("Minutes");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Parcel", b =>
+            modelBuilder.Entity("HoaM.Domain.Parcel", b =>
                 {
                     b.Navigation("Lots");
 
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("HoaM.Domain.Features.Residence", b =>
+            modelBuilder.Entity("HoaM.Domain.Residence", b =>
                 {
                     b.Navigation("Residents");
                 });

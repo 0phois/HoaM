@@ -1,9 +1,8 @@
 ﻿using HoaM.Domain.Common;
 using HoaM.Domain.Exceptions;
 using MassTransit;
-using static HoaM.Domain.Exceptions.DomainErrors;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public class ActionItem : AuditableEntity<ActionItemId>
     {

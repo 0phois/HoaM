@@ -1,4 +1,4 @@
-﻿namespace HoaM.Domain.Features
+﻿namespace HoaM.Domain
 {
     public abstract class RecurringTransaction<T> : Event<T> where T : ITransaction
     {

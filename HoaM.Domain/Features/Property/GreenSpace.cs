@@ -1,6 +1,6 @@
 ﻿using HoaM.Domain.Exceptions;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     /// <summary>
     /// Details of a recreational space within the community/neighborhood

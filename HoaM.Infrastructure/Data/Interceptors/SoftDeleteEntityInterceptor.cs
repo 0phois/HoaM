@@ -1,5 +1,5 @@
-﻿using HoaM.Domain.Common;
-using HoaM.Domain.Features;
+﻿using HoaM.Domain;
+using HoaM.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 

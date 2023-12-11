@@ -1,6 +1,6 @@
 ﻿using HoaM.Domain.Exceptions;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public class PeriodicMeeting : RecurringMeeting<Meeting>
     {

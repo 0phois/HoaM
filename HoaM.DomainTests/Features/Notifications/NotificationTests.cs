@@ -142,7 +142,7 @@
         {
             var title = new NotificationTitle("Test Notification");
             var body = new Text("This is a test notification content.");
-            
+
             return NotificationTemplate.Create(title, body, NotificationType.Information);
         }
 
@@ -150,7 +150,7 @@
         {
             var firstName = new FirstName("John");
             var lastName = new LastName("Doe");
-            
+
             return AssociationMember.Create(firstName, lastName);
         }
     }

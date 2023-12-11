@@ -1,6 +1,6 @@
 ﻿using HoaM.Domain.Exceptions;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     /// <summary>
     /// Details of a residential property within the community/neighborhood

@@ -1,4 +1,4 @@
-﻿using HoaM.Domain.Features;
+﻿using HoaM.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +9,7 @@ namespace HoaM.Infrastructure.Data
         public void Configure(EntityTypeBuilder<Community> builder)
         {
             builder.ToTable("Communities");
-           
+
             builder.HasKey(community => community.Id);
 
             builder.Property(community => community.Name).IsRequired();

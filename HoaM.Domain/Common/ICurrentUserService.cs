@@ -1,6 +1,4 @@
-﻿using HoaM.Domain.Features;
-
-namespace HoaM.Domain
+﻿namespace HoaM.Domain
 {
     public interface ICurrentUserService
     {

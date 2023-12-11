@@ -1,5 +1,5 @@
-﻿using HoaM.Application.Features;
-using HoaM.Domain.Features;
+﻿using HoaM.Application;
+using HoaM.Domain;
 using MediatR.Pipeline;
 
 namespace HoaM.Extensions.MediatR

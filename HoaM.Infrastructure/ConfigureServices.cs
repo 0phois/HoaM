@@ -1,5 +1,4 @@
-﻿using HoaM.Domain;
-using HoaM.Infrastructure.Data;
+﻿using HoaM.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -12,7 +11,7 @@ namespace HoaM.Infrastructure
 {
     public sealed class InfrastructureBuilder<TDbContext>(IServiceCollection services, IConfiguration configuration) where TDbContext : DbContext
     {
-        public IServiceCollection ServiceCollection { get; } = services; 
+        public IServiceCollection ServiceCollection { get; } = services;
         public IConfiguration Configuration { get; } = configuration;
     }
 
@@ -29,7 +28,7 @@ namespace HoaM.Infrastructure
 
             var defaultIdentityBuilder = services.AddIdentityApiEndpoints<TUser>().AddRoles<TRole>()
                                                  .AddEntityFrameworkStores<TDbContext>();
-            
+
             identityBuilder?.Invoke(defaultIdentityBuilder);
 
             services.Configure<IdentityOptions>(configuration.GetSection(nameof(IdentityOptions)));
@@ -43,7 +42,7 @@ namespace HoaM.Infrastructure
             var services = builder.ServiceCollection;
             var databaseOptions = builder.Configuration.GetSection(nameof(DatabaseOptions)).Get<DatabaseOptions>() ?? new();
 
-            var connectionString = string.IsNullOrEmpty(databaseOptions.ConnectionString) 
+            var connectionString = string.IsNullOrEmpty(databaseOptions.ConnectionString)
                 ? builder.Configuration.GetConnectionString("DefaultConnection")
                 : databaseOptions.ConnectionString;
 
@@ -75,7 +74,7 @@ namespace HoaM.Infrastructure
 
             services.AddScoped<DbContext, TContext>();
 
-            return builder; 
+            return builder;
         }
 
         public static IServiceCollection WithDefaultRepositories<TContext>(this InfrastructureBuilder<TContext> builder) where TContext : DbContext

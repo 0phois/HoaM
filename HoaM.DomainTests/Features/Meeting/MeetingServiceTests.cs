@@ -1,6 +1,4 @@
-﻿using NSubstitute.ExceptionExtensions;
-
-namespace HoaM.Domain.UnitTests
+﻿namespace HoaM.Domain.UnitTests
 {
     public class MeetingServiceTests
     {

@@ -10,10 +10,7 @@ namespace HoaM.Extensions.MediatR
 
         public async Task<IResult> ExecuteAsync<TCommand>(TCommand request, CancellationToken cancellationToken = default) where TCommand : ICommand
         {
-            if (request is IBaseCommandBinder commandBinder)
-                return await _mediator.Send(new BoundMediatrCommand<TCommand>(commandBinder), cancellationToken).ConfigureAwait(false);
-            else
-                return await _mediator.Send(new MediatrCommand<TCommand>(request), cancellationToken).ConfigureAwait(false);
+            return await _mediator.Send(new MediatrCommand<TCommand>(request), cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<IResult<TResponse>> ExecuteAsync<TCommand, TResponse>(TCommand request, CancellationToken cancellationToken = default) where TCommand : ICommand<TResponse>

@@ -1,7 +1,7 @@
 ﻿using HoaM.Domain.Common;
 using HoaM.Domain.Exceptions;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public sealed class MeetingService(ICurrentUserService currentUserService, TimeProvider systemClock) : IMeetingManager
     {

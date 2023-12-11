@@ -1,4 +1,4 @@
-﻿namespace HoaM.Domain.Features
+﻿namespace HoaM.Domain
 {
     /// <summary>
     /// Represents the type of <see cref="PhoneNumber"/>

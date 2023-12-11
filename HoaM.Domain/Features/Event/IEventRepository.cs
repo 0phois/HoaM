@@ -1,6 +1,4 @@
-﻿using HoaM.Domain.Common;
-
-namespace HoaM.Domain.Features
+﻿namespace HoaM.Domain
 {
     public interface IEventRepository<T> : IBaseRepository<Event<T>, EventId>
     {

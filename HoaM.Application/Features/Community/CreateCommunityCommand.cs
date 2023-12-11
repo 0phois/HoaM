@@ -3,9 +3,8 @@ using HoaM.Application.Common;
 using HoaM.Application.Exceptions;
 using HoaM.Domain;
 using HoaM.Domain.Common;
-using HoaM.Domain.Features;
 
-namespace HoaM.Application.Features
+namespace HoaM.Application
 {
     public sealed record CreateCommunityCommand(CommunityName Name) : ICommand<CommunityId> { }
 
@@ -28,7 +27,7 @@ namespace HoaM.Application.Features
         public Task<IResult<CommunityId>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {
             var community = Community.Create(request.Name);
-            
+
             repository.Insert(community);
 
             return Results.Success(community.Id);

@@ -1,7 +1,7 @@
 ﻿using HoaM.Domain.Common;
 using MassTransit;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public class AuditLog : Entity<AuditId>, IAuditTrail
     {

@@ -2,7 +2,7 @@
 using HoaM.Domain.Exceptions;
 using MassTransit;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     public abstract class Event : AuditableSoftDeleteEntity<EventId>
     {
@@ -48,7 +48,7 @@ namespace HoaM.Domain.Features
         private protected Event(T activity, EventTitle title, Occurrence occurance, Schedule? schedule)
         {
             if (activity is null) throw new DomainException(DomainErrors.Event.ActivityNullOrEmpty);
-            
+
             if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
 
             if (occurance is null) throw new DomainException(DomainErrors.Event.OccuranceNullOrEmpty);

@@ -1,4 +1,4 @@
-﻿using HoaM.Domain.Features;
+﻿using HoaM.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

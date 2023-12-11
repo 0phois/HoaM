@@ -2,7 +2,7 @@
 using HoaM.Domain.Exceptions;
 using MassTransit;
 
-namespace HoaM.Domain.Features
+namespace HoaM.Domain
 {
     /// <summary>
     /// Defines a member of the home owner's association
@@ -56,8 +56,8 @@ namespace HoaM.Domain.Features
         public DateTimeOffset? DeletionDate { get; set; }
         public bool IsDeleted => DeletionDate is not null;
 
-        public Username DisplayName => Username.TryParse(Email?.Address.Value, out var displayName) 
-            ? displayName 
+        public Username DisplayName => Username.TryParse(Email?.Address.Value, out var displayName)
+            ? displayName
             : Username.From($"{FirstName} {LastName}");
 
         private protected AssociationMember() { }

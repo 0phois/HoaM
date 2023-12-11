@@ -116,7 +116,7 @@
             var initialDetails = Note.Create(Text.From("Initial detail"));
 
             committee.WithAdditionalDetails(initialDetails);
-            
+
             var newDetails = Note.Create(Text.From("Additional detail"));
 
             // Act

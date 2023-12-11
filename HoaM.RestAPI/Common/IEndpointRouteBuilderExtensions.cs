@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.Reflection;
 
-namespace HoaM.API.Features
+namespace HoaM.API
 {
     public static class IEndpointRouteBuilderExtensions
     {
@@ -78,9 +78,9 @@ namespace HoaM.API.Features
         private static void ThrowIfAnonymous(this MethodInfo method)
         {
             var invalidChars = new[] { '<', '>' };
-            
+
             if (method.Name.Any(invalidChars.Contains))
                 throw new ArgumentException("The endpoint name must be specified when using anonymous handlers.");
         }
-    }   
+    }
 }
