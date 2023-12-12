@@ -11,33 +11,33 @@ namespace HoaM.Infrastructure.Data
 
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
-            DispatchDomainEvents<DomainEvent>(eventData.Context).GetAwaiter().GetResult();
+            DispatchDomainEvents<DomainEvent>(eventData.Context, default).GetAwaiter().GetResult();
 
             return base.SavingChanges(eventData, result);
         }
 
         public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
-            await DispatchDomainEvents<DomainEvent>(eventData.Context);
+            await DispatchDomainEvents<DomainEvent>(eventData.Context, cancellationToken);
 
             return await base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
         public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
         {
-            DispatchDomainEvents<DomainNotification>(eventData.Context).GetAwaiter().GetResult();
+            DispatchDomainEvents<DomainNotification>(eventData.Context, default).GetAwaiter().GetResult();
 
             return base.SavedChanges(eventData, result);
         }
 
         public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
         {
-            await DispatchDomainEvents<DomainNotification>(eventData.Context);
+            await DispatchDomainEvents<DomainNotification>(eventData.Context, cancellationToken);
 
             return await base.SavedChangesAsync(eventData, result, cancellationToken);
         }
 
-        public async Task DispatchDomainEvents<TEventType>(DbContext? context) where TEventType : class, IDomainEvent
+        public async Task DispatchDomainEvents<TEventType>(DbContext? context, CancellationToken cancellationToken) where TEventType : class, IDomainEvent
         {
             if (context == null) return;
 
@@ -51,7 +51,7 @@ namespace HoaM.Infrastructure.Data
                 entities.ToList().ForEach(e => e.ClearDomainEvents());
 
             foreach (var domainEvent in domainEvents)
-                await Dispatcher.PublishAsync(domainEvent);
+                await Dispatcher.PublishAsync(domainEvent, cancellationToken);
         }
     }
 }

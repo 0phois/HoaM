@@ -5,7 +5,7 @@
         Guid Id { get; }
     }
 
-    public interface INotifyBefore { }
+    public interface INotifyBefore : IDomainEvent { }
 
-    public interface INotifyAfter { }
+    public interface INotifyAfter : IDomainEvent { }
 }

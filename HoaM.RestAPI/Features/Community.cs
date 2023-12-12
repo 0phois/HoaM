@@ -20,20 +20,20 @@ namespace HoaM.API
         public static async Task<CommunityId> CreateCommunity([FromServices] ICommandService commandService, CommunityName name)
         {
             var result = await commandService.ExecuteAsync<CreateCommunityCommand, CommunityId>(new CreateCommunityCommand(name));
-            //TODO map result to value or error
+
             return result.Value;
         }
 
         public static async Task<IResult> UpdateCommunityName([FromServices] ICommandService commandService, CommunityId id, CommunityName newName)
         {
-            await commandService.ExecuteAsync(new UpdateCommunityNameCommand(id, newName));
+            var result = await commandService.ExecuteAsync(new UpdateCommunityNameCommand(id, newName));
 
             return Results.NoContent();
         }
 
         public static async Task<IResult> DeleteCommunity([FromServices] ICommandService commandService, CommunityId id)
         {
-            await commandService.ExecuteAsync(new DeleteCommunityCommand(id));
+            var result = await commandService.ExecuteAsync(new DeleteCommunityCommand(id));
 
             return Results.NoContent();
         }

@@ -1,4 +1,5 @@
-﻿using HoaM.Application.Common;
+﻿using HoaM.Application;
+using HoaM.Application.Common;
 using HoaM.Domain.Common;
 using MediatR;
 using MediatR.Pipeline;
@@ -8,14 +9,21 @@ namespace HoaM.Extensions.MediatR
 {
     public static class ConfigureServices
     {
+        /// <summary>
+        /// Configures MediatR and registers related services.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+        /// <returns>The <see cref="IServiceCollection"/> for chaining.</returns>
         public static IServiceCollection UseMediatR(this IServiceCollection services)
         {
-            services.RegisterCommandHandlerDecorators();
+            services.RegisterCommandHandlerAdapters();
 
+            //TODO - register notification handler adapters
+            
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
-                      .AddCommandBinders();
+                      .AddCommandBinders().Lifetime = ServiceLifetime.Scoped;
             });
 
             services.AddScoped<ICommandService, MediatrCommandService>();
@@ -35,7 +43,7 @@ namespace HoaM.Extensions.MediatR
             return configuration;
         }
 
-        private static void RegisterCommandHandlerDecorators(this IServiceCollection services)
+        private static void RegisterCommandHandlerAdapters(this IServiceCollection services)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var handlerTypes = assemblies.SelectMany(a => a.GetTypes())
@@ -45,53 +53,29 @@ namespace HoaM.Extensions.MediatR
             {
                 var interfaceType = Array.Find(handlerType.GetInterfaces(), IsCommandHandlerInterface);
 
-                if (interfaceType is not null && GetMediatrHandlerType(interfaceType) is { } mediatrHandlerType)
+                if (interfaceType is not null)
                 {
-                    RegisterDecoratorServices(services, interfaceType, handlerType, mediatrHandlerType);
+                    RegisterMediatrRequestAdapters(services, interfaceType, handlerType);
                 }
             }
         }
 
-        private static void RegisterDecoratorServices(IServiceCollection services, Type interfaceType, Type handlerType, Type mediatrHandlerType)
+        private static void RegisterMediatrRequestAdapters(IServiceCollection services, Type interfaceType, Type handlerType)
         {
-            services.AddTransient(interfaceType, handlerType);
+            services.AddScoped(interfaceType, handlerType);
 
             var genericArguments = interfaceType.GetGenericArguments();
-            var mediatrCommandType = GetMediatrCommand(genericArguments).MakeGenericType(genericArguments);
-            var mediatrHandlerGenericType = mediatrHandlerType.MakeGenericType(genericArguments);
+            var mediatrRequestType = typeof(MediatrRequestAdapter<,>).MakeGenericType(genericArguments);
+            var mediatrRequestHandlerType = typeof(MediatrRequestHandlerAdapter<,>).MakeGenericType(genericArguments);
+            var mediatrResultType = genericArguments[1].IsGenericType
+                ? typeof(IResult<>).MakeGenericType(genericArguments[1].GetGenericArguments()[0])
+                : genericArguments[1];
 
-            var requestHandlerType = typeof(IRequestHandler<,>).MakeGenericType(mediatrCommandType, genericArguments.Length == 1 ? typeof(IResult) : typeof(IResult<>).MakeGenericType(genericArguments[1]));
+            var requestHandlerType = typeof(IRequestHandler<,>).MakeGenericType(mediatrRequestType, mediatrResultType);
 
-            services.AddTransient(requestHandlerType, mediatrHandlerGenericType);
+            services.AddScoped(requestHandlerType, mediatrRequestHandlerType);
         }
 
-        private static bool IsCommandHandlerInterface(Type type)
-        {
-            return type.IsGenericType &&
-                   (type.GetGenericTypeDefinition() == typeof(ICommandHandler<>) ||
-                    type.GetGenericTypeDefinition() == typeof(ICommandHandler<,>));
-        }
-
-        private static Type GetMediatrCommand(Type[] genericArguments)
-        {
-            return genericArguments.Length switch
-            {
-                1 => typeof(MediatrCommand<>),
-                2 => typeof(MediatrCommand<,>),
-                _ => throw new ArgumentOutOfRangeException(nameof(genericArguments), "Generic arguments length is outside of the expected range")
-            };
-        }
-
-        private static Type GetMediatrHandlerType(Type commandHandlerInterface)
-        {
-            var genericArguments = commandHandlerInterface.GetGenericArguments();
-
-            return genericArguments.Length switch
-            {
-                1 => typeof(MediatrCommandHandler<>),
-                2 => typeof(MediatrCommandHandler<,>),
-                _ => throw new ArgumentOutOfRangeException(nameof(commandHandlerInterface), "Generic arguments length is outside of the expected range")
-            };
-        }
+        private static bool IsCommandHandlerInterface(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICommandHandler<,>);
     }
 }

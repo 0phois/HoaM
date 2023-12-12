@@ -2,6 +2,6 @@
 {
     public interface IDomainEventDispatcher
     {
-        Task PublishAsync(IDomainEvent devent);
+        Task PublishAsync(IDomainEvent domainEvent, CancellationToken cancellationToken);
     }
 }
