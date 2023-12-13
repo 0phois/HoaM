@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HoaM.Domain\HoaM.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Core\HoaM.Domain\HoaM.Domain.csproj" />
   </ItemGroup>
 
 </Project>

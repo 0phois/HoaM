@@ -16,10 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HoaM.Application\HoaM.Application.csproj" />
-    <ProjectReference Include="..\HoaM.Extensions.MediatR\HoaM.Extensions.MediatR.csproj" />
-    <ProjectReference Include="..\HoaM.Infrastructure\HoaM.Infrastructure.csproj" />
-    <ProjectReference Include="..\HoaM.RestAPI\HoaM.API.csproj" />
+    <ProjectReference Include="..\..\src\Addons\HoaM.Extensions.MediatR\HoaM.Extensions.MediatR.csproj" />
+    <ProjectReference Include="..\..\src\API\HoaM.API\HoaM.API.csproj" />
+    <ProjectReference Include="..\..\src\Core\HoaM.Application\HoaM.Application.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\HoaM.Infrastructure\HoaM.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

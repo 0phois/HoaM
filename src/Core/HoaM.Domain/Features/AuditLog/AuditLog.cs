@@ -17,7 +17,7 @@ namespace HoaM.Domain
         /// <summary>
         /// Gets or sets the name of the database table being modified.
         /// </summary>
-        public string TableName { get; init; }
+        public string TableName { get; init; } = null!;
 
         /// <summary>
         /// Gets or sets the primary identifier for the record from its originating table.

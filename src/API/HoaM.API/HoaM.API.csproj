@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HoaM.Application\HoaM.Application.csproj" />
-    <ProjectReference Include="..\HoaM.Domain\HoaM.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\HoaM.Application\HoaM.Application.csproj" />
+    <ProjectReference Include="..\..\Core\HoaM.Domain\HoaM.Domain.csproj" />
   </ItemGroup>	
 </Project>
