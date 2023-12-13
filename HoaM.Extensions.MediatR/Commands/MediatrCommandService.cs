@@ -8,7 +8,7 @@ namespace HoaM.Extensions.MediatR
     {
         private readonly IMediator _mediator = mediator;
 
-        public Task<IResult> ExecuteAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) 
+        public Task<IResult> ExecuteAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
             where TCommand : ICommand<IResult>
         {
             return _mediator.Send(new MediatrRequestAdapter<TCommand, IResult>(command), cancellationToken);

@@ -5,29 +5,38 @@ using System.IO.Compression;
 
 namespace HoaM.Domain
 {
+    /// <summary>
+    /// Represents a document entity.
+    /// Inherits from <see cref="Entity{DocumentId}"/>.
+    /// </summary>
     public sealed class Document : Entity<DocumentId>
     {
         /// <summary>
-        /// Unique ID of the <see cref="Document"/>
+        /// Unique ID of the <see cref="Document"/>.
         /// </summary>
         public override DocumentId Id { get; protected set; } = DocumentId.From(NewId.Next().ToGuid());
 
         /// <summary>
-        /// Name of the <see cref="Document"/>
+        /// Name of the <see cref="Document"/>.
         /// </summary>
         public FileName Title { get; private set; } = null!;
 
         /// <summary>
-        /// Compressed <see cref="Document"/> data
+        /// Compressed content data of the <see cref="Document"/>.
         /// </summary>
         public byte[] Content { get; private set; } = [];
 
         private Document() { }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Document"/> with the specified title and compressed data.
+        /// </summary>
+        /// <param name="title">The name of the document.</param>
+        /// <param name="data">The compressed document data.</param>
+        /// <returns>A new <see cref="Document"/> instance.</returns>
         public static Document Create(FileName title, byte[] data)
         {
             if (title is null) throw new DomainException(DomainErrors.Document.TitleNullOrEmpty);
-
             if (data is null || data.Length == 0) throw new DomainException(DomainErrors.Document.DataNullOrEmpty);
 
             var compressedData = Compress(data);
@@ -35,6 +44,10 @@ namespace HoaM.Domain
             return new() { Title = title, Content = compressedData };
         }
 
+        /// <summary>
+        /// Edits the title of the <see cref="Document"/>.
+        /// </summary>
+        /// <param name="title">The new title for the document.</param>
         public void EditTitle(FileName title)
         {
             if (title is null) throw new DomainException(DomainErrors.Document.TitleNullOrEmpty);
@@ -55,6 +68,10 @@ namespace HoaM.Domain
             return compressedStream.ToArray();
         }
 
+        /// <summary>
+        /// Extracts the uncompressed data of the <see cref="Document"/>.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation with the uncompressed data.</returns>
         public async Task<byte[]> ExtractUncompressedDataAsync()
         {
             await using var uncompressedStream = new MemoryStream();
@@ -67,4 +84,5 @@ namespace HoaM.Domain
             return uncompressedStream.ToArray();
         }
     }
+
 }

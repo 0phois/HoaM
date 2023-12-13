@@ -105,10 +105,10 @@ namespace HoaM.Infrastructure
 
                 if (entityType!.FullName is null) continue;
 
-                var genericRepositoryType = typeof(GenericRepository<,>).MakeGenericType(entityType!, entityIdType!);
+                var genericRepositoryType = typeof(GenericRepository<,>).MakeGenericType(entityType, entityIdType!);
                 services.AddScoped(genericRepositoryType, repositoryType);
 
-                var interfaceType = Array.Find(repositoryType.GetInterfaces(), inter => inter.Name == $"I{entityType!.Name}Repository");
+                var interfaceType = Array.Find(repositoryType.GetInterfaces(), inter => inter.Name == $"I{entityType.Name}Repository");
 
                 if (interfaceType != null)
                 {

@@ -2,37 +2,42 @@
 
 namespace HoaM.Domain
 {
+    /// <summary>
+    /// Represents an interface for a financial transaction.
+    /// </summary>
     public interface ITransaction : IEntity<TransactionId>, IAuditable, ISoftDelete
     {
         /// <summary>
-        /// <see cref="AssociationMember"/> that submitted the <see cref="ITransaction"/>
+        /// Gets or sets the member who submitted the transaction.
         /// </summary>
         AssociationMember? SubmittedBy { get; set; }
 
         /// <summary>
-        /// Short description of this <see cref="ITransaction"/>
+        /// Gets the title of the transaction.
         /// </summary>
         TransactionTitle Title { get; init; }
 
         /// <summary>
-        /// Monetary value of this <see cref="ITransaction"/>
+        /// Gets the amount of the transaction.
         /// </summary>
         Money Amount { get; init; }
 
         /// <summary>
-        /// Date Due when the <see cref="ITransaction"/> is a <see cref="TransactionType.Credit"/> <br></br>
-        /// Date Paid when the <see cref="ITransaction"/> is a <see cref="TransactionType.Debit"/>
+        /// Gets the effective date of the transaction. 
+        /// For <see cref="TransactionType.Credit"/> transactions, it is the due date.
+        /// For <see cref="TransactionType.Debit"/> transactions, it is the paid date.
         /// </summary>
         DateOnly EffectiveDate { get; }
 
         /// <summary>
-        /// The <see cref="TransactionType">type</see> of <see cref="ITransaction"/>
+        /// Gets the type of the transaction.
         /// </summary>
         TransactionType Type { get; }
 
         /// <summary>
-        /// Additional details/notes on this <see cref="ITransaction"/> 
+        /// Gets the optional memo associated with the transaction.
         /// </summary>
-        public Note? Memo { get; }
+        Note? Memo { get; }
     }
+
 }

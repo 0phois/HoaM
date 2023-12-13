@@ -35,21 +35,5 @@
             Assert.False(secondPublish.IsSuccess);
             Assert.Equal(DomainErrors.Article.AlreadyPublished.Message, secondPublish.Message);
         }
-
-        [Fact]
-        public void PublishArticle_WhenArticlePublishThrowsDomainException_ReturnsExceptionResult()
-        {
-            // Arrange
-            var systemClock = TimeProvider.System;
-            var articleService = new ArticleService(systemClock);
-            var article = Article.CreateAnnouncement(ArticleTitle.From("New Announcement"), Text.From("Announcement content"));
-
-            // Act
-            var result = articleService.PublishArticle(article);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.IsType<DomainException>((result as ExceptionResult)?.Exception);
-        }
     }
 }

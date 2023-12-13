@@ -47,7 +47,7 @@ namespace HoaM.Infrastructure.Data
     {
         public JsonConverter() : base(
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<T>(v, (JsonSerializerOptions?)null))
+                v => JsonSerializer.Deserialize<T>(v, (JsonSerializerOptions?)null)!)
         { }
     }
 }

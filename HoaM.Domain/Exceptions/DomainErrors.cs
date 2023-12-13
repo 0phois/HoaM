@@ -185,7 +185,7 @@
         public static class Schedule
         {
             public static Error NullOrEmpty => new($"{nameof(Schedule)}.{nameof(NullOrEmpty)}", "Schedule is required.");
-            public static Error OccuranceNullOrEmpty => new($"{nameof(Schedule)}.{nameof(OccuranceNullOrEmpty)}", "First occurance is required.");
+            public static Error OccurrenceNullOrEmpty => new($"{nameof(Schedule)}.{nameof(OccurrenceNullOrEmpty)}", "First occurance is required.");
             public static Error IntervalTooSmall => new($"{nameof(Schedule)}.{nameof(IntervalTooSmall)}", "Scheduled interval cannot be less than one (1) day.");
         }
     }

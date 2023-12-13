@@ -1,7 +1,7 @@
 ﻿namespace HoaM.Domain
 {
     /// <summary>
-    /// Represents the current state of a residential lot (property)
+    /// Represents the current state of a <see cref="Parcel"/> of land (property)
     /// </summary>
     public enum DevelopmentStatus
     {

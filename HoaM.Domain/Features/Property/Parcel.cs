@@ -4,44 +4,63 @@ using MassTransit;
 
 namespace HoaM.Domain
 {
+    /// <summary>
+    /// Represents a land parcel identified by a unique <see cref="ParcelId"/>.
+    /// </summary>
     public abstract class Parcel : Entity<ParcelId>, ISoftDelete
     {
         /// <summary>
-        /// Unique ID of the <see cref="Parcel"/>
+        /// Unique ID of the <see cref="Parcel"/>.
         /// </summary>
         public override ParcelId Id { get; protected set; } = ParcelId.From(NewId.Next().ToGuid());
 
         /// <summary>
-        /// All <see cref="Lot"/>s that make up the <see cref="Parcel"/>
+        /// Gets the collection of lots associated with the parcel.
         /// </summary>
         public IReadOnlyCollection<Lot> Lots => _lots.AsReadOnly();
         private readonly List<Lot> _lots = [];
 
         /// <summary>
-        /// Street number for the <see cref="Parcel"/>
+        /// Gets or sets the street number associated with the parcel.
         /// </summary>
         public StreetNumber? StreetNumber { get; private protected set; }
 
         /// <summary>
-        /// Street name for the <see cref="Parcel"/>
+        /// Gets or sets the street name associated with the parcel.
         /// </summary>
         public StreetName? StreetName { get; private protected set; }
 
         /// <summary>
-        /// Development status of the <see cref="Parcel"/>
+        /// Gets or sets the development status of the parcel.
         /// </summary>
         public DevelopmentStatus Status { get; private protected set; }
 
         /// <summary>
-        /// Summary of all <see cref="ITransaction"/>s linked to this <seealso cref="Parcel"/>
+        /// Gets the collection of transactions associated with the parcel.
         /// </summary>
         public IReadOnlyCollection<Transaction> Transactions { get; private protected set; } = new List<Transaction>().AsReadOnly();
 
+        /// <summary>
+        /// Gets or sets the ID of the user who deleted the parcel.
+        /// </summary>
         public AssociationMemberId? DeletedBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time when the parcel was deleted.
+        /// </summary>
         public DateTimeOffset? DeletionDate { get; set; }
 
+        /// <summary>
+        /// Private parameterless constructor for entity creation.
+        /// </summary>
         private protected Parcel() { }
 
+        /// <summary>
+        /// Adds a <see cref="Lot"/> to the parcel.
+        /// </summary>
+        /// <typeparam name="T">The type of parcel.</typeparam>
+        /// <param name="lot">The lot to add.</param>
+        /// <returns>The modified parcel instance.</returns>
         public T AddLot<T>(Lot lot) where T : Parcel
         {
             if (lot is null) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
@@ -53,6 +72,12 @@ namespace HoaM.Domain
             return (T)this;
         }
 
+        /// <summary>
+        /// Sets the collection of lots associated with the parcel.
+        /// </summary>
+        /// <typeparam name="T">The type of parcel.</typeparam>
+        /// <param name="lots">The lots to associate with the parcel.</param>
+        /// <returns>The modified parcel instance.</returns>
         public T WithLots<T>(params Lot[] lots) where T : Parcel
         {
             if (lots is null || lots.Length == 0) throw new DomainException(DomainErrors.Lot.NullOrEmpty);
@@ -65,6 +90,13 @@ namespace HoaM.Domain
             return (T)this;
         }
 
+        /// <summary>
+        /// Sets the street address associated with the parcel.
+        /// </summary>
+        /// <typeparam name="T">The type of parcel.</typeparam>
+        /// <param name="houseNumber">The street number.</param>
+        /// <param name="streetName">The street name.</param>
+        /// <returns>The modified parcel instance.</returns>
         public T WithAddress<T>(StreetNumber houseNumber, StreetName streetName) where T : Parcel
         {
             if (houseNumber is null) throw new DomainException(DomainErrors.Parcel.StreetNumberNullOrEmpty);
@@ -77,6 +109,10 @@ namespace HoaM.Domain
             return (T)this;
         }
 
+        /// <summary>
+        /// Edits the street name associated with the parcel.
+        /// </summary>
+        /// <param name="streetName">The new street name.</param>
         public void EditStreetName(StreetName streetName)
         {
             if (streetName is null) throw new DomainException(DomainErrors.Parcel.StreetNameNullOrEmpty);
@@ -86,6 +122,10 @@ namespace HoaM.Domain
             StreetName = streetName;
         }
 
+        /// <summary>
+        /// Edits the street number associated with the parcel.
+        /// </summary>
+        /// <param name="streetNumber">The new street number.</param>
         public void EditStreetNumber(StreetNumber streetNumber)
         {
             if (streetNumber is null) throw new DomainException(DomainErrors.Parcel.StreetNumberNullOrEmpty);
@@ -95,6 +135,10 @@ namespace HoaM.Domain
             StreetNumber = streetNumber;
         }
 
+        /// <summary>
+        /// Updates the development status of the parcel.
+        /// </summary>
+        /// <param name="status">The new development status.</param>
         public void UpdateDevelopmentStatus(DevelopmentStatus status)
         {
             if (!Enum.IsDefined(typeof(DevelopmentStatus), status)) throw new DomainException(DomainErrors.Parcel.StatusNotDefined);
@@ -104,4 +148,5 @@ namespace HoaM.Domain
             Status = status;
         }
     }
+
 }

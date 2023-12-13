@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HoaM.Extensions.MediatR
 {
-    internal sealed class MediatrNotificationHandlerAdapter<TNotification>(IEnumerable<IDomainEventHandler<TNotification>> domainEventHandlers) : INotificationHandler<MediatrNotificationAdapter<TNotification>> 
+    internal sealed class MediatrNotificationHandlerAdapter<TNotification>(IEnumerable<IDomainEventHandler<TNotification>> domainEventHandlers) : INotificationHandler<MediatrNotificationAdapter<TNotification>>
         where TNotification : IDomainEvent
     {
         private readonly IEnumerable<IDomainEventHandler<TNotification>> _handlers = domainEventHandlers ?? [];

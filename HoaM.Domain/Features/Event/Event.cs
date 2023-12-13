@@ -4,28 +4,36 @@ using MassTransit;
 
 namespace HoaM.Domain
 {
+    /// <summary>
+    /// Represents an abstract class for managing and auditing events with soft delete functionality.
+    /// Inherits from <see cref="AuditableSoftDeleteEntity{TId}"/>.
+    /// </summary>
     public abstract class Event : AuditableSoftDeleteEntity<EventId>
     {
         /// <summary>
-        /// Unique ID of the <see cref="Event"/>
+        /// Unique ID of the <see cref="Event"/>.
         /// </summary>
         public override EventId Id { get; protected set; } = EventId.From(NewId.Next().ToGuid());
 
         /// <summary>
-        /// Name of the <see cref="Event"/>
+        /// Name of the <see cref="Event"/>.
         /// </summary>
-        public EventTitle Title { get; private set; } = null!;
+        public EventTitle Title { get; protected set; } = null!;
 
         /// <summary>
-        /// Start time and end time of the <see cref="Event"/>
+        /// Start time and end time of the <see cref="Event"/>.
         /// </summary>
         public Occurrence Occurrence { get; init; } = null!;
 
         /// <summary>
-        /// Interval at which the <see cref="Event"/> occurs
+        /// Interval at which the <see cref="Event"/> occurs.
         /// </summary>
         public Schedule? Schedule { get; init; }
 
+        /// <summary>
+        /// Edit the title of the <see cref="Event"/>.
+        /// </summary>
+        /// <param name="title">The new title for the event.</param>
         public void EditTitle(EventTitle title)
         {
             if (title is null) throw new DomainException(DomainErrors.Event.TitleNullOrEmpty);
@@ -36,15 +44,30 @@ namespace HoaM.Domain
         }
     }
 
+    /// <summary>
+    /// Represents a generic class for managing events with a specified activity type.
+    /// Inherits from <see cref="Event"/>.
+    /// </summary>
+    /// <typeparam name="T">The type representing the basis of the event.</typeparam>
     public class Event<T> : Event
     {
         /// <summary>
-        /// Represents the basis of the event
+        /// Represents the basis of the event.
         /// </summary>
         public T Data { get; private set; } = default!;
 
+        /// <summary>
+        /// Default constructor for <see cref="Event{T}"/>.
+        /// </summary>
         private protected Event() { }
 
+        /// <summary>
+        /// Constructor for creating an instance of <see cref="Event{T}"/> with specified parameters.
+        /// </summary>
+        /// <param name="activity">The activity associated with the event.</param>
+        /// <param name="title">The title of the event.</param>
+        /// <param name="occurance">The occurrence details of the event.</param>
+        /// <param name="schedule">The schedule for the event (optional).</param>
         private protected Event(T activity, EventTitle title, Occurrence occurance, Schedule? schedule)
         {
             if (activity is null) throw new DomainException(DomainErrors.Event.ActivityNullOrEmpty);
@@ -53,11 +76,21 @@ namespace HoaM.Domain
 
             if (occurance is null) throw new DomainException(DomainErrors.Event.OccuranceNullOrEmpty);
 
+            Title = title;
             Data = activity;
             Occurrence = occurance;
             Schedule = schedule;
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Event{T}"/>.
+        /// </summary>
+        /// <param name="activity">The activity associated with the event.</param>
+        /// <param name="title">The title of the event.</param>
+        /// <param name="start">The start time of the event.</param>
+        /// <param name="stop">The end time of the event.</param>
+        /// <param name="schedule">The schedule for the event (optional).</param>
+        /// <returns>An instance of <see cref="Event{T}"/>.</returns>
         public static Event<T> Create(T activity, EventTitle title, DateTimeOffset start, DateTimeOffset stop, Schedule? schedule = null)
         {
             if (start == default) throw new DomainException(DomainErrors.Event.StartNullOrEmpty);
@@ -69,6 +102,11 @@ namespace HoaM.Domain
             return new(activity, title, occurance, schedule);
         }
 
+        /// <summary>
+        /// Gets a sequence of instances of <see cref="Event{T}"/> based on the schedule.
+        /// </summary>
+        /// <param name="limit">The maximum number of instances to retrieve.</param>
+        /// <returns>A sequence of instances of <see cref="Event{T}"/>.</returns>
         public IEnumerable<Event<T>> GetInstances(int limit)
         {
             if (limit <= 0) throw new DomainException(DomainErrors.Event.InvalidLimit);
@@ -85,10 +123,14 @@ namespace HoaM.Domain
 
             foreach (var occurrence in occurrences)
             {
-                yield return Event<T>.Create(Data, Title, occurrence.Start, occurrence.Stop);
+                yield return Create(Data, Title, occurrence.Start, occurrence.Stop);
             }
         }
     }
 
+    /// <summary>
+    /// Represents a record for specifying the time an event occurs.
+    /// </summary>
     public sealed record Occurrence(DateTimeOffset Start, DateTimeOffset Stop);
+
 }

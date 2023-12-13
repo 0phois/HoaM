@@ -1,5 +1,4 @@
-﻿using HoaM.Application;
-using HoaM.Application.Common;
+﻿using HoaM.Application.Common;
 using HoaM.Domain.Common;
 using MediatR;
 using MediatR.Pipeline;
@@ -19,7 +18,7 @@ namespace HoaM.Extensions.MediatR
             services.RegisterCommandHandlerAdapters();
 
             //TODO - register notification handler adapters
-            
+
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
@@ -76,6 +75,7 @@ namespace HoaM.Extensions.MediatR
             services.AddScoped(requestHandlerType, mediatrRequestHandlerType);
         }
 
-        private static bool IsCommandHandlerInterface(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICommandHandler<,>);
+        private static bool IsCommandHandlerInterface(Type type)
+            => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICommandHandler<,>);
     }
 }
